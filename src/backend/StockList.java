@@ -21,50 +21,19 @@ SOFTWARE.
  */
 package backend;
 
-import java.util.Date;
-
 /**
  *
  * @author chonk
  */
-public class BuyOrderList {
+public class StockList {
 
-    public BuyOrderNode first;
+    StockNode first;
 
-    public BuyOrderList getOrdersByClient(Client c) {
-        BuyOrderList ret = new BuyOrderList();
-        BuyOrderNode aux = first;
+    public StockList getStockByAvailable(int stock) {
+        StockList ret = new StockList();
+        StockNode aux = first;
         while (aux != null) {
-            if (aux.data.getClient().equals(c)) {
-                ret.insert(aux.data);
-            }
-            aux = aux.next;
-        }
-        return ret;
-    }
-
-    public BuyOrderList getOrdersByDate(Date date) {
-        return this.getOrdersByDateRange(date, date);
-    }
-
-    public BuyOrderList getOrdersByDateRange(Date start, Date end) {
-        BuyOrderList ret = new BuyOrderList();
-        BuyOrderNode aux = first;
-        while (aux != null) {
-            Date date = aux.data.getDate();
-            if (date.before(end) && date.after(start)) {
-                ret.insert(aux.data);
-            }
-            aux = aux.next;
-        }
-        return ret;
-    }
-
-    public BuyOrderList getOrdersByPlant(Plant p) {
-        BuyOrderList ret = new BuyOrderList();
-        BuyOrderNode aux = first;
-        while (aux != null) {
-            if (aux.data.getOrders().contains(p)) {
+            if (aux.data.stock == stock) {
                 ret.insert(aux.data);
             }
             aux = aux.next;
@@ -73,7 +42,7 @@ public class BuyOrderList {
     }
 
     public int size() {
-        BuyOrderNode aux = first;
+        StockNode aux = first;
         int counter = 0;
         while (aux != null) {
             counter++;
@@ -82,33 +51,29 @@ public class BuyOrderList {
         return counter;
     }
 
-    public boolean insert(BuyOrder order) {
+    public boolean insert(Stock stock) {
         if (first == null) {
-            first = new BuyOrderNode(order);
+            first = new StockNode(stock);
             return true;
         }
 
-        BuyOrderNode aux = first;
+        StockNode aux = first;
         while (aux.next != null) {
-            if (aux.data.equals(order))
+            if (aux.data.equals(stock))
                 return false;
             aux = aux.next;
         }
-        aux.next = new BuyOrderNode(order);
+        aux.next = new StockNode(stock);
         return true;
     }
 
-    public boolean delete(BuyOrder order) {
-        return this.delete(order.getId());
-    }
-
-    public boolean delete(int id) {
+    public boolean delete(Stock stock) {
         if (first == null)
             return false;
 
-        BuyOrderNode aux = first;
+        StockNode aux = first;
         while (aux.next != null) {
-            if (aux.next.data.equals(id)) {
+            if (aux.next.data.equals(stock)) {
                 aux.next = aux.next.next;
                 return true;
             }
@@ -117,10 +82,22 @@ public class BuyOrderList {
         return false;
     }
 
-    public boolean exists(int id) {
-        BuyOrderNode aux = first;
+    public boolean exists(Stock stock) {
+        StockNode aux = first;
         while (aux != null) {
-            if (aux.data.getId() == id) {
+            if (aux.data.equals(stock)) {
+                return true;
+            }
+            aux = aux.next;
+        }
+        return false;
+    }
+    
+    public boolean modify(Stock stock) {
+        StockNode aux = first;
+        while (aux != null) {
+            if (aux.data.equals(stock)) {
+                aux.data = stock;
                 return true;
             }
             aux = aux.next;

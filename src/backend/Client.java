@@ -26,11 +26,12 @@ package backend;
  * @author chonk
  */
 public class Client {
+
     public String name;
     public String surname;
     public String phoneNumber;
     public String emailAddress;
-    
+
     public boolean equals(Client client) {
         return this.name.equals(client.name) && this.name.equals(client.surname) && this.name.equals(client.phoneNumber) && this.name.equals(client.emailAddress);
     }

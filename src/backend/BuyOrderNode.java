@@ -26,10 +26,11 @@ package backend;
  * @author chonk
  */
 public class BuyOrderNode {
+
     public BuyOrderNode(BuyOrder order) {
         this.data = order;
     }
-    
+
     public BuyOrderNode next;
     public BuyOrder data;
 }

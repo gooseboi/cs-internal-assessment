@@ -27,15 +27,15 @@ import java.util.Date;
  *
  * @author chonk
  */
-public class BuyOrderList {
+public class SalesList {
 
-    public BuyOrderNode first;
+    public SalesNode first;
 
-    public BuyOrderList getOrdersByClient(Client c) {
-        BuyOrderList ret = new BuyOrderList();
-        BuyOrderNode aux = first;
+    public SalesList getSalesByClient(Client c) {
+        SalesList ret = new SalesList();
+        SalesNode aux = first;
         while (aux != null) {
-            if (aux.data.getClient().equals(c)) {
+            if (aux.data.client.equals(c)) {
                 ret.insert(aux.data);
             }
             aux = aux.next;
@@ -43,15 +43,15 @@ public class BuyOrderList {
         return ret;
     }
 
-    public BuyOrderList getOrdersByDate(Date date) {
-        return this.getOrdersByDateRange(date, date);
+    public SalesList getSalesByDate(Date date) {
+        return this.getSalesByDateRange(date, date);
     }
 
-    public BuyOrderList getOrdersByDateRange(Date start, Date end) {
-        BuyOrderList ret = new BuyOrderList();
-        BuyOrderNode aux = first;
+    public SalesList getSalesByDateRange(Date start, Date end) {
+        SalesList ret = new SalesList();
+        SalesNode aux = first;
         while (aux != null) {
-            Date date = aux.data.getDate();
+            Date date = aux.data.date;
             if (date.before(end) && date.after(start)) {
                 ret.insert(aux.data);
             }
@@ -60,11 +60,11 @@ public class BuyOrderList {
         return ret;
     }
 
-    public BuyOrderList getOrdersByPlant(Plant p) {
-        BuyOrderList ret = new BuyOrderList();
-        BuyOrderNode aux = first;
+    public SalesList getSalesByPlant(Plant p) {
+        SalesList ret = new SalesList();
+        SalesNode aux = first;
         while (aux != null) {
-            if (aux.data.getOrders().contains(p)) {
+            if (aux.data.orders.contains(p)) {
                 ret.insert(aux.data);
             }
             aux = aux.next;
@@ -73,7 +73,7 @@ public class BuyOrderList {
     }
 
     public int size() {
-        BuyOrderNode aux = first;
+        SalesNode aux = first;
         int counter = 0;
         while (aux != null) {
             counter++;
@@ -82,31 +82,31 @@ public class BuyOrderList {
         return counter;
     }
 
-    public boolean insert(BuyOrder order) {
+    public boolean insert(Sale sale) {
         if (first == null) {
-            first = new BuyOrderNode(order);
+            first = new SalesNode(sale);
             return true;
         }
 
-        BuyOrderNode aux = first;
+        SalesNode aux = first;
         while (aux.next != null) {
-            if (aux.data.equals(order))
+            if (aux.data.equals(sale))
                 return false;
             aux = aux.next;
         }
-        aux.next = new BuyOrderNode(order);
+        aux.next = new SalesNode(sale);
         return true;
     }
 
-    public boolean delete(BuyOrder order) {
-        return this.delete(order.getId());
+    public boolean delete(Sale sale) {
+        return this.delete(sale.id);
     }
 
     public boolean delete(int id) {
         if (first == null)
             return false;
 
-        BuyOrderNode aux = first;
+        SalesNode aux = first;
         while (aux.next != null) {
             if (aux.next.data.equals(id)) {
                 aux.next = aux.next.next;
@@ -118,9 +118,21 @@ public class BuyOrderList {
     }
 
     public boolean exists(int id) {
-        BuyOrderNode aux = first;
+        SalesNode aux = first;
         while (aux != null) {
-            if (aux.data.getId() == id) {
+            if (aux.data.id == id) {
+                return true;
+            }
+            aux = aux.next;
+        }
+        return false;
+    }
+
+    public boolean modify(Sale sale) {
+        SalesNode aux = first;
+        while (aux != null) {
+            if (aux.data.equals(sale)) {
+                aux.data = sale;
                 return true;
             }
             aux = aux.next;

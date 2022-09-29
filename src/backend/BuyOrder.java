@@ -28,21 +28,62 @@ import java.util.Date;
  * @author chonk
  */
 public class BuyOrder {
-    public OrderList orders;
-    public Client client;
-    public Date date;
-    public int id;
-    
+
+    private OrderList orders;
+    private Client client;
+    private Date date;
+    private int id;
+
     public BuyOrder(Client client, Date date) {
         this.client = client;
         this.date = date;
         // this.id = GLOBAL_ID++;
     }
-    
+
     public BuyOrder(Client client, Date date, OrderList list) {
         this.client = client;
         this.date = date;
         this.orders = list;
         // this.id = GLOBAL_ID++;
+    }
+
+    public boolean equals(BuyOrder order) {
+        return this.id == order.id;
+    }
+
+    public boolean equals(int id) {
+        return this.id == id;
+    }
+
+    public OrderList getOrders() {
+        return orders;
+    }
+
+    public void setOrders(OrderList orders) {
+        this.orders = orders;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

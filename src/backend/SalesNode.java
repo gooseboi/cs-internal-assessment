@@ -25,16 +25,12 @@ package backend;
  *
  * @author chonk
  */
-public class Order {
+public class SalesNode {
 
-    public Plant plant;
-    public int num;
+    public SalesNode(Sale sale) {
+        this.data = sale;
+    }
 
-    public boolean equals(Order order) {
-        return this.plant.equals(order.plant);
-    }
-    
-    public boolean equals(Plant p) {
-        return this.plant.equals(p);
-    }
+    public SalesNode next;
+    public Sale data;
 }
