@@ -150,4 +150,8 @@ public class OrderList {
         }
         return false;
     }
+    
+    public void clear() {
+        this.first = null;
+    }
 }

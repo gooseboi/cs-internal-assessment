@@ -127,4 +127,8 @@ public class BuyOrderList {
         }
         return false;
     }
+    
+    public void clear() {
+        this.first = null;
+    }
 }

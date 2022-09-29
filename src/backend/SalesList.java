@@ -139,4 +139,8 @@ public class SalesList {
         }
         return false;
     }
+    
+    public void clear() {
+        this.first = null;
+    }
 }
