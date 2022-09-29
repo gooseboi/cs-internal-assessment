@@ -29,16 +29,16 @@ import java.util.Date;
  */
 public class SalesList {
 
-    public SalesNode first;
+    private SalesNode first;
 
     public SalesList getSalesByClient(Client c) {
         SalesList ret = new SalesList();
         SalesNode aux = first;
         while (aux != null) {
-            if (aux.data.client.equals(c)) {
-                ret.insert(aux.data);
+            if (aux.getData().getClient().equals(c)) {
+                ret.insert(aux.getData());
             }
-            aux = aux.next;
+            aux = aux.getNext();
         }
         return ret;
     }
@@ -51,11 +51,11 @@ public class SalesList {
         SalesList ret = new SalesList();
         SalesNode aux = first;
         while (aux != null) {
-            Date date = aux.data.date;
+            Date date = aux.getData().getDate();
             if (date.before(end) && date.after(start)) {
-                ret.insert(aux.data);
+                ret.insert(aux.getData());
             }
-            aux = aux.next;
+            aux = aux.getNext();
         }
         return ret;
     }
@@ -64,10 +64,10 @@ public class SalesList {
         SalesList ret = new SalesList();
         SalesNode aux = first;
         while (aux != null) {
-            if (aux.data.orders.contains(p)) {
-                ret.insert(aux.data);
+            if (aux.getData().getOrders().contains(p)) {
+                ret.insert(aux.getData());
             }
-            aux = aux.next;
+            aux = aux.getNext();
         }
         return ret;
     }
@@ -77,7 +77,7 @@ public class SalesList {
         int counter = 0;
         while (aux != null) {
             counter++;
-            aux = aux.next;
+            aux = aux.getNext();
         }
         return counter;
     }
@@ -89,17 +89,17 @@ public class SalesList {
         }
 
         SalesNode aux = first;
-        while (aux.next != null) {
-            if (aux.data.equals(sale))
+        while (aux.getNext() != null) {
+            if (aux.getData().equals(sale))
                 return false;
-            aux = aux.next;
+            aux = aux.getNext();
         }
-        aux.next = new SalesNode(sale);
+        aux.setNext(new SalesNode(sale));
         return true;
     }
 
     public boolean delete(Sale sale) {
-        return this.delete(sale.id);
+        return this.delete(sale.getId());
     }
 
     public boolean delete(int id) {
@@ -107,12 +107,12 @@ public class SalesList {
             return false;
 
         SalesNode aux = first;
-        while (aux.next != null) {
-            if (aux.next.data.equals(id)) {
-                aux.next = aux.next.next;
+        while (aux.getNext() != null) {
+            if (aux.getNext().getData().equals(id)) {
+                aux.setNext(aux.getNext().getNext());
                 return true;
             }
-            aux = aux.next;
+            aux = aux.getNext();
         }
         return false;
     }
@@ -120,10 +120,10 @@ public class SalesList {
     public boolean exists(int id) {
         SalesNode aux = first;
         while (aux != null) {
-            if (aux.data.id == id) {
+            if (aux.getData().getId() == id) {
                 return true;
             }
-            aux = aux.next;
+            aux = aux.getNext();
         }
         return false;
     }
@@ -131,11 +131,11 @@ public class SalesList {
     public boolean modify(Sale sale) {
         SalesNode aux = first;
         while (aux != null) {
-            if (aux.data.equals(sale)) {
-                aux.data = sale;
+            if (aux.getData().equals(sale)) {
+                aux.setData(sale);
                 return true;
             }
-            aux = aux.next;
+            aux = aux.getNext();
         }
         return false;
     }

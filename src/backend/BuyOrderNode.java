@@ -31,6 +31,22 @@ public class BuyOrderNode {
         this.data = order;
     }
 
-    public BuyOrderNode next;
-    public BuyOrder data;
+    private BuyOrderNode next;
+    private BuyOrder data;
+
+    public BuyOrderNode getNext() {
+        return next;
+    }
+
+    public void setNext(BuyOrderNode next) {
+        this.next = next;
+    }
+
+    public BuyOrder getData() {
+        return data;
+    }
+
+    public void setData(BuyOrder data) {
+        this.data = data;
+    }
 }

@@ -31,6 +31,22 @@ public class StockNode {
         this.data = stock;
     }
 
-    public StockNode next;
-    public Stock data;
+    private StockNode next;
+    private Stock data;
+
+    public StockNode getNext() {
+        return next;
+    }
+
+    public void setNext(StockNode next) {
+        this.next = next;
+    }
+
+    public Stock getData() {
+        return data;
+    }
+
+    public void setData(Stock data) {
+        this.data = data;
+    }
 }

@@ -27,12 +27,44 @@ package backend;
  */
 public class Client {
 
-    public String name;
-    public String surname;
-    public String phoneNumber;
-    public String emailAddress;
+    private String name;
+    private String surname;
+    private String phoneNumber;
+    private String emailAddress;
 
     public boolean equals(Client client) {
         return this.name.equals(client.name) && this.name.equals(client.surname) && this.name.equals(client.phoneNumber) && this.name.equals(client.emailAddress);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 }

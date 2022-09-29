@@ -31,6 +31,22 @@ public class SalesNode {
         this.data = sale;
     }
 
-    public SalesNode next;
-    public Sale data;
+    private SalesNode next;
+    private Sale data;
+
+    public SalesNode getNext() {
+        return next;
+    }
+
+    public void setNext(SalesNode next) {
+        this.next = next;
+    }
+
+    public Sale getData() {
+        return data;
+    }
+
+    public void setData(Sale data) {
+        this.data = data;
+    }
 }

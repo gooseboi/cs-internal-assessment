@@ -27,14 +27,14 @@ package backend;
  */
 public class OrderList {
 
-    public OrderNode first;
+    private OrderNode first;
 
     public int size() {
         OrderNode aux = first;
         int counter = 0;
         while (aux != null) {
             counter++;
-            aux = aux.next;
+            aux = aux.getNext();
         }
         return counter;
     }
@@ -45,10 +45,10 @@ public class OrderList {
             return false;
         OrderNode aux = first;
         while (aux != null) {
-            if (aux.data.plant.equals(p)) {
+            if (aux.getData().getPlant().equals(p)) {
                 return true;
             }
-            aux = aux.next;
+            aux = aux.getNext();
         }
         return false;
     }
@@ -60,12 +60,12 @@ public class OrderList {
         }
 
         OrderNode aux = first;
-        while (aux.next != null) {
-            if (aux.data.equals(order))
+        while (aux.getNext() != null) {
+            if (aux.getData().equals(order))
                 return false;
-            aux = aux.next;
+            aux = aux.getNext();
         }
-        aux.next = new OrderNode(order);
+        aux.setNext(new OrderNode(order));
         return true;
     }
 
@@ -76,13 +76,15 @@ public class OrderList {
         }
 
         OrderNode aux = first;
-        while (aux.next != null) {
-            if (aux.data.equals(order)) {
-                aux.data.num = order.num++;
+        while (aux.getNext() != null) {
+            if (aux.getData().equals(order)) {
+                int num = order.getNum() + 1;
+                aux.getData().setNum(num);
+                order.setNum(num);
             }
-            aux = aux.next;
+            aux = aux.getNext();
         }
-        aux.next = new OrderNode(order);
+        aux.setNext(new OrderNode(order));
     }
 
     public boolean delete(Order order) {
@@ -90,12 +92,12 @@ public class OrderList {
             return false;
 
         OrderNode aux = first;
-        while (aux.next != null) {
-            if (aux.next.data.equals(order)) {
-                aux.next = aux.next.next;
+        while (aux.getNext() != null) {
+            if (aux.getNext().getData().equals(order)) {
+                aux.setNext(aux.getNext().getNext());
                 return true;
             }
-            aux = aux.next;
+            aux = aux.getNext();
         }
         return false;
     }
@@ -105,12 +107,12 @@ public class OrderList {
             return false;
 
         OrderNode aux = first;
-        while (aux.next != null) {
-            if (aux.next.data.equals(p)) {
-                aux.next = aux.next.next;
+        while (aux.getNext() != null) {
+            if (aux.getNext().getData().equals(p)) {
+                aux.setNext(aux.getNext().getNext());
                 return true;
             }
-            aux = aux.next;
+            aux = aux.getNext();
         }
         return false;
     }
@@ -118,10 +120,10 @@ public class OrderList {
     public boolean exists(Order order) {
         OrderNode aux = first;
         while (aux != null) {
-            if (aux.data.equals(order)) {
+            if (aux.getData().equals(order)) {
                 return true;
             }
-            aux = aux.next;
+            aux = aux.getNext();
         }
         return false;
     }
@@ -129,10 +131,10 @@ public class OrderList {
     public boolean exists(Plant p) {
         OrderNode aux = first;
         while (aux != null) {
-            if (aux.data.equals(p)) {
+            if (aux.getData().equals(p)) {
                 return true;
             }
-            aux = aux.next;
+            aux = aux.getNext();
         }
         return false;
     }
@@ -140,11 +142,11 @@ public class OrderList {
     public boolean modify(Order order) {
         OrderNode aux = first;
         while (aux != null) {
-            if (aux.data.equals(order)) {
-                aux.data = order;
+            if (aux.getData().equals(order)) {
+                aux.setData(order);
                 return true;
             }
-            aux = aux.next;
+            aux = aux.getNext();
         }
         return false;
     }

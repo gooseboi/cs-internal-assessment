@@ -33,10 +33,10 @@ public class StockList {
         StockList ret = new StockList();
         StockNode aux = first;
         while (aux != null) {
-            if (aux.data.stock == stock) {
-                ret.insert(aux.data);
+            if (aux.getData().getStock() == stock) {
+                ret.insert(aux.getData());
             }
-            aux = aux.next;
+            aux = aux.getNext();
         }
         return ret;
     }
@@ -46,7 +46,7 @@ public class StockList {
         int counter = 0;
         while (aux != null) {
             counter++;
-            aux = aux.next;
+            aux = aux.getNext();
         }
         return counter;
     }
@@ -58,12 +58,12 @@ public class StockList {
         }
 
         StockNode aux = first;
-        while (aux.next != null) {
-            if (aux.data.equals(stock))
+        while (aux.getNext() != null) {
+            if (aux.getData().equals(stock))
                 return false;
-            aux = aux.next;
+            aux = aux.getNext();
         }
-        aux.next = new StockNode(stock);
+        aux.setNext(new StockNode(stock));
         return true;
     }
 
@@ -72,12 +72,12 @@ public class StockList {
             return false;
 
         StockNode aux = first;
-        while (aux.next != null) {
-            if (aux.next.data.equals(stock)) {
-                aux.next = aux.next.next;
+        while (aux.getNext() != null) {
+            if (aux.getNext().getData().equals(stock)) {
+                aux.setNext(aux.getNext().getNext());
                 return true;
             }
-            aux = aux.next;
+            aux = aux.getNext();
         }
         return false;
     }
@@ -85,10 +85,10 @@ public class StockList {
     public boolean exists(Stock stock) {
         StockNode aux = first;
         while (aux != null) {
-            if (aux.data.equals(stock)) {
+            if (aux.getData().equals(stock)) {
                 return true;
             }
-            aux = aux.next;
+            aux = aux.getNext();
         }
         return false;
     }
@@ -96,11 +96,11 @@ public class StockList {
     public boolean modify(Stock stock) {
         StockNode aux = first;
         while (aux != null) {
-            if (aux.data.equals(stock)) {
-                aux.data = stock;
+            if (aux.getData().equals(stock)) {
+                aux.setData(stock);
                 return true;
             }
-            aux = aux.next;
+            aux = aux.getNext();
         }
         return false;
     }

@@ -27,8 +27,8 @@ package backend;
  */
 public class Order {
 
-    public Plant plant;
-    public int num;
+    private Plant plant;
+    private int num;
 
     public boolean equals(Order order) {
         return this.plant.equals(order.plant);
@@ -36,5 +36,21 @@ public class Order {
     
     public boolean equals(Plant p) {
         return this.plant.equals(p);
+    }
+
+    public Plant getPlant() {
+        return plant;
+    }
+
+    public void setPlant(Plant plant) {
+        this.plant = plant;
+    }
+
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
     }
 }

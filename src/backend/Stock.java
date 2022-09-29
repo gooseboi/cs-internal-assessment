@@ -27,8 +27,8 @@ package backend;
  */
 public class Stock {
 
-    public Plant plant;
-    public int stock;
+    private Plant plant;
+    private int stock;
     
     public Stock(Plant plant, int stock) {
         this.plant = plant;
@@ -37,5 +37,21 @@ public class Stock {
 
     public boolean equals(Stock stock) {
         return this.plant == stock.plant;
+    }
+
+    public Plant getPlant() {
+        return plant;
+    }
+
+    public void setPlant(Plant plant) {
+        this.plant = plant;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 }

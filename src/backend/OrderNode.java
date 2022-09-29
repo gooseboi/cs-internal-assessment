@@ -27,10 +27,26 @@ package backend;
  */
 public class OrderNode {
 
-    public OrderNode next;
-    public Order data;
+    private OrderNode next;
+    private Order data;
 
     public OrderNode(Order order) {
         this.data = order;
+    }
+
+    public OrderNode getNext() {
+        return next;
+    }
+
+    public void setNext(OrderNode next) {
+        this.next = next;
+    }
+
+    public Order getData() {
+        return data;
+    }
+
+    public void setData(Order data) {
+        this.data = data;
     }
 }
