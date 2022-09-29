@@ -31,4 +31,13 @@ public class Sale {
     public OrderList orders;
     public Client client;
     public Date date;
+    public int id;
+    
+    public boolean equals(Sale sale) {
+        return this.id == sale.id;
+    }
+    
+    public boolean equals(int id) {
+        return this.id == id;
+    }
 }

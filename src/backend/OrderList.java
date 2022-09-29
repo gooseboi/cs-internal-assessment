@@ -68,4 +68,84 @@ public class OrderList {
         aux.next = new OrderNode(order);
         return true;
     }
+
+    public void merge(Order order) {
+        if (first == null) {
+            first = new OrderNode(order);
+            return;
+        }
+
+        OrderNode aux = first;
+        while (aux.next != null) {
+            if (aux.data.equals(order)) {
+                aux.data.num = order.num++;
+            }
+            aux = aux.next;
+        }
+        aux.next = new OrderNode(order);
+    }
+
+    public boolean delete(Order order) {
+        if (first == null)
+            return false;
+
+        OrderNode aux = first;
+        while (aux.next != null) {
+            if (aux.next.data.equals(order)) {
+                aux.next = aux.next.next;
+                return true;
+            }
+            aux = aux.next;
+        }
+        return false;
+    }
+
+    public boolean delete(Plant p) {
+        if (first == null)
+            return false;
+
+        OrderNode aux = first;
+        while (aux.next != null) {
+            if (aux.next.data.equals(p)) {
+                aux.next = aux.next.next;
+                return true;
+            }
+            aux = aux.next;
+        }
+        return false;
+    }
+
+    public boolean exists(Order order) {
+        OrderNode aux = first;
+        while (aux != null) {
+            if (aux.data.equals(order)) {
+                return true;
+            }
+            aux = aux.next;
+        }
+        return false;
+    }
+
+    public boolean exists(Plant p) {
+        OrderNode aux = first;
+        while (aux != null) {
+            if (aux.data.equals(p)) {
+                return true;
+            }
+            aux = aux.next;
+        }
+        return false;
+    }
+
+    public boolean modify(Order order) {
+        OrderNode aux = first;
+        while (aux != null) {
+            if (aux.data.equals(order)) {
+                aux.data = order;
+                return true;
+            }
+            aux = aux.next;
+        }
+        return false;
+    }
 }

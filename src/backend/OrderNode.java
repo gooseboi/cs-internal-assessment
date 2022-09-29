@@ -26,9 +26,10 @@ package backend;
  * @author chonk
  */
 public class OrderNode {
+
     public OrderNode next;
     public Order data;
-    
+
     public OrderNode(Order order) {
         this.data = order;
     }

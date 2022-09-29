@@ -98,4 +98,34 @@ public class BuyOrderList {
         aux.next = new BuyOrderNode(order);
         return true;
     }
+
+    public boolean delete(BuyOrder order) {
+        return this.delete(order.getId());
+    }
+
+    public boolean delete(int id) {
+        if (first == null)
+            return false;
+
+        BuyOrderNode aux = first;
+        while (aux.next != null) {
+            if (aux.next.data.equals(id)) {
+                aux.next = aux.next.next;
+                return true;
+            }
+            aux = aux.next;
+        }
+        return false;
+    }
+
+    public boolean exists(int id) {
+        BuyOrderNode aux = first;
+        while (aux != null) {
+            if (aux.data.getId() == id) {
+                return true;
+            }
+            aux = aux.next;
+        }
+        return false;
+    }
 }
