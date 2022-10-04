@@ -21,7 +21,11 @@ SOFTWARE.
  */
 package frontend;
 
+import backend.Plant;
+import backend.Stock;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import static backend.Main.stocks;
 
 /**
  *
@@ -204,6 +208,50 @@ public class AddStock extends javax.swing.JPanel {
     private void priceTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_priceTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_priceTextFieldActionPerformed
+
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        String plantName = plantTextField.getText();
+        // TODO: Parse growthCondition as enum
+        String growthCondition = growthConditionTextField.getText();
+        double price;
+        int initialStock;
+        try {
+            price = Double.parseDouble(priceTextField.getText());
+
+            if (price < 0.0) {
+                JOptionPane.showMessageDialog(this, "Price must be greater than 0!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Price must be a number!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            initialStock = Integer.parseInt(initalStockTextField.getText());
+
+            if (initialStock < 0.0) {
+                JOptionPane.showMessageDialog(this, "Initial stock must be greater than 0!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Initial stock must be a whole number!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Plant p = new Plant(plantName, price, growthCondition);
+        Stock stock = new Stock(p, initialStock);
+
+        if (stocks.insert(stock)) {
+            JOptionPane.showMessageDialog(this, "Stock successfully added!", "Info", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Stock with same name already exists, stock could not be added!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void plantTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_plantTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_plantTextFieldActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
