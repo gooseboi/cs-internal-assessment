@@ -50,7 +50,7 @@ public class ManageStock extends javax.swing.JPanel {
 
         titleLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        salesTable = new javax.swing.JTable();
+        stocksTable = new javax.swing.JTable();
         backButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
         addButton = new javax.swing.JButton();
@@ -62,13 +62,10 @@ public class ManageStock extends javax.swing.JPanel {
         titleLabel.setText("Manage Stock");
         titleLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        salesTable.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        salesTable.setModel(new javax.swing.table.DefaultTableModel(
+        stocksTable.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        stocksTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "Plant Name", "Total Available", "Growth Conditions", "Price per unit", "Buy Orders"
@@ -77,25 +74,23 @@ public class ManageStock extends javax.swing.JPanel {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
             };
-            boolean[] canEdit = new boolean [] {
-                true, true, false, true, true
-            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
         });
-        jScrollPane1.setViewportView(salesTable);
-        if (salesTable.getColumnModel().getColumnCount() > 0) {
-            salesTable.getColumnModel().getColumn(0).setResizable(false);
-            salesTable.getColumnModel().getColumn(1).setResizable(false);
-            salesTable.getColumnModel().getColumn(2).setResizable(false);
-            salesTable.getColumnModel().getColumn(3).setResizable(false);
-            salesTable.getColumnModel().getColumn(4).setResizable(false);
+        jScrollPane1.setViewportView(stocksTable);
+        if (stocksTable.getColumnModel().getColumnCount() > 0) {
+            stocksTable.getColumnModel().getColumn(0).setResizable(false);
+            stocksTable.getColumnModel().getColumn(0).setHeaderValue("Plant Name");
+            stocksTable.getColumnModel().getColumn(1).setResizable(false);
+            stocksTable.getColumnModel().getColumn(1).setHeaderValue("Total Available");
+            stocksTable.getColumnModel().getColumn(2).setResizable(false);
+            stocksTable.getColumnModel().getColumn(2).setHeaderValue("Growth Conditions");
+            stocksTable.getColumnModel().getColumn(3).setResizable(false);
+            stocksTable.getColumnModel().getColumn(3).setHeaderValue("Price per unit");
+            stocksTable.getColumnModel().getColumn(4).setResizable(false);
+            stocksTable.getColumnModel().getColumn(4).setHeaderValue("Buy Orders");
         }
 
         backButton.setText("Back");
@@ -176,7 +171,7 @@ public class ManageStock extends javax.swing.JPanel {
     private javax.swing.JButton backButton;
     private javax.swing.JButton deleteButton;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable salesTable;
+    private javax.swing.JTable stocksTable;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 }
