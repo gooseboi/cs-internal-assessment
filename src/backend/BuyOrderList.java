@@ -43,6 +43,10 @@ public class BuyOrderList {
         return ret;
     }
 
+	public BuyOrderNode getFirst() {
+		return this.first;
+	}
+
     public BuyOrderList getOrdersByDate(Date date) {
         return this.getOrdersByDateRange(date, date);
     }

@@ -39,6 +39,10 @@ public class OrderList {
         return counter;
     }
 
+	public OrderNode getFirst() {
+		return this.first;
+	}
+
     public boolean contains(Plant p) {
         int l = this.size();
         if (l == 0)

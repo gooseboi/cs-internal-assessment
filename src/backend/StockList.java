@@ -50,6 +50,10 @@ public class StockList {
         }
         return counter;
     }
+    
+    public StockNode getFirst() {
+        return first;
+    }
 
     public boolean insert(Stock stock) {
         if (first == null) {
