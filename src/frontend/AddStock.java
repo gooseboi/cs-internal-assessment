@@ -52,7 +52,7 @@ public class AddStock extends javax.swing.JPanel {
         plantLabel = new javax.swing.JLabel();
         growthConditionsLabel = new javax.swing.JLabel();
         plantTextField = new javax.swing.JTextField();
-        growthConditionsTextField = new javax.swing.JTextField();
+        growthConditionTextField = new javax.swing.JTextField();
         saveButton = new javax.swing.JButton();
         backButton = new javax.swing.JButton();
         initalStockLabel = new javax.swing.JLabel();
@@ -71,13 +71,24 @@ public class AddStock extends javax.swing.JPanel {
         growthConditionsLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         growthConditionsLabel.setText("Growth Conditions:");
 
-        growthConditionsTextField.addActionListener(new java.awt.event.ActionListener() {
+        plantTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                growthConditionsTextFieldActionPerformed(evt);
+                plantTextFieldActionPerformed(evt);
+            }
+        });
+
+        growthConditionTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                growthConditionTextFieldActionPerformed(evt);
             }
         });
 
         saveButton.setText("Save");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
 
         backButton.setText("Back");
         backButton.addActionListener(new java.awt.event.ActionListener() {
@@ -127,7 +138,7 @@ public class AddStock extends javax.swing.JPanel {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(18, 18, 18)
-                                        .addComponent(growthConditionsTextField))
+                                        .addComponent(growthConditionTextField))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(18, 18, 18)
                                         .addComponent(plantTextField))))
@@ -160,7 +171,7 @@ public class AddStock extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(growthConditionsLabel)
-                    .addComponent(growthConditionsTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(growthConditionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(initalStockTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -177,9 +188,9 @@ public class AddStock extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void growthConditionsTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_growthConditionsTextFieldActionPerformed
+    private void growthConditionTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_growthConditionTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_growthConditionsTextFieldActionPerformed
+    }//GEN-LAST:event_growthConditionTextFieldActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         this.window.setContentPane(new ManageStock(window));
@@ -196,8 +207,8 @@ public class AddStock extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
+    private javax.swing.JTextField growthConditionTextField;
     private javax.swing.JLabel growthConditionsLabel;
-    private javax.swing.JTextField growthConditionsTextField;
     private javax.swing.JLabel initalStockLabel;
     private javax.swing.JTextField initalStockTextField;
     private javax.swing.JLabel plantLabel;
