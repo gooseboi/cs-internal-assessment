@@ -50,7 +50,7 @@ public class StockList {
         }
         return counter;
     }
-    
+
     public StockNode getFirst() {
         return first;
     }
@@ -96,7 +96,7 @@ public class StockList {
         }
         return false;
     }
-    
+
     public boolean modify(Stock stock) {
         StockNode aux = first;
         while (aux != null) {

@@ -28,15 +28,16 @@ import java.util.Date;
  * @author chonk
  */
 public class Sale {
+
     private OrderList orders;
     private Client client;
     private Date date;
     private int id;
-    
+
     public boolean equals(Sale sale) {
         return this.id == sale.id;
     }
-    
+
     public boolean equals(int id) {
         return this.id == id;
     }

@@ -33,7 +33,7 @@ public class Order {
     public boolean equals(Order order) {
         return this.plant.equals(order.plant);
     }
-    
+
     public boolean equals(Plant p) {
         return this.plant.equals(p);
     }

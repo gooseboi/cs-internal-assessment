@@ -30,7 +30,7 @@ public class Plant {
     private String name;
     private double price;
     private String growthCondition;
-    
+
     public Plant(String name, double price, String growthCondition) {
         this.name = name;
         this.price = price;

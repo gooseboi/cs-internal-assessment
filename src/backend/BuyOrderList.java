@@ -43,9 +43,9 @@ public class BuyOrderList {
         return ret;
     }
 
-	public BuyOrderNode getFirst() {
-		return this.first;
-	}
+    public BuyOrderNode getFirst() {
+        return this.first;
+    }
 
     public BuyOrderList getOrdersByDate(Date date) {
         return this.getOrdersByDateRange(date, date);
@@ -131,7 +131,7 @@ public class BuyOrderList {
         }
         return false;
     }
-    
+
     public void clear() {
         this.first = null;
     }

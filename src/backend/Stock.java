@@ -29,7 +29,7 @@ public class Stock {
 
     private Plant plant;
     private int stock;
-    
+
     public Stock(Plant plant, int stock) {
         this.plant = plant;
         this.stock = stock;

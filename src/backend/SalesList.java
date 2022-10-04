@@ -43,9 +43,9 @@ public class SalesList {
         return ret;
     }
 
-	public SalesNode getFirst() {
-		return this.first;
-	}
+    public SalesNode getFirst() {
+        return this.first;
+    }
 
     public SalesList getSalesByDate(Date date) {
         return this.getSalesByDateRange(date, date);
@@ -143,7 +143,7 @@ public class SalesList {
         }
         return false;
     }
-    
+
     public void clear() {
         this.first = null;
     }

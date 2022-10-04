@@ -39,9 +39,9 @@ public class OrderList {
         return counter;
     }
 
-	public OrderNode getFirst() {
-		return this.first;
-	}
+    public OrderNode getFirst() {
+        return this.first;
+    }
 
     public boolean contains(Plant p) {
         int l = this.size();
@@ -154,7 +154,7 @@ public class OrderList {
         }
         return false;
     }
-    
+
     public void clear() {
         this.first = null;
     }
