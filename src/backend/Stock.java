@@ -36,7 +36,7 @@ public class Stock {
     }
 
     public boolean equals(Stock stock) {
-        return this.plant == stock.plant;
+        return this.plant.equals(stock.plant);
     }
 
     public Plant getPlant() {
