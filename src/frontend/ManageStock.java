@@ -22,6 +22,11 @@ SOFTWARE.
 package frontend;
 
 import javax.swing.JFrame;
+import static backend.Main.stocks;
+import static backend.Main.buyOrders;
+import backend.StockNode;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -37,6 +42,26 @@ public class ManageStock extends javax.swing.JPanel {
     public ManageStock(JFrame window) {
         initComponents();
         this.window = window;
+
+        this.drawTable();
+    }
+
+    private void drawTable() {
+        StockNode node = stocks.getFirst();
+        DefaultTableModel model = (DefaultTableModel) stocksTable.getModel();
+        while (node != null) {
+            String[] curr = new String[5];
+            curr[0] = node.getData().getPlant().getName();
+            curr[1] = String.valueOf(node.getData().getStock());
+            curr[2] = node.getData().getPlant().getGrowthCondition();
+            curr[3] = String.valueOf(node.getData().getPlant().getPrice());
+            curr[4] = " "; //String.valueOf(buyOrders.getOrdersByPlant(node.getData().getPlant()).size());
+
+            model.addRow(curr);
+            node = node.getNext();
+        }
+
+        stocksTable.setModel(model);
     }
 
     /**
@@ -82,15 +107,10 @@ public class ManageStock extends javax.swing.JPanel {
         jScrollPane1.setViewportView(stocksTable);
         if (stocksTable.getColumnModel().getColumnCount() > 0) {
             stocksTable.getColumnModel().getColumn(0).setResizable(false);
-            stocksTable.getColumnModel().getColumn(0).setHeaderValue("Plant Name");
             stocksTable.getColumnModel().getColumn(1).setResizable(false);
-            stocksTable.getColumnModel().getColumn(1).setHeaderValue("Total Available");
             stocksTable.getColumnModel().getColumn(2).setResizable(false);
-            stocksTable.getColumnModel().getColumn(2).setHeaderValue("Growth Conditions");
             stocksTable.getColumnModel().getColumn(3).setResizable(false);
-            stocksTable.getColumnModel().getColumn(3).setHeaderValue("Price per unit");
             stocksTable.getColumnModel().getColumn(4).setResizable(false);
-            stocksTable.getColumnModel().getColumn(4).setHeaderValue("Buy Orders");
         }
 
         backButton.setText("Back");
@@ -158,7 +178,11 @@ public class ManageStock extends javax.swing.JPanel {
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        // Delete currently selected stock
+        int selected = stocksTable.getSelectedRow();
+        stocks.delete(selected);
+        //DefaultTableModel model = (DefaultTableModel) stocksTable.getModel();
+       // model.removeRow(selected);
+       this.drawTable();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
