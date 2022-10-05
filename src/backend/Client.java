@@ -32,6 +32,13 @@ public class Client {
     private String phoneNumber;
     private String emailAddress;
 
+    public Client(String name, String surname, String phoneNumber, String emailAddress) {
+        this.name = name;
+        this.surname = surname;
+        this.phoneNumber = phoneNumber;
+        this.emailAddress = emailAddress;
+    }
+
     public boolean equals(Client client) {
         return this.name.equals(client.name) && this.name.equals(client.surname) && this.name.equals(client.phoneNumber) && this.name.equals(client.emailAddress);
     }

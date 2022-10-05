@@ -34,6 +34,13 @@ public class Sale {
     private Date date;
     private int id;
 
+    public Sale(OrderList orders, Client client, Date date, int id) {
+        this.orders = orders;
+        this.client = client;
+        this.date = date;
+        this.id = id;
+    }
+
     public boolean equals(Sale sale) {
         return this.id == sale.id;
     }
