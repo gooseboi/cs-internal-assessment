@@ -33,6 +33,8 @@ public class Main {
     public static BuyOrderList buyOrders = new BuyOrderList();
     public static StockList stocks = new StockList();
 
+    public static int GLOBAL_SALE_ID = 0;
+
     /**
      * @param args the command line arguments
      */

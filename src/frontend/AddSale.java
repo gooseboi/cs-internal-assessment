@@ -21,8 +21,14 @@ SOFTWARE.
  */
 package frontend;
 
+import backend.Client;
+import static backend.Main.GLOBAL_SALE_ID;
+import static backend.Main.sales;
 import javax.swing.JFrame;
 import backend.OrderList;
+import backend.Sale;
+import java.util.Date;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -168,6 +174,20 @@ public class AddSale extends javax.swing.JPanel {
         this.window.setContentPane(new EditOrder(window, orders, "addsale"));
         this.window.pack();
     }//GEN-LAST:event_editOrdersActionPerformed
+
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        String clientName = clientNameTextField.getText();
+        //TODO get the date
+        Date date = null;
+
+        if (orders.size() == 0) {
+            JOptionPane.showMessageDialog(this, "You must add some orders!", "Error!", JOptionPane.ERROR_MESSAGE);
+        }
+
+        // TODO search for a client and sak to create it if it doesn't exist
+        Client client = null;
+        Sale sale = new Sale(orders, client, date, GLOBAL_SALE_ID++);
+    }//GEN-LAST:event_saveButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
