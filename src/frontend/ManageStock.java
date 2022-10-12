@@ -24,9 +24,12 @@ package frontend;
 import javax.swing.JFrame;
 import static backend.Main.stocks;
 import static backend.Main.buyOrders;
+import backend.OrderList;
 import backend.StockNode;
-import javax.swing.JTable;
+import frontend.tables.StocksCellRenderer;
+import frontend.tables.StocksHeaderRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 /**
  *
@@ -42,6 +45,13 @@ public class ManageStock extends javax.swing.JPanel {
     public ManageStock(JFrame window) {
         initComponents();
         this.window = window;
+        stocksTable.getColumnModel().getColumn(0).setCellRenderer(new StocksCellRenderer());
+        stocksTable.getColumnModel().getColumn(1).setCellRenderer(new StocksCellRenderer());
+        stocksTable.getColumnModel().getColumn(2).setCellRenderer(new StocksCellRenderer());
+        stocksTable.getColumnModel().getColumn(3).setCellRenderer(new StocksCellRenderer());
+        stocksTable.getColumnModel().getColumn(4).setCellRenderer(new StocksCellRenderer());
+        JTableHeader h = stocksTable.getTableHeader();
+        h.setDefaultRenderer(new StocksHeaderRenderer(stocksTable));
 
         this.drawTable();
     }
