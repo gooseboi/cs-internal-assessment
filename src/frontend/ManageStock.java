@@ -191,9 +191,8 @@ public class ManageStock extends javax.swing.JPanel {
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         int selected = stocksTable.getSelectedRow();
         stocks.delete(selected);
-        //DefaultTableModel model = (DefaultTableModel) stocksTable.getModel();
-       // model.removeRow(selected);
-       this.drawTable();
+        DefaultTableModel model = (DefaultTableModel) stocksTable.getModel();
+        model.removeRow(selected);
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
