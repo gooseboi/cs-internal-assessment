@@ -78,24 +78,6 @@ public class OrderList {
         }
     }
 
-    public void merge(Order order) {
-        if (first == null) {
-            first = new OrderNode(order);
-            return;
-        }
-
-        OrderNode aux = first;
-        while (aux.getNext() != null) {
-            if (aux.getData().equals(order)) {
-                int num = order.getNum() + 1;
-                aux.getData().setNum(num);
-                order.setNum(num);
-            }
-            aux = aux.getNext();
-        }
-        aux.setNext(new OrderNode(order));
-    }
-
     public boolean delete(Order order) {
         if (first == null)
             return false;
@@ -148,11 +130,12 @@ public class OrderList {
         return false;
     }
 
-    public boolean modify(Order order) {
+    public boolean merge(Order order) {
         OrderNode aux = first;
         while (aux != null) {
             if (aux.getData().equals(order)) {
-                aux.setData(order);
+                var o = aux.getData();
+                o.setNum(o.getNum() + order.getNum());
                 return true;
             }
             aux = aux.getNext();
@@ -175,11 +158,22 @@ public class OrderList {
         return null;
     }
 
-    public int accumulate() {
+    public int accumulateStock() {
         OrderNode aux = first;
         int ret = 0;
         while (aux != null) {
             ret += aux.getData().getNum();
+            aux = aux.getNext();
+        }
+        return ret;
+    }
+
+    public float accumulatePrice() {
+        OrderNode aux = first;
+        float ret = 0;
+        while (aux != null) {
+            Plant p = aux.getData().getPlant();
+            ret += p.getPrice() * aux.getData().getNum();
             aux = aux.getNext();
         }
         return ret;
