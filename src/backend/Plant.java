@@ -41,6 +41,10 @@ public class Plant {
         return this.name.equals(plant.name);
     }
 
+    public boolean equals(String name) {
+        return this.name.equals(name);
+    }
+
     public String getName() {
         return name;
     }

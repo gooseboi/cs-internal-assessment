@@ -137,4 +137,16 @@ public class StockList {
         }
         return false;
     }
+
+    public Plant findPlant(String plantName) {
+        StockNode aux = first;
+        while (aux != null) {
+            Plant p = aux.getData().getPlant();
+            if (p.equals(plantName)) {
+                return p;
+            }
+            aux = aux.getNext();
+        }
+        return null;
+    }
 }

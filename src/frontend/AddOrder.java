@@ -23,6 +23,10 @@ package frontend;
 
 import javax.swing.JFrame;
 import backend.OrderList;
+import javax.swing.JOptionPane;
+import static backend.Main.stocks;
+import backend.Order;
+import backend.Plant;
 
 /**
  *
@@ -77,6 +81,11 @@ public class AddOrder extends javax.swing.JPanel {
         amountLabel.setText("Order Amount:");
 
         saveButton.setText("Save");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
 
         backButton.setText("Back");
         backButton.addActionListener(new java.awt.event.ActionListener() {
@@ -137,13 +146,43 @@ public class AddOrder extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void amountTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_amountTextFieldActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_amountTextFieldActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         this.window.setContentPane(new EditOrder(window, orders, parent));
         this.window.pack();
     }//GEN-LAST:event_backButtonActionPerformed
+
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        String plantName = plantTextField.getText();
+        int num = 0;
+        try {
+            String numS = amountTextField.getText();
+            num = Integer.parseInt(numS);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Invalid amount, must be a number!", "Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Plant p = stocks.findPlant(plantName);
+        if (p == null) {
+            int res = JOptionPane.showConfirmDialog(this, "This plant doesn't exist in stock, would you like to add it?", "INFO", JOptionPane.YES_NO_OPTION);
+            if (res == JOptionPane.YES_OPTION) {
+                throw new UnsupportedOperationException("Cannot add plant yet");
+            }
+        }
+
+        Order o = new Order(p, num);
+        if (orders.insert(o)) {
+            JOptionPane.showMessageDialog(this, "Order successfully added!", "INFO", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            int res = JOptionPane.showConfirmDialog(this, "An item in the order already contains this plant, would you like to add the stock to the previous item?", "INFO", JOptionPane.YES_NO_OPTION);
+            if (res == JOptionPane.YES_OPTION) {
+                orders.merge(o);
+                JOptionPane.showMessageDialog(this, "Order amount successfully added!", "INFO", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_saveButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel amountLabel;
