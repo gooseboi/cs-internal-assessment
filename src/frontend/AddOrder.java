@@ -70,6 +70,7 @@ public class AddOrder extends javax.swing.JPanel {
         titleLabel.setText("Add Order");
         titleLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
+        plantLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         plantLabel.setText("Plant Name:");
 
         amountTextField.addActionListener(new java.awt.event.ActionListener() {
@@ -104,20 +105,20 @@ public class AddOrder extends javax.swing.JPanel {
                         .addGap(244, 244, 244)
                         .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 26, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(226, 226, 226)
+                        .addGap(224, 224, 224)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(plantLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(plantLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(plantTextField))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(amountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(amountLabel)
                                 .addGap(18, 18, 18)
-                                .addComponent(amountTextField))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(amountTextField)))))
                 .addGap(259, 259, 259))
             .addGroup(layout.createSequentialGroup()
                 .addGap(40, 40, 40)
