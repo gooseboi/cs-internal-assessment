@@ -64,12 +64,13 @@ public class BuyOrderList {
         return ret;
     }
 
-    public BuyOrderList getOrdersByPlant(Plant p) {
-        BuyOrderList ret = new BuyOrderList();
+    public OrderList getOrdersByPlant(Plant p) {
+        OrderList ret = new OrderList();
         BuyOrderNode aux = first;
         while (aux != null) {
-            if (aux.getData().getOrders().contains(p)) {
-                ret.insert(aux.getData());
+            Order found = aux.getData().getOrders().find(p);
+            if (found != null) {
+                ret.insert(found);
             }
             aux = aux.getNext();
         }

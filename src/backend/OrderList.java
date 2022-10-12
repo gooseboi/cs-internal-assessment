@@ -158,4 +158,25 @@ public class OrderList {
     public void clear() {
         this.first = null;
     }
+
+    public Order find(Plant p) {
+        OrderNode aux = first;
+        while (aux != null) {
+            if (aux.getData().equals(p)) {
+                return aux.getData();
+            }
+            aux = aux.getNext();
+        }
+        return null;
+    }
+
+    public int accumulate() {
+        OrderNode aux = first;
+        int ret = 0;
+        while (aux != null) {
+            ret += aux.getData().getNum();
+            aux = aux.getNext();
+        }
+        return ret;
+    }
 }
