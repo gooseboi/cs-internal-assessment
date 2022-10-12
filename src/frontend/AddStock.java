@@ -60,7 +60,7 @@ public class AddStock extends javax.swing.JPanel {
         saveButton = new javax.swing.JButton();
         backButton = new javax.swing.JButton();
         initalStockLabel = new javax.swing.JLabel();
-        initalStockTextField = new javax.swing.JTextField();
+        initialStockTextField = new javax.swing.JTextField();
         priceLabel = new javax.swing.JLabel();
         priceTextField = new javax.swing.JTextField();
 
@@ -104,9 +104,9 @@ public class AddStock extends javax.swing.JPanel {
         initalStockLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         initalStockLabel.setText("Initial stock:");
 
-        initalStockTextField.addActionListener(new java.awt.event.ActionListener() {
+        initialStockTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                initalStockTextFieldActionPerformed(evt);
+                initialStockTextFieldActionPerformed(evt);
             }
         });
 
@@ -131,7 +131,7 @@ public class AddStock extends javax.swing.JPanel {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(244, 244, 244)
                         .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 46, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(201, 201, 201)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,16 +147,13 @@ public class AddStock extends javax.swing.JPanel {
                                         .addGap(18, 18, 18)
                                         .addComponent(plantTextField))))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(initalStockLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(priceLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(initalStockLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
+                                    .addComponent(priceLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
-                                        .addComponent(priceTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
-                                        .addComponent(initalStockTextField)))))))
+                                    .addComponent(priceTextField)
+                                    .addComponent(initialStockTextField))))))
                 .addGap(240, 240, 240))
             .addGroup(layout.createSequentialGroup()
                 .addGap(40, 40, 40)
@@ -178,7 +175,7 @@ public class AddStock extends javax.swing.JPanel {
                     .addComponent(growthConditionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(initalStockTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(initialStockTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(initalStockLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -201,9 +198,9 @@ public class AddStock extends javax.swing.JPanel {
         this.window.pack();
     }//GEN-LAST:event_backButtonActionPerformed
 
-    private void initalStockTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_initalStockTextFieldActionPerformed
+    private void initialStockTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_initialStockTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_initalStockTextFieldActionPerformed
+    }//GEN-LAST:event_initialStockTextFieldActionPerformed
 
     private void priceTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_priceTextFieldActionPerformed
         // TODO add your handling code here:
@@ -228,7 +225,7 @@ public class AddStock extends javax.swing.JPanel {
         }
 
         try {
-            initialStock = Integer.parseInt(initalStockTextField.getText());
+            initialStock = Integer.parseInt(initialStockTextField.getText());
 
             if (initialStock < 0.0) {
                 JOptionPane.showMessageDialog(this, "Initial stock must be greater than 0!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -258,7 +255,7 @@ public class AddStock extends javax.swing.JPanel {
     private javax.swing.JTextField growthConditionTextField;
     private javax.swing.JLabel growthConditionsLabel;
     private javax.swing.JLabel initalStockLabel;
-    private javax.swing.JTextField initalStockTextField;
+    private javax.swing.JTextField initialStockTextField;
     private javax.swing.JLabel plantLabel;
     private javax.swing.JTextField plantTextField;
     private javax.swing.JLabel priceLabel;
