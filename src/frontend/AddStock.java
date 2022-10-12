@@ -241,6 +241,10 @@ public class AddStock extends javax.swing.JPanel {
 
         if (stocks.insert(stock)) {
             JOptionPane.showMessageDialog(this, "Stock successfully added!", "Info", JOptionPane.INFORMATION_MESSAGE);
+            plantTextField.setText("");
+            growthConditionTextField.setText("");
+            priceTextField.setText("");
+            initialStockTextField.setText("");
         } else {
             JOptionPane.showMessageDialog(this, "Stock with same name already exists, stock could not be added!", "Error", JOptionPane.ERROR_MESSAGE);
         }
