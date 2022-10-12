@@ -67,8 +67,13 @@ public class StockList {
                 return false;
             aux = aux.getNext();
         }
-        aux.setNext(new StockNode(stock));
-        return true;
+
+        if (aux.getData().equals(stock)) {
+            return false;
+        } else {
+            aux.setNext(new StockNode(stock));
+            return true;
+        }
     }
 
     public boolean delete(Stock stock) {

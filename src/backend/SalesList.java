@@ -92,14 +92,19 @@ public class SalesList {
             return true;
         }
 
-        SalesNode aux = first;
+        var aux = first;
         while (aux.getNext() != null) {
             if (aux.getData().equals(sale))
                 return false;
             aux = aux.getNext();
         }
-        aux.setNext(new SalesNode(sale));
-        return true;
+
+        if (aux.getData().equals(sale)) {
+            return false;
+        } else {
+            aux.setNext(new SalesNode(sale));
+            return true;
+        }
     }
 
     public boolean delete(Sale sale) {

@@ -99,8 +99,13 @@ public class BuyOrderList {
                 return false;
             aux = aux.getNext();
         }
-        aux.setNext(new BuyOrderNode(order));
-        return true;
+
+        if (aux.getData().equals(order)) {
+            return false;
+        } else {
+            aux.setNext(new BuyOrderNode(order));
+            return true;
+        }
     }
 
     public boolean delete(BuyOrder order) {

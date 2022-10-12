@@ -63,14 +63,19 @@ public class OrderList {
             return true;
         }
 
-        OrderNode aux = first;
+        var aux = first;
         while (aux.getNext() != null) {
             if (aux.getData().equals(order))
                 return false;
             aux = aux.getNext();
         }
-        aux.setNext(new OrderNode(order));
-        return true;
+
+        if (aux.getData().equals(order)) {
+            return false;
+        } else {
+            aux.setNext(new OrderNode(order));
+            return true;
+        }
     }
 
     public void merge(Order order) {
