@@ -129,6 +129,9 @@
               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_AddingCodePre" type="java.lang.String" value="salesTable.getModel().addTableModelListener(new TableModelListener() {&#xa;    public void tableChanged(TableModelEvent evt) {&#xa;        onCellChanged(evt);     &#xa;    } &#xa;});"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>

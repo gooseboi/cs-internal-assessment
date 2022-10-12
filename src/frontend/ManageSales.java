@@ -22,6 +22,10 @@ SOFTWARE.
 package frontend;
 
 import javax.swing.JFrame;
+import javax.swing.table.DefaultTableModel;
+import static backend.Main.sales;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 
 /**
  *
@@ -37,6 +41,25 @@ public class ManageSales extends javax.swing.JPanel {
     public ManageSales(JFrame window) {
         initComponents();
         this.window = window;
+
+        this.drawTable();
+    }
+
+    private void drawTable() {
+        var node = sales.getFirst();
+        var model = (DefaultTableModel) salesTable.getModel();
+        while (node != null) {
+            String[] curr = new String[4];
+            curr[0] = String.valueOf(node.getData().getClient().getName());
+            curr[1] = String.valueOf(node.getData().getOrders().accumulatePrice());
+            curr[2] = String.valueOf(node.getData().getOrders().accumulateStock());
+            curr[3] = node.getData().getDate().toString();
+
+            model.addRow(curr);
+            node = node.getNext();
+        }
+
+        salesTable.setModel(model);
     }
 
     /**
@@ -88,6 +111,11 @@ public class ManageSales extends javax.swing.JPanel {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        salesTable.getModel().addTableModelListener(new TableModelListener() {
+            public void tableChanged(TableModelEvent evt) {
+                onCellChanged(evt);
             }
         });
         jScrollPane1.setViewportView(salesTable);
@@ -186,6 +214,10 @@ public class ManageSales extends javax.swing.JPanel {
         this.window.setContentPane(new EditOrder(window, null, "managesales"));
         this.window.pack();
     }//GEN-LAST:event_modifyButtonActionPerformed
+
+    public void onCellChanged(TableModelEvent evt) {
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
