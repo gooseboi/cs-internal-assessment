@@ -30,6 +30,11 @@ public class Order {
     private Plant plant;
     private int num;
 
+    public Order(Plant plant, int num) {
+        this.plant = plant;
+        this.num = num;
+    }
+
     public boolean equals(Order order) {
         return this.plant.equals(order.plant);
     }
