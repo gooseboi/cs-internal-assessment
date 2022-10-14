@@ -208,6 +208,11 @@ public class AddStock extends javax.swing.JPanel {
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         String plantName = plantTextField.getText();
+        if (plantName.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Name must not be empty!", "ERROR", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         // TODO: Parse growthCondition as enum
         String growthCondition = growthConditionTextField.getText();
         double price;
@@ -216,23 +221,21 @@ public class AddStock extends javax.swing.JPanel {
             price = Double.parseDouble(priceTextField.getText());
 
             if (price < 0.0) {
-                JOptionPane.showMessageDialog(this, "Price must be greater than 0!", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
+                throw new NumberFormatException();
             }
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Price must be a number!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Price must be a positive number!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         try {
             initialStock = Integer.parseInt(initialStockTextField.getText());
 
-            if (initialStock < 0.0) {
-                JOptionPane.showMessageDialog(this, "Initial stock must be greater than 0!", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
+            if (initialStock < 0) {
+                throw new NumberFormatException();
             }
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Initial stock must be a whole number!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Initial stock must be a positive whole number!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
