@@ -114,6 +114,10 @@ public class SalesList {
     public boolean delete(int id) {
         if (first == null)
             return false;
+        else if (first.getData().equals(id)) {
+            first = first.getNext();
+            return true;
+        }
 
         SalesNode aux = first;
         while (aux.getNext() != null) {

@@ -78,6 +78,10 @@ public class OrderList {
     public boolean delete(Order order) {
         if (first == null)
             return false;
+        else if (first.getData().equals(order)) {
+            first = first.getNext();
+            return true;
+        }
 
         OrderNode aux = first;
         while (aux.getNext() != null) {

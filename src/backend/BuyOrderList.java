@@ -115,6 +115,10 @@ public class BuyOrderList {
     public boolean delete(int id) {
         if (first == null)
             return false;
+        else if (first.getData().equals(id)) {
+            first = first.getNext();
+            return true;
+        }
 
         BuyOrderNode aux = first;
         while (aux.getNext() != null) {

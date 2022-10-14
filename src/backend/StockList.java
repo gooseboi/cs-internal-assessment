@@ -79,6 +79,10 @@ public class StockList {
     public boolean delete(Stock stock) {
         if (first == null)
             return false;
+        else if (first.getData().equals(stock)) {
+            first = first.getNext();
+            return true;
+        }
 
         StockNode aux = first;
         while (aux.getNext() != null) {
