@@ -44,9 +44,6 @@ public class OrderList {
     }
 
     public boolean contains(Plant p) {
-        int l = this.size();
-        if (l == 0)
-            return false;
         OrderNode aux = first;
         while (aux != null) {
             if (aux.getData().getPlant().equals(p)) {
