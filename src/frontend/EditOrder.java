@@ -132,11 +132,11 @@ public class EditOrder extends javax.swing.JPanel {
                 {null, null}
             },
             new String [] {
-                "Number Ordered", "Plant Name"
+                "Plant Name", "Number Ordered"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, false
+                false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -278,19 +278,34 @@ public class EditOrder extends javax.swing.JPanel {
             return;
         }
 
-        ((DefaultListModel<String>) stockList.getModel()).remove(idx);
-        Plant p = stocks.findPlant(value);
-        orders.insert(new Order(p, amount));
-        this.drawTable();
+        String name = (String) ordersTable.getValueAt(row, 0);
+        orders.delete(name);
+        ((DefaultTableModel) ordersTable.getModel()).removeRow(row);
+        this.drawList();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void onCellChanged(TableModelEvent evt) {
         if (evt.getType() == TableModelEvent.UPDATE) {
-            int col = evt.getColumn();
             int row = evt.getFirstRow();
             assert evt.getFirstRow() == evt.getLastRow() : "First row is not last row";
-            System.out.println("Col" + col);
-            System.out.println("Row" + row);
+            String name = (String) ordersTable.getValueAt(row, 0);
+            int num;
+            try {
+                num = Integer.parseInt((String) ordersTable.getValueAt(row, 1));
+                if (num < 0) {
+                    throw new NumberFormatException();
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Amount entered must be a positive whole number!", "ERROR!", JOptionPane.ERROR_MESSAGE);
+                this.drawTable();
+                return;
+            }
+
+            if (orders.modify(name, num)) {
+                JOptionPane.showMessageDialog(this, "Order modified successfully", "INFO", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Failed modifying order!(What?)", "ERROR!", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 

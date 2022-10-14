@@ -105,6 +105,25 @@ public class OrderList {
         return false;
     }
 
+    public boolean delete(String plantName) {
+        if (first == null) {
+            return false;
+        } else if (first.getData().getPlant().equals(plantName)) {
+            first = first.getNext();
+            return true;
+        }
+
+        OrderNode aux = first;
+        while (aux.getNext() != null) {
+            if (aux.getNext().getData().getPlant().equals(plantName)) {
+                aux.setNext(aux.getNext().getNext());
+                return true;
+            }
+            aux = aux.getNext();
+        }
+        return false;
+    }
+
     public boolean exists(Order order) {
         OrderNode aux = first;
         while (aux != null) {
@@ -120,6 +139,32 @@ public class OrderList {
         OrderNode aux = first;
         while (aux != null) {
             if (aux.getData().equals(p)) {
+                return true;
+            }
+            aux = aux.getNext();
+        }
+        return false;
+    }
+
+    public boolean modify(Order order) {
+        var aux = first;
+        while (aux != null) {
+            var o = aux.getData();
+            if (o.equals(order)) {
+                o.setNum(order.getNum());
+                return true;
+            }
+            aux = aux.getNext();
+        }
+        return false;
+    }
+
+    public boolean modify(String plantName, int num) {
+        var aux = first;
+        while (aux != null) {
+            var o = aux.getData();
+            if (o.getPlant().equals(plantName)) {
+                o.setNum(num);
                 return true;
             }
             aux = aux.getNext();
