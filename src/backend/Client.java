@@ -31,6 +31,7 @@ public class Client {
     private String surname;
     private String phoneNumber;
     private String emailAddress;
+    private int id;
 
     public Client(String name, String surname, String phoneNumber, String emailAddress) {
         this.name = name;
@@ -40,7 +41,11 @@ public class Client {
     }
 
     public boolean equals(Client client) {
-        return this.name.equals(client.name) && this.name.equals(client.surname) && this.name.equals(client.phoneNumber) && this.name.equals(client.emailAddress);
+        return this.id == client.id;
+    }
+
+    public boolean equals(String name) {
+        return this.name.equals(name);
     }
 
     public String getName() {
@@ -73,5 +78,9 @@ public class Client {
 
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
+    }
+
+    public int getId() {
+        return id;
     }
 }

@@ -22,6 +22,7 @@ SOFTWARE.
 package backend;
 
 import java.util.Date;
+import static backend.Main.GLOBAL_BUYORDER_ID;
 
 /**
  *
@@ -37,14 +38,14 @@ public class BuyOrder {
     public BuyOrder(Client client, Date date) {
         this.client = client;
         this.date = date;
-        // this.id = GLOBAL_ID++;
+        this.id = GLOBAL_BUYORDER_ID++;
     }
 
     public BuyOrder(Client client, Date date, OrderList list) {
         this.client = client;
         this.date = date;
         this.orders = list;
-        // this.id = GLOBAL_ID++;
+        this.id = GLOBAL_BUYORDER_ID++;
     }
 
     public boolean equals(BuyOrder order) {

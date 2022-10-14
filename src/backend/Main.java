@@ -34,6 +34,8 @@ public class Main {
     public static StockList stocks = new StockList();
 
     public static int GLOBAL_SALE_ID = 0;
+    public static int GLOBAL_BUYORDER_ID = 0;
+    public static int GLOBAL_CLIENT_ID = 0;
 
     /**
      * @param args the command line arguments
