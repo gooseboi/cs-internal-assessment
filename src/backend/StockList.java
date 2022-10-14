@@ -21,6 +21,8 @@ SOFTWARE.
  */
 package backend;
 
+import static backend.Main.didChange;
+
 /**
  *
  * @author chonk
@@ -58,6 +60,7 @@ public class StockList {
     public boolean insert(Stock stock) {
         if (first == null) {
             first = new StockNode(stock);
+            didChange = true;
             return true;
         }
 
@@ -72,6 +75,7 @@ public class StockList {
             return false;
         } else {
             aux.setNext(new StockNode(stock));
+            didChange = true;
             return true;
         }
     }
@@ -81,6 +85,7 @@ public class StockList {
             return false;
         else if (first.getData().equals(stock)) {
             first = first.getNext();
+            didChange = true;
             return true;
         }
 
@@ -88,6 +93,7 @@ public class StockList {
         while (aux.getNext() != null) {
             if (aux.getNext().getData().equals(stock)) {
                 aux.setNext(aux.getNext().getNext());
+                didChange = true;
                 return true;
             }
             aux = aux.getNext();
@@ -100,6 +106,7 @@ public class StockList {
             return false;
         if (idx == 0) {
             first = first.getNext();
+            didChange = true;
             return true;
         }
 
@@ -135,6 +142,7 @@ public class StockList {
         while (aux != null) {
             if (aux.getData().equals(stock)) {
                 aux.setData(stock);
+                didChange = true;
                 return true;
             }
             aux = aux.getNext();

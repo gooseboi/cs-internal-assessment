@@ -22,6 +22,7 @@ SOFTWARE.
 package backend;
 
 import java.util.Date;
+import static backend.Main.didChange;
 
 /**
  *
@@ -90,6 +91,7 @@ public class BuyOrderList {
     public boolean insert(BuyOrder order) {
         if (first == null) {
             first = new BuyOrderNode(order);
+            didChange = true;
             return true;
         }
 
@@ -104,6 +106,7 @@ public class BuyOrderList {
             return false;
         } else {
             aux.setNext(new BuyOrderNode(order));
+            didChange = true;
             return true;
         }
     }
@@ -117,6 +120,7 @@ public class BuyOrderList {
             return false;
         else if (first.getData().equals(id)) {
             first = first.getNext();
+            didChange = true;
             return true;
         }
 
@@ -124,6 +128,7 @@ public class BuyOrderList {
         while (aux.getNext() != null) {
             if (aux.getNext().getData().equals(id)) {
                 aux.setNext(aux.getNext().getNext());
+                didChange = true;
                 return true;
             }
             aux = aux.getNext();
@@ -135,6 +140,7 @@ public class BuyOrderList {
         BuyOrderNode aux = first;
         while (aux != null) {
             if (aux.getData().getId() == id) {
+                didChange = true;
                 return true;
             }
             aux = aux.getNext();
