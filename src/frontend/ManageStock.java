@@ -41,6 +41,7 @@ public class ManageStock extends javax.swing.JPanel {
 
     private final JFrame window;
     private final StockList localStock;
+    private StockList filtered;
 
     /**
      * Creates new form ManageOrders
@@ -57,6 +58,7 @@ public class ManageStock extends javax.swing.JPanel {
         h.setDefaultRenderer(new StocksHeaderRenderer(stocksTable));
 
         localStock = stocks.clone();
+        filtered = null;
         orderDescending = true;
         mode = StockOrderMode.Name;
         sortDirectionButton.setText("⬇");
@@ -67,7 +69,7 @@ public class ManageStock extends javax.swing.JPanel {
     }
 
     private void drawTable() {
-        StockNode node = localStock.getFirst();
+        StockNode node = (filtered == null ? localStock : filtered).getFirst();
         DefaultTableModel model = (DefaultTableModel) stocksTable.getModel();
         model.setRowCount(0);
         while (node != null) {
@@ -112,6 +114,7 @@ public class ManageStock extends javax.swing.JPanel {
         sortLabel = new javax.swing.JLabel();
         nameRadioButton = new javax.swing.JRadioButton();
         sortDirectionButton = new javax.swing.JButton();
+        searchButtonActionPerformed = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(700, 500));
 
@@ -169,6 +172,12 @@ public class ManageStock extends javax.swing.JPanel {
 
         searchLabel.setText("Search:");
 
+        searchTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchTextFieldActionPerformed(evt);
+            }
+        });
+
         sortButtonGroup.add(totalRadioButton);
         totalRadioButton.setText("Available");
         totalRadioButton.addActionListener(new java.awt.event.ActionListener() {
@@ -211,6 +220,13 @@ public class ManageStock extends javax.swing.JPanel {
             }
         });
 
+        searchButtonActionPerformed.setText("Go");
+        searchButtonActionPerformed.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchButtonActionPerformedActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -240,17 +256,19 @@ public class ManageStock extends javax.swing.JPanel {
                                         .addComponent(priceRadioButton)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(buyOrdersRadioButton)))))))
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addContainerGap(47, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(160, 160, 160)
+                .addGap(118, 118, 118)
                 .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(searchLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(searchTextField)
+                .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(searchButtonActionPerformed, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(154, 154, 154))
+                .addGap(115, 115, 115))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -264,7 +282,8 @@ public class ManageStock extends javax.swing.JPanel {
                     .addComponent(addButton)
                     .addComponent(deleteButton)
                     .addComponent(searchLabel)
-                    .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchButtonActionPerformed))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(47, 47, 47)
@@ -342,16 +361,37 @@ public class ManageStock extends javax.swing.JPanel {
         drawTable();
     }//GEN-LAST:event_buyOrdersRadioButtonActionPerformed
 
+    private void searchButtonActionPerformedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformedActionPerformed
+        filter();
+    }//GEN-LAST:event_searchButtonActionPerformedActionPerformed
+
+    private void searchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTextFieldActionPerformed
+        filter();
+    }//GEN-LAST:event_searchTextFieldActionPerformed
+
+    private void filter() {
+        String searchText = searchTextField.getText();
+        if (searchText == null || searchText.equals("")) {
+            filtered = null;
+            this.sortList();
+        } else {
+            filtered = localStock.getStockByName(searchText);
+        }
+
+        this.drawTable();
+    }
+
     private void sortList() {
+        StockList list = (filtered == null ? localStock : filtered);
         switch (mode) {
             case Name:
-                localStock.sortByName(orderDescending);
+                list.sortByName(orderDescending);
                 break;
             case Available:
-                localStock.sortByAvailable(orderDescending);
+                list.sortByAvailable(orderDescending);
                 break;
             case Price:
-                localStock.sortByPrice(orderDescending);
+                list.sortByPrice(orderDescending);
                 break;
             case BuyOrders:
                 //localStock.sortByBuyOrders(orderDescending);
@@ -374,6 +414,7 @@ public class ManageStock extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JRadioButton nameRadioButton;
     private javax.swing.JRadioButton priceRadioButton;
+    private javax.swing.JButton searchButtonActionPerformed;
     private javax.swing.JLabel searchLabel;
     private javax.swing.JTextField searchTextField;
     private javax.swing.ButtonGroup sortButtonGroup;

@@ -64,6 +64,19 @@ public class StockList {
         return ret;
     }
 
+    public StockList getStockByName(String plantName) {
+        StockList ret = new StockList(false);
+        StockNode aux = first;
+        while (aux != null) {
+            var p = aux.getData().getPlant();
+            if (p.getName().toUpperCase().startsWith(plantName.toUpperCase())) {
+                ret.insert(aux.getData());
+            }
+            aux = aux.getNext();
+        }
+        return ret;
+    }
+
     public int size() {
         StockNode aux = first;
         int counter = 0;
