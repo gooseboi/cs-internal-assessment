@@ -82,7 +82,8 @@ public class StockList {
     public boolean insert(Stock stock) {
         if (first == null) {
             first = new StockNode(stock);
-            didChange = true;
+            if (isGlobal)
+                didChange = true;
             return true;
         }
 
@@ -97,7 +98,8 @@ public class StockList {
             return false;
         } else {
             aux.setNext(new StockNode(stock));
-            didChange = true;
+            if (isGlobal)
+                didChange = true;
             return true;
         }
     }
