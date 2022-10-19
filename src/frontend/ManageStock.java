@@ -71,11 +71,13 @@ public class ManageStock extends javax.swing.JPanel {
         model.setRowCount(0);
         while (node != null) {
             String[] curr = new String[5];
-            curr[0] = node.getData().getPlant().getName();
-            curr[1] = String.valueOf(node.getData().getStock());
-            curr[2] = node.getData().getPlant().getGrowthCondition();
-            curr[3] = String.valueOf(node.getData().getPlant().getPrice());
-            OrderList l = buyOrders.getOrdersByPlant(node.getData().getPlant());
+            var data = node.getData();
+            var p = data.getPlant();
+            curr[0] = p.getName();
+            curr[1] = String.valueOf(data.getStock());
+            curr[2] = p.getGrowthCondition();
+            curr[3] = String.valueOf(p.getPrice());
+            OrderList l = buyOrders.getOrdersByPlant(p);
             curr[4] = String.valueOf(l.accumulateStock());
 
             model.addRow(curr);
