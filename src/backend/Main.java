@@ -29,10 +29,10 @@ import javax.swing.JFrame;
 public class Main {
 
     public static JFrame mainWindow;
-    public static SalesList sales = new SalesList();
-    public static BuyOrderList buyOrders = new BuyOrderList();
-    public static StockList stocks = new StockList();
-    public static ClientList clients = new ClientList();
+    public static SalesList sales = new SalesList(true);
+    public static BuyOrderList buyOrders = new BuyOrderList(true);
+    public static StockList stocks = new StockList(true);
+    public static ClientList clients = new ClientList(true);
 
     public static int GLOBAL_SALE_ID = 0;
     public static int GLOBAL_BUYORDER_ID = 0;

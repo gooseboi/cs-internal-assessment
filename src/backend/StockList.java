@@ -29,10 +29,15 @@ import static backend.Main.didChange;
  */
 public class StockList {
 
-    StockNode first;
+    private StockNode first;
+    private boolean isGlobal;
+
+    public StockList(boolean isGlobal) {
+        this.isGlobal = isGlobal;
+    }
 
     public StockList getStockByAvailable(int stock) {
-        StockList ret = new StockList();
+        StockList ret = new StockList(false);
         StockNode aux = first;
         while (aux != null) {
             if (aux.getData().getStock() == stock) {
@@ -181,5 +186,23 @@ public class StockList {
             aux = aux.getNext();
         }
         return null;
+    }
+
+    @Override
+    public StockList clone() {
+        var ret = new StockList(false);
+        if (first == null) {
+            return ret;
+        }
+
+        ret.first = first.clone();
+        var node = first.getNext();
+        var ret_node = ret.first;
+        while (node != null) {
+            ret_node.setNext(node.clone());
+            node = node.getNext();
+            ret_node = ret_node.getNext();
+        }
+        return ret;
     }
 }

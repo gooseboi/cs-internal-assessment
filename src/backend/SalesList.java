@@ -31,9 +31,14 @@ import static backend.Main.didChange;
 public class SalesList {
 
     private SalesNode first;
+    private boolean isGlobal;
+
+    public SalesList(boolean isGlobal) {
+        this.isGlobal = isGlobal;
+    }
 
     public SalesList getSalesByClient(Client c) {
-        SalesList ret = new SalesList();
+        SalesList ret = new SalesList(false);
         SalesNode aux = first;
         while (aux != null) {
             if (aux.getData().getClient().equals(c)) {
@@ -53,7 +58,7 @@ public class SalesList {
     }
 
     public SalesList getSalesByDateRange(Date start, Date end) {
-        SalesList ret = new SalesList();
+        SalesList ret = new SalesList(false);
         SalesNode aux = first;
         while (aux != null) {
             Date date = aux.getData().getDate();
@@ -66,7 +71,7 @@ public class SalesList {
     }
 
     public SalesList getSalesByPlant(Plant p) {
-        SalesList ret = new SalesList();
+        SalesList ret = new SalesList(false);
         SalesNode aux = first;
         while (aux != null) {
             if (aux.getData().getOrders().contains(p)) {
@@ -90,7 +95,8 @@ public class SalesList {
     public boolean insert(Sale sale) {
         if (first == null) {
             first = new SalesNode(sale);
-            didChange = true;
+            if (isGlobal)
+                didChange = true;
             return true;
         }
 
@@ -105,7 +111,8 @@ public class SalesList {
             return false;
         } else {
             aux.setNext(new SalesNode(sale));
-            didChange = true;
+            if (isGlobal)
+                didChange = true;
             return true;
         }
     }
@@ -165,12 +172,30 @@ public class SalesList {
 
     public ClientList findClient(String clientName) {
         var aux = first;
-        ClientList ret = new ClientList();
+        ClientList ret = new ClientList(false);
         while (aux != null) {
             var c = aux.getData().getClient();
             if (c.equals(clientName))
                 ret.insert(c);
             aux = aux.getNext();
+        }
+        return ret;
+    }
+
+    @Override
+    public SalesList clone() {
+        var ret = new SalesList(false);
+        if (first == null) {
+            return ret;
+        }
+
+        ret.first = first.clone();
+        var node = first.getNext();
+        var ret_node = ret.first;
+        while (node != null) {
+            ret_node.setNext(node.clone());
+            node = node.getNext();
+            ret_node = ret_node.getNext();
         }
         return ret;
     }

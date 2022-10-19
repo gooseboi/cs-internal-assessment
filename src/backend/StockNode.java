@@ -49,4 +49,9 @@ public class StockNode {
     public void setData(Stock data) {
         this.data = data;
     }
+    
+    @Override
+    public StockNode clone() {
+        return new StockNode(this.data);
+    }
 }

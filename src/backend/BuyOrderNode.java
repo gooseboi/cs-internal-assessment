@@ -49,4 +49,9 @@ public class BuyOrderNode {
     public void setData(BuyOrder data) {
         this.data = data;
     }
+
+    @Override
+    public BuyOrderNode clone() {
+        return new BuyOrderNode(this.data);
+    }
 }

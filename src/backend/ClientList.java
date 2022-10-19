@@ -30,8 +30,10 @@ import static backend.Main.didChange;
 public class ClientList {
 
     private ClientNode first;
+    private boolean isGlobal;
 
-    public ClientList() {
+    public ClientList(boolean isGlobal) {
+        this.isGlobal = isGlobal;
     }
 
     public ClientNode getFirst() {
@@ -51,7 +53,8 @@ public class ClientList {
     public boolean insert(Client client) {
         if (first == null) {
             first = new ClientNode(client);
-            didChange = true;
+            if (isGlobal)
+                didChange = true;
             return true;
         }
 
@@ -67,13 +70,14 @@ public class ClientList {
             return false;
         } else {
             aux.setNext(new ClientNode(client));
-            didChange = true;
+            if (isGlobal)
+                didChange = true;
             return true;
         }
     }
 
     public ClientList getByName(String clientName) {
-        var ret = new ClientList();
+        var ret = new ClientList(false);
         var node = first;
         while (node != null) {
             var c = node.getData();

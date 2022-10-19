@@ -31,9 +31,14 @@ import static backend.Main.didChange;
 public class BuyOrderList {
 
     private BuyOrderNode first;
+    private boolean isGlobal;
+
+    public BuyOrderList(boolean isGlobal) {
+        this.isGlobal = isGlobal;
+    }
 
     public BuyOrderList getOrdersByClient(Client c) {
-        BuyOrderList ret = new BuyOrderList();
+        BuyOrderList ret = new BuyOrderList(false);
         BuyOrderNode aux = first;
         while (aux != null) {
             if (aux.getData().getClient().equals(c)) {
@@ -53,7 +58,7 @@ public class BuyOrderList {
     }
 
     public BuyOrderList getOrdersByDateRange(Date start, Date end) {
-        BuyOrderList ret = new BuyOrderList();
+        BuyOrderList ret = new BuyOrderList(false);
         BuyOrderNode aux = first;
         while (aux != null) {
             Date date = aux.getData().getDate();
@@ -91,7 +96,8 @@ public class BuyOrderList {
     public boolean insert(BuyOrder order) {
         if (first == null) {
             first = new BuyOrderNode(order);
-            didChange = true;
+            if (isGlobal)
+                didChange = true;
             return true;
         }
 
@@ -106,7 +112,8 @@ public class BuyOrderList {
             return false;
         } else {
             aux.setNext(new BuyOrderNode(order));
-            didChange = true;
+            if (isGlobal)
+                didChange = true;
             return true;
         }
     }
@@ -155,12 +162,27 @@ public class BuyOrderList {
 
     public ClientList findClient(String clientName) {
         var aux = first;
-        ClientList ret = new ClientList();
+        ClientList ret = new ClientList(false);
         while (aux != null) {
             var c = aux.getData().getClient();
             if (c.equals(clientName))
                 ret.insert(c);
             aux = aux.getNext();
+        }
+        return ret;
+    }
+
+    public BuyOrderList clone() {
+        var ret = new BuyOrderList(false);
+        var node = first;
+        if (node == null) {
+            return ret;
+        }
+
+        var ret_node = ret.first;
+        ret_node = new BuyOrderNode(node.getData());
+        while (node != null) {
+            ret_node.setNext(node.clone());
         }
         return ret;
     }
