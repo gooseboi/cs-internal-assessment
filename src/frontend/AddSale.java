@@ -22,8 +22,10 @@ SOFTWARE.
 package frontend;
 
 import backend.Client;
+import backend.ClientList;
 import static backend.Main.GLOBAL_SALE_ID;
 import static backend.Main.sales;
+import static backend.Main.clients;
 import javax.swing.JFrame;
 import backend.OrderList;
 import backend.Sale;

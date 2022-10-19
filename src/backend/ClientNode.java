@@ -21,36 +21,32 @@ SOFTWARE.
  */
 package backend;
 
-import javax.swing.JFrame;
-
 /**
+ *
  * @author chonk
  */
-public class Main {
+public class ClientNode {
 
-    public static JFrame mainWindow;
-    public static SalesList sales = new SalesList();
-    public static BuyOrderList buyOrders = new BuyOrderList();
-    public static StockList stocks = new StockList();
-    public static ClientList clients = new ClientList();
+    private ClientNode next;
+    private Client data;
 
-    public static int GLOBAL_SALE_ID = 0;
-    public static int GLOBAL_BUYORDER_ID = 0;
-    public static int GLOBAL_CLIENT_ID = 0;
+    public ClientNode(Client client) {
+        this.data = client;
+    }
 
-    // TODO: Track if the OrderList of a sale or buy order changed
-    public static boolean didChange = false;
+    public ClientNode getNext() {
+        return next;
+    }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // Create the main menu window
-        mainWindow = new JFrame();
-        mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainWindow.setContentPane(new frontend.MainMenu(mainWindow));
-        mainWindow.pack();
-        mainWindow.setLocationRelativeTo(null);
-        mainWindow.setVisible(true);
+    public void setNext(ClientNode next) {
+        this.next = next;
+    }
+
+    public Client getData() {
+        return data;
+    }
+
+    public void setData(Client data) {
+        this.data = data;
     }
 }

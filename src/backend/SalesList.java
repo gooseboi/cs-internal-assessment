@@ -162,4 +162,16 @@ public class SalesList {
     public void clear() {
         this.first = null;
     }
+
+    public ClientList findClient(String clientName) {
+        var aux = first;
+        ClientList ret = new ClientList();
+        while (aux != null) {
+            var c = aux.getData().getClient();
+            if (c.equals(clientName))
+                ret.insert(c);
+            aux = aux.getNext();
+        }
+        return ret;
+    }
 }

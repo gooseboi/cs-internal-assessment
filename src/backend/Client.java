@@ -21,6 +21,8 @@ SOFTWARE.
  */
 package backend;
 
+import static backend.Main.GLOBAL_CLIENT_ID;
+
 /**
  *
  * @author chonk
@@ -38,6 +40,7 @@ public class Client {
         this.surname = surname;
         this.phoneNumber = phoneNumber;
         this.emailAddress = emailAddress;
+        this.id = GLOBAL_CLIENT_ID++;
     }
 
     public boolean equals(Client client) {
