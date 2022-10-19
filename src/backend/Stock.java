@@ -39,6 +39,10 @@ public class Stock {
         return this.plant.equals(stock.plant);
     }
 
+    public boolean equals(String plantName) {
+        return this.plant.equals(plantName);
+    }
+
     public Plant getPlant() {
         return plant;
     }
