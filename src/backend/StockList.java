@@ -24,7 +24,6 @@ package backend;
 import static backend.Main.didChange;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
-import java.util.function.Function;
 
 /**
  *
@@ -299,6 +298,10 @@ public class StockList {
 
     public void sortBy(BiPredicate<Stock, Stock> pred) {
         Stock[] arr = this.toArray();
+        if (arr.length == 0) {
+            return;
+        }
+
         BiConsumer<Integer, Integer> swap = (Integer i, Integer j) -> {
             var temp = arr[i];
             arr[i] = arr[j];

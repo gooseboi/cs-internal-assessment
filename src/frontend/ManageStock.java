@@ -25,6 +25,7 @@ import javax.swing.JFrame;
 import static backend.Main.stocks;
 import static backend.Main.buyOrders;
 import backend.OrderList;
+import backend.StockList;
 import backend.StockNode;
 import frontend.tables.StocksCellRenderer;
 import frontend.tables.StocksHeaderRenderer;
@@ -38,6 +39,7 @@ import javax.swing.table.JTableHeader;
 public class ManageStock extends javax.swing.JPanel {
 
     private final JFrame window;
+    private final StockList localStock;
 
     /**
      * Creates new form ManageOrders
@@ -53,12 +55,20 @@ public class ManageStock extends javax.swing.JPanel {
         JTableHeader h = stocksTable.getTableHeader();
         h.setDefaultRenderer(new StocksHeaderRenderer(stocksTable));
 
+        localStock = stocks.clone();
+        orderDescending = true;
+        mode = StockOrderMode.Name;
+        sortDirectionButton.setText("⬇");
+        nameRadioButton.setSelected(true);
+
+        this.sortList();
         this.drawTable();
     }
 
     private void drawTable() {
-        StockNode node = stocks.getFirst();
+        StockNode node = localStock.getFirst();
         DefaultTableModel model = (DefaultTableModel) stocksTable.getModel();
+        model.setRowCount(0);
         while (node != null) {
             String[] curr = new String[5];
             curr[0] = node.getData().getPlant().getName();
@@ -84,12 +94,21 @@ public class ManageStock extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        sortButtonGroup = new javax.swing.ButtonGroup();
         titleLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         stocksTable = new javax.swing.JTable();
         backButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
         addButton = new javax.swing.JButton();
+        searchLabel = new javax.swing.JLabel();
+        searchTextField = new javax.swing.JTextField();
+        totalRadioButton = new javax.swing.JRadioButton();
+        priceRadioButton = new javax.swing.JRadioButton();
+        buyOrdersRadioButton = new javax.swing.JRadioButton();
+        sortLabel = new javax.swing.JLabel();
+        nameRadioButton = new javax.swing.JRadioButton();
+        sortDirectionButton = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(700, 500));
 
@@ -145,6 +164,50 @@ public class ManageStock extends javax.swing.JPanel {
             }
         });
 
+        searchLabel.setText("Search:");
+
+        sortButtonGroup.add(totalRadioButton);
+        totalRadioButton.setText("Available");
+        totalRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                totalRadioButtonActionPerformed(evt);
+            }
+        });
+
+        sortButtonGroup.add(priceRadioButton);
+        priceRadioButton.setText("Price");
+        priceRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                priceRadioButtonActionPerformed(evt);
+            }
+        });
+
+        sortButtonGroup.add(buyOrdersRadioButton);
+        buyOrdersRadioButton.setText("Buy Orders");
+        buyOrdersRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buyOrdersRadioButtonActionPerformed(evt);
+            }
+        });
+
+        sortLabel.setText("Sort By:");
+
+        sortButtonGroup.add(nameRadioButton);
+        nameRadioButton.setText("Name");
+        nameRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nameRadioButtonActionPerformed(evt);
+            }
+        });
+
+        sortDirectionButton.setFont(new java.awt.Font("sansserif", 0, 18)); // NOI18N
+        sortDirectionButton.setText("⬇");
+        sortDirectionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sortDirectionButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -155,16 +218,36 @@ public class ManageStock extends javax.swing.JPanel {
                         .addGap(258, 258, 258)
                         .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(160, 160, 160)
-                        .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(193, 193, 193)
-                        .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(38, 38, 38)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 624, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(backButton))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(backButton)
+                                .addGap(119, 119, 119)
+                                .addComponent(nameRadioButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(sortLabel)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(sortDirectionButton))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(totalRadioButton)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(priceRadioButton)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(buyOrdersRadioButton)))))))
                 .addContainerGap(38, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(160, 160, 160)
+                .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(searchLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(searchTextField)
+                .addGap(18, 18, 18)
+                .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(154, 154, 154))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -173,12 +256,27 @@ public class ManageStock extends javax.swing.JPanel {
                 .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addButton)
                     .addComponent(deleteButton)
-                    .addComponent(addButton))
-                .addGap(21, 21, 21)
-                .addComponent(backButton)
+                    .addComponent(searchLabel)
+                    .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(47, 47, 47)
+                        .addComponent(backButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(sortLabel)
+                            .addComponent(sortDirectionButton))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(totalRadioButton)
+                            .addComponent(priceRadioButton)
+                            .addComponent(buyOrdersRadioButton)
+                            .addComponent(nameRadioButton))))
                 .addGap(37, 37, 37))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -200,12 +298,85 @@ public class ManageStock extends javax.swing.JPanel {
         this.window.pack();
     }//GEN-LAST:event_addButtonActionPerformed
 
+    private void priceRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_priceRadioButtonActionPerformed
+        mode = StockOrderMode.Price;
+        sortList();
+        drawTable();
+    }//GEN-LAST:event_priceRadioButtonActionPerformed
+
+    private void sortDirectionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sortDirectionButtonActionPerformed
+        orderDescending = !orderDescending;
+        if (orderDescending) {
+            sortDirectionButton.setText("⬇");
+        } else {
+            sortDirectionButton.setText("⬆");
+        }
+        sortList();
+        drawTable();
+    }//GEN-LAST:event_sortDirectionButtonActionPerformed
+
+    private void totalRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_totalRadioButtonActionPerformed
+        mode = StockOrderMode.Available;
+        sortList();
+        drawTable();
+    }//GEN-LAST:event_totalRadioButtonActionPerformed
+
+    private void nameRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameRadioButtonActionPerformed
+        mode = StockOrderMode.Name;
+        sortList();
+        drawTable();
+    }//GEN-LAST:event_nameRadioButtonActionPerformed
+
+    private void buyOrdersRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyOrdersRadioButtonActionPerformed
+        mode = StockOrderMode.BuyOrders;
+        sortList();
+        drawTable();
+    }//GEN-LAST:event_buyOrdersRadioButtonActionPerformed
+
+    private void sortList() {
+        switch (mode) {
+            case Name:
+                localStock.sortByName(orderDescending);
+                break;
+            case Available:
+                localStock.sortByAvailable(orderDescending);
+                break;
+            case Price:
+                localStock.sortByPrice(orderDescending);
+                break;
+            case BuyOrders:
+                //localStock.sortByBuyOrders(orderDescending);
+                break;
+        }
+    }
+
+    enum StockOrderMode {
+        Name,
+        Available,
+        Price,
+        BuyOrders,
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
     private javax.swing.JButton backButton;
+    private javax.swing.JRadioButton buyOrdersRadioButton;
     private javax.swing.JButton deleteButton;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JRadioButton nameRadioButton;
+    private javax.swing.JRadioButton priceRadioButton;
+    private javax.swing.JLabel searchLabel;
+    private javax.swing.JTextField searchTextField;
+    private javax.swing.ButtonGroup sortButtonGroup;
+    private javax.swing.JButton sortDirectionButton;
+    private javax.swing.JLabel sortLabel;
     private javax.swing.JTable stocksTable;
     private javax.swing.JLabel titleLabel;
+    private javax.swing.JRadioButton totalRadioButton;
     // End of variables declaration//GEN-END:variables
+
+    // Wrong
+    private boolean orderDescending;
+    private StockOrderMode mode;
+    // Actual end of variable declarations
 }

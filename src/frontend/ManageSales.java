@@ -48,6 +48,7 @@ public class ManageSales extends javax.swing.JPanel {
     private void drawTable() {
         var node = sales.getFirst();
         var model = (DefaultTableModel) salesTable.getModel();
+        model.setRowCount(0);
         while (node != null) {
             String[] curr = new String[4];
             curr[0] = String.valueOf(node.getData().getClient().getName());
