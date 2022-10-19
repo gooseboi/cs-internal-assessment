@@ -48,7 +48,8 @@ public class Main {
         mainWindow = new JFrame();
         mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainWindow.setContentPane(new frontend.MainMenu(mainWindow));
-        mainWindow.setSize(700, 500);
+        mainWindow.pack();
+        mainWindow.setLocationRelativeTo(null);
         mainWindow.setVisible(true);
     }
 }
