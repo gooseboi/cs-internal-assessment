@@ -112,7 +112,7 @@ public class StockList {
 
         StockNode aux = first;
         int i = 0;
-        while (aux.getNext() != null && i != idx) {
+        while (aux.getNext() != null && i != idx - 1) {
             aux = aux.getNext();
             i++;
         }
