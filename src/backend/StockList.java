@@ -101,6 +101,27 @@ public class StockList {
         return false;
     }
 
+    public boolean delete(String plantName) {
+        if (first == null)
+            return false;
+        else if (first.getData().equals(plantName)) {
+            first = first.getNext();
+            didChange = true;
+            return true;
+        }
+
+        StockNode aux = first;
+        while (aux.getNext() != null) {
+            if (aux.getNext().getData().equals(plantName)) {
+                aux.setNext(aux.getNext().getNext());
+                didChange = true;
+                return true;
+            }
+            aux = aux.getNext();
+        }
+        return false;
+    }
+
     public boolean delete(int idx) {
         if (first == null)
             return false;
