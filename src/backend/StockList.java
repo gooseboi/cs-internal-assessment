@@ -22,6 +22,9 @@ SOFTWARE.
 package backend;
 
 import static backend.Main.didChange;
+import java.util.function.BiConsumer;
+import java.util.function.BiPredicate;
+import java.util.function.Function;
 
 /**
  *
@@ -34,6 +37,20 @@ public class StockList {
 
     public StockList(boolean isGlobal) {
         this.isGlobal = isGlobal;
+    }
+
+    public StockList(Stock[] arr) {
+        if (arr.length > 0 && arr[0] != null) {
+            this.first = new StockNode(arr[0]);
+        } else {
+            return;
+        }
+
+        var node = this.first;
+        for (int i = 1; i < arr.length; i++) {
+            node.setNext(new StockNode(arr[i]));
+            node = node.getNext();
+        }
     }
 
     public StockList getStockByAvailable(int stock) {
@@ -205,4 +222,102 @@ public class StockList {
         }
         return ret;
     }
+
+    public Stock[] toArray() {
+        var node = first;
+        int s = this.size();
+        Stock[] ret = new Stock[s];
+        int top = 0;
+        while (node != null) {
+            ret[top++] = node.getData();
+            node = node.getNext();
+        }
+        return ret;
+    }
+
+    public void sortByName(boolean orderDescending) {
+        BiPredicate<Stock, Stock> pred;
+        if (orderDescending) {
+            pred = (s1, s2) -> {
+                var n1 = s1.getPlant().getName();
+                var n2 = s2.getPlant().getName();
+                boolean res = n1.compareTo(n2) > 0;
+                return res;
+            };
+        } else {
+            pred = (s1, s2) -> {
+                var n1 = s1.getPlant().getName();
+                var n2 = s2.getPlant().getName();
+                boolean res = n1.compareTo(n2) < 0;
+                return res;
+            };
+        }
+        this.sortBy(pred);
+    }
+
+    public void sortByPrice(boolean orderDescending) {
+        BiPredicate<Stock, Stock> pred;
+        if (orderDescending) {
+            pred = (s1, s2) -> {
+                var p1 = s1.getPlant().getPrice();
+                var p2 = s2.getPlant().getPrice();
+                return p1 > p2;
+            };
+        } else {
+            pred = (s1, s2) -> {
+                var p1 = s1.getPlant().getPrice();
+                var p2 = s2.getPlant().getPrice();
+                return p1 < p2;
+            };
+        }
+        this.sortBy(pred);
+    }
+
+    public void sortByAvailable(boolean orderDescending) {
+        BiPredicate<Stock, Stock> pred;
+        if (orderDescending) {
+            pred = (s1, s2) -> {
+                var n1 = s1.getStock();
+                var n2 = s2.getStock();
+                return n1 > n2;
+            };
+        } else {
+            pred = (s1, s2) -> {
+                var n1 = s1.getPlant().getPrice();
+                var n2 = s2.getPlant().getPrice();
+                return n1 < n2;
+            };
+        }
+        this.sortBy(pred);
+    }
+
+    public void sortByBuyOrders(boolean orderDescending) {
+        throw new UnsupportedOperationException("sortByBuyOrders");
+    }
+
+    public void sortBy(BiPredicate<Stock, Stock> pred) {
+        Stock[] arr = this.toArray();
+        BiConsumer<Integer, Integer> swap = (Integer i, Integer j) -> {
+            var temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        };
+
+        boolean swapped = true;
+        while (swapped) {
+            int i = 0;
+            swapped = false;
+            while (i != arr.length - 1) {
+                if (pred.test(arr[i], arr[i + 1])) {
+                    swap.accept(i, i + 1);
+                    swapped = true;
+                }
+                i++;
+            }
+        }
+
+        StockList temp = new StockList(arr);
+        this.first = temp.first;
+    }
+
 }
