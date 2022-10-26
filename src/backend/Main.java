@@ -21,7 +21,9 @@ SOFTWARE.
  */
 package backend;
 
+import java.awt.Component;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  * @author chonk
@@ -52,5 +54,13 @@ public class Main {
         mainWindow.pack();
         mainWindow.setLocationRelativeTo(null);
         mainWindow.setVisible(true);
+    }
+
+    public static void showInformationDialog(Component window, String message) {
+        JOptionPane.showMessageDialog(window, message, "INFO", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public static void showErrorDialog(Component window, String message) {
+        JOptionPane.showMessageDialog(window, message, "ERROR", JOptionPane.ERROR_MESSAGE);
     }
 }

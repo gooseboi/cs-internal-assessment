@@ -30,7 +30,8 @@ import javax.swing.DefaultListModel;
 import static backend.Main.stocks;
 import backend.Order;
 import backend.Plant;
-import javax.swing.JOptionPane;
+import static backend.Main.showErrorDialog;
+import static backend.Main.showInformationDialog;
 
 /**
  *
@@ -237,13 +238,13 @@ public class EditOrder extends javax.swing.JPanel {
         String value = stockList.getSelectedValue();
         int idx = stockList.getSelectedIndex();
         if (value == null) {
-            JOptionPane.showMessageDialog(this, "No item selected!", "ERROR!", JOptionPane.ERROR_MESSAGE);
+            showErrorDialog(this, "No item selected!");
             return;
         }
 
         int amount = (int) amountSpinner.getValue();
         if (amount <= 0) {
-            JOptionPane.showMessageDialog(this, "Must add 1 or more of the item!", "ERROR!", JOptionPane.ERROR_MESSAGE);
+            showErrorDialog(this, "Must add 1 or more of the item!");
             return;
         }
 
@@ -274,7 +275,7 @@ public class EditOrder extends javax.swing.JPanel {
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         int row = ordersTable.getSelectedRow();
         if (row == -1) {
-            JOptionPane.showMessageDialog(this, "No item selected!", "ERROR!", JOptionPane.ERROR_MESSAGE);
+            showErrorDialog(this, "No item selected!");
             return;
         }
 
@@ -296,15 +297,15 @@ public class EditOrder extends javax.swing.JPanel {
                     throw new NumberFormatException();
                 }
             } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "Amount entered must be a positive whole number!", "ERROR!", JOptionPane.ERROR_MESSAGE);
+                showErrorDialog(this, "Amount entered must be a positive whole number!");
                 this.drawTable();
                 return;
             }
 
             if (orders.modify(name, num)) {
-                JOptionPane.showMessageDialog(this, "Order modified successfully", "INFO", JOptionPane.INFORMATION_MESSAGE);
+                showInformationDialog(this, "Order modified successfully");
             } else {
-                JOptionPane.showMessageDialog(this, "Failed modifying order!(What?)", "ERROR!", JOptionPane.ERROR_MESSAGE);
+                showErrorDialog(this, "Failed modifying order!(What?)");
             }
         }
     }

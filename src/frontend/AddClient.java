@@ -24,7 +24,8 @@ package frontend;
 import backend.Client;
 import static backend.Main.clients;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import static backend.Main.showInformationDialog;
+import static backend.Main.showErrorDialog;
 
 /**
  *
@@ -174,39 +175,42 @@ public class AddClient extends javax.swing.JPanel {
         String phoneNumber = phoneNumberTextField.getText();
 
         if (name == null || name.isBlank() || name.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Name must not be empty!", "ERROR", JOptionPane.ERROR_MESSAGE);
+            showErrorDialog(this, "Name must not be empty!");
             return;
         } else if (name.matches(".*\\d+.*")) {
-            JOptionPane.showMessageDialog(this, "Name must not contain numbers!", "ERROR", JOptionPane.ERROR_MESSAGE);
+            showErrorDialog(this, "Name must not contain numbers!");
             return;
         }
 
         if (surname == null || surname.isBlank() || surname.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Surname must not be empty!", "ERROR", JOptionPane.ERROR_MESSAGE);
+            showErrorDialog(this, "Surname must not be empty!");
             return;
         } else if (surname.matches(".*\\d+.*")) {
-            JOptionPane.showMessageDialog(this, "Surname must not contain numbers!", "ERROR", JOptionPane.ERROR_MESSAGE);
+            showErrorDialog(this, "Surname must not contain numbers!");
             return;
         }
 
         if (emailAddress == null || emailAddress.equals("")) {
-            JOptionPane.showMessageDialog(this, "Email Address must not be empty!", "ERROR", JOptionPane.ERROR_MESSAGE);
+            showErrorDialog(this, "Email Address must not be empty!");
             return;
         } else if (!emailAddress.matches("[\\d\\w\\.]+@(.+\\.)+(.+)")) {
-            JOptionPane.showMessageDialog(this, "Invalid email adress!", "ERROR", JOptionPane.ERROR_MESSAGE);
+            showErrorDialog(this, "Invalid email adress!");
             return;
         }
 
         if (phoneNumber == null || phoneNumber.isBlank() || phoneNumber.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Phone Number must not be empty!", "ERROR", JOptionPane.ERROR_MESSAGE);
+            showErrorDialog(this, "Phone Number must not be empty!");
             return;
         } else if (!phoneNumber.matches("(\\d{1,9}|\\+\\d{1,3} ?\\d{1,3} \\d{1,9})")) {
-            JOptionPane.showMessageDialog(this, "Invalid phone number!", "ERROR", JOptionPane.ERROR_MESSAGE);
+            showErrorDialog(this, "Invalid phone number!");
             return;
         }
-        
+
         Client c = new Client(name, surname, phoneNumber, emailAddress);
-        clients.insert(c);
+        if (clients.insert(c)) {
+            showErrorDialog(this, "Client successfully added!");
+
+        }
     }//GEN-LAST:event_saveButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -24,7 +24,8 @@ package frontend;
 import backend.Plant;
 import backend.Stock;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import static backend.Main.showErrorDialog;
+import static backend.Main.showInformationDialog;
 import static backend.Main.stocks;
 
 /**
@@ -172,8 +173,8 @@ public class AddStock extends javax.swing.JPanel {
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         String plantName = plantTextField.getText();
-        if (plantName.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Name must not be empty!", "ERROR", JOptionPane.ERROR_MESSAGE);
+        if (plantName == null || plantName.isBlank() || plantName.isEmpty()) {
+            showErrorDialog(this, "Name must not be empty!");
             return;
         }
 
@@ -181,6 +182,7 @@ public class AddStock extends javax.swing.JPanel {
         String growthCondition = growthConditionTextField.getText();
         double price;
         int initialStock;
+
         try {
             price = Double.parseDouble(priceTextField.getText());
 
@@ -188,7 +190,7 @@ public class AddStock extends javax.swing.JPanel {
                 throw new NumberFormatException();
             }
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Price must be a positive number!", "Error", JOptionPane.ERROR_MESSAGE);
+            showErrorDialog(this, "Price must be a positive number!");
             return;
         }
 
@@ -199,7 +201,7 @@ public class AddStock extends javax.swing.JPanel {
                 throw new NumberFormatException();
             }
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Initial stock must be a positive whole number!", "Error", JOptionPane.ERROR_MESSAGE);
+            showErrorDialog(this, "Initial stock must be a positive whole number!");
             return;
         }
 
@@ -207,13 +209,13 @@ public class AddStock extends javax.swing.JPanel {
         Stock stock = new Stock(p, initialStock);
 
         if (stocks.insert(stock)) {
-            JOptionPane.showMessageDialog(this, "Stock successfully added!", "Info", JOptionPane.INFORMATION_MESSAGE);
+            showInformationDialog(this, "Stock successfully added!");
             plantTextField.setText("");
             growthConditionTextField.setText("");
             priceTextField.setText("");
             initialStockTextField.setText("");
         } else {
-            JOptionPane.showMessageDialog(this, "Stock with same name already exists, stock could not be added!", "Error", JOptionPane.ERROR_MESSAGE);
+            showErrorDialog(this, "Stock with same name already exists!");
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 

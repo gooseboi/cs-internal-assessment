@@ -29,9 +29,10 @@ import backend.StockList;
 import backend.StockNode;
 import frontend.tables.StocksCellRenderer;
 import frontend.tables.StocksHeaderRenderer;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import static backend.Main.showErrorDialog;
+import static backend.Main.showInformationDialog;
 
 /**
  *
@@ -311,7 +312,7 @@ public class ManageStock extends javax.swing.JPanel {
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         int selected = stocksTable.getSelectedRow();
         if (selected == -1) {
-            JOptionPane.showMessageDialog(this, "Please select a plant to delete!", "ERROR!", JOptionPane.ERROR_MESSAGE);
+            showErrorDialog(this, "Please select a plant to delete!");
             return;
         }
         String name = (String) stocksTable.getValueAt(selected, 0);
