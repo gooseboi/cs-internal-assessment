@@ -75,18 +75,6 @@ public class AddStock extends javax.swing.JPanel {
         growthConditionsLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         growthConditionsLabel.setText("Growth Conditions:");
 
-        plantTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                plantTextFieldActionPerformed(evt);
-            }
-        });
-
-        growthConditionTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                growthConditionTextFieldActionPerformed(evt);
-            }
-        });
-
         saveButton.setText("Save");
         saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -104,20 +92,8 @@ public class AddStock extends javax.swing.JPanel {
         initalStockLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         initalStockLabel.setText("Initial stock:");
 
-        initialStockTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                initialStockTextFieldActionPerformed(evt);
-            }
-        });
-
         priceLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         priceLabel.setText("Price:");
-
-        priceTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                priceTextFieldActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -189,22 +165,10 @@ public class AddStock extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void growthConditionTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_growthConditionTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_growthConditionTextFieldActionPerformed
-
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         this.window.setContentPane(new ManageStock(window));
         this.window.pack();
     }//GEN-LAST:event_backButtonActionPerformed
-
-    private void initialStockTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_initialStockTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_initialStockTextFieldActionPerformed
-
-    private void priceTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_priceTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_priceTextFieldActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         String plantName = plantTextField.getText();
@@ -253,10 +217,6 @@ public class AddStock extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 
-    private void plantTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_plantTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_plantTextFieldActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
     private javax.swing.JTextField growthConditionTextField;
@@ -270,5 +230,4 @@ public class AddStock extends javax.swing.JPanel {
     private javax.swing.JButton saveButton;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
-
 }

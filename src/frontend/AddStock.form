@@ -127,14 +127,8 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="plantTextField">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="plantTextFieldActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="growthConditionTextField">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="growthConditionTextFieldActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="saveButton">
       <Properties>
@@ -159,9 +153,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="initialStockTextField">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="initialStockTextFieldActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="priceLabel">
       <Properties>
@@ -170,9 +161,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="priceTextField">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="priceTextFieldActionPerformed"/>
-      </Events>
     </Component>
   </SubComponents>
 </Form>
