@@ -49,7 +49,7 @@ public class SalesNode {
     public void setData(Sale data) {
         this.data = data;
     }
-    
+
     @Override
     public SalesNode clone() {
         return new SalesNode(this.data);
