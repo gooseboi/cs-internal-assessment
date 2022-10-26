@@ -21,6 +21,7 @@ SOFTWARE.
  */
 package backend;
 
+import static backend.Main.GLOBAL_SALE_ID;
 import java.util.Date;
 
 /**
@@ -35,10 +36,16 @@ public class Sale {
     private int id;
 
     public Sale(OrderList orders, Client client, Date date, int id) {
+        this(orders, client, date);
+        this.id = id;
+        GLOBAL_SALE_ID--;
+    }
+
+    public Sale(OrderList orders, Client client, Date date) {
         this.orders = orders;
         this.client = client;
         this.date = date;
-        this.id = id;
+        this.id = GLOBAL_SALE_ID++;
     }
 
     public boolean equals(Sale sale) {
