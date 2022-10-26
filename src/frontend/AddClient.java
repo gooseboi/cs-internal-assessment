@@ -201,7 +201,7 @@ public class AddClient extends javax.swing.JPanel {
         if (phoneNumber == null || phoneNumber.isBlank() || phoneNumber.isEmpty()) {
             showErrorDialog(this, "Phone Number must not be empty!");
             return;
-        } else if (!phoneNumber.matches("(\\d{1,9}|\\+\\d{1,3} ?\\d{1,3} \\d{1,9})")) {
+        } else if (phoneNumber.equals("")) { // TODO: Properly check phone number
             showErrorDialog(this, "Invalid phone number!");
             return;
         }
