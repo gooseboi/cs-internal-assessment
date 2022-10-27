@@ -51,6 +51,10 @@ public class ClientList {
     }
 
     public boolean insert(Client client) {
+        if (this.contains(client)) {
+            return false;
+        }
+
         if (first == null) {
             first = new ClientNode(client);
             if (isGlobal)
@@ -74,6 +78,18 @@ public class ClientList {
                 didChange = true;
             return true;
         }
+    }
+
+    public boolean contains(Client c) {
+        var node = this.first;
+        while (node != null) {
+            var d = node.getData();
+            if (d.all_equal(c)) {
+                return true;
+            }
+            node = node.getNext();
+        }
+        return false;
     }
 
     public ClientList getByName(String clientName) {

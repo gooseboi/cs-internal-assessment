@@ -51,6 +51,14 @@ public class Client {
         return this.name.equals(name);
     }
 
+    public boolean equals(int id) {
+        return this.id == id;
+    }
+
+    public boolean all_equal(Client c) {
+        return this.name.equals(c.name) && this.surname.equals(c.surname) && (this.emailAddress.equals(c.emailAddress) || this.phoneNumber.equals(c.phoneNumber));
+    }
+
     public String getName() {
         return name;
     }
@@ -83,7 +91,7 @@ public class Client {
         this.emailAddress = emailAddress;
     }
 
-    public int getId() {
+    public int getID() {
         return id;
     }
 }
