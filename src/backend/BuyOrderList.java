@@ -172,6 +172,7 @@ public class BuyOrderList {
         return ret;
     }
 
+    @Override
     public BuyOrderList clone() {
         var ret = new BuyOrderList(false);
         var node = first;
