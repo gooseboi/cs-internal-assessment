@@ -50,7 +50,7 @@ public class ManageClients extends javax.swing.JPanel {
 
         titleLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        salesTable = new javax.swing.JTable();
+        clientsTable = new javax.swing.JTable();
         deleteButton = new javax.swing.JButton();
         backButton = new javax.swing.JButton();
         markAsSaleButton = new javax.swing.JButton();
@@ -69,8 +69,8 @@ public class ManageClients extends javax.swing.JPanel {
         titleLabel.setText("Manage Clients");
         titleLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        salesTable.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        salesTable.setModel(new javax.swing.table.DefaultTableModel(
+        clientsTable.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        clientsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -96,7 +96,7 @@ public class ManageClients extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(salesTable);
+        jScrollPane1.setViewportView(clientsTable);
 
         deleteButton.setText("Delete");
         deleteButton.addActionListener(new java.awt.event.ActionListener() {
@@ -233,12 +233,12 @@ public class ManageClients extends javax.swing.JPanel {
     private javax.swing.JButton addButton;
     private javax.swing.JButton backButton;
     private javax.swing.JRadioButton buyOrderRadioButton;
+    private javax.swing.JTable clientsTable;
     private javax.swing.JButton deleteButton;
     private javax.swing.JLabel includeLabel;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton markAsSaleButton;
     private javax.swing.JRadioButton salesRadioButton;
-    private javax.swing.JTable salesTable;
     private javax.swing.JLabel searchLabel;
     private javax.swing.JTextField searchTextField;
     private javax.swing.JComboBox<String> searchTypeComboBox;
