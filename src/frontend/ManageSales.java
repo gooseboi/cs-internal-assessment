@@ -26,6 +26,7 @@ import javax.swing.table.DefaultTableModel;
 import static backend.Main.sales;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import frontend.tables.SalesCellRenderer;
 
 /**
  *
@@ -50,10 +51,10 @@ public class ManageSales extends javax.swing.JPanel {
         var model = (DefaultTableModel) salesTable.getModel();
         model.setRowCount(0);
         while (node != null) {
-            String[] curr = new String[4];
+            Object[] curr = new Object[4];
             curr[0] = String.valueOf(node.getData().getClient().getName());
-            curr[1] = String.valueOf(node.getData().getOrders().accumulatePrice());
-            curr[2] = String.valueOf(node.getData().getOrders().accumulateStock());
+            curr[1] = node.getData().getOrders().accumulatePrice();
+            curr[2] = node.getData().getOrders().accumulateStock();
             curr[3] = node.getData().getDate().toString();
 
             model.addRow(curr);
@@ -114,6 +115,10 @@ public class ManageSales extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        salesTable.getColumnModel().getColumn(0).setCellRenderer(new SalesCellRenderer());
+        salesTable.getColumnModel().getColumn(1).setCellRenderer(new SalesCellRenderer());
+        salesTable.getColumnModel().getColumn(2).setCellRenderer(new SalesCellRenderer());
+        salesTable.getColumnModel().getColumn(3).setCellRenderer(new SalesCellRenderer());
         salesTable.getModel().addTableModelListener(new TableModelListener() {
             public void tableChanged(TableModelEvent evt) {
                 onCellChanged(evt);
@@ -203,7 +208,7 @@ public class ManageSales extends javax.swing.JPanel {
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        // Delete currently selected window
+        // TODO: Delete currently selected sale
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed

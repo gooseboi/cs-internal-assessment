@@ -131,6 +131,7 @@
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_AddingCodePre" type="java.lang.String" value="salesTable.getModel().addTableModelListener(new TableModelListener() {&#xa;    public void tableChanged(TableModelEvent evt) {&#xa;        onCellChanged(evt);     &#xa;    } &#xa;});"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="salesTable.getColumnModel().getColumn(0).setCellRenderer(new SalesCellRenderer());&#xa;salesTable.getColumnModel().getColumn(1).setCellRenderer(new SalesCellRenderer());&#xa;salesTable.getColumnModel().getColumn(2).setCellRenderer(new SalesCellRenderer());&#xa;salesTable.getColumnModel().getColumn(3).setCellRenderer(new SalesCellRenderer());"/>
           </AuxValues>
         </Component>
       </SubComponents>
