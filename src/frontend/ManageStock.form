@@ -182,6 +182,9 @@
               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="stocksTable.getColumnModel().getColumn(0).setCellRenderer(new StocksCellRenderer());&#xa;stocksTable.getColumnModel().getColumn(1).setCellRenderer(new StocksCellRenderer());&#xa;stocksTable.getColumnModel().getColumn(2).setCellRenderer(new StocksCellRenderer());&#xa;stocksTable.getColumnModel().getColumn(3).setCellRenderer(new StocksCellRenderer());&#xa;stocksTable.getColumnModel().getColumn(4).setCellRenderer(new StocksCellRenderer());&#xa;JTableHeader h = stocksTable.getTableHeader();&#xa;h.setDefaultRenderer(new StocksHeaderRenderer(stocksTable));"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>

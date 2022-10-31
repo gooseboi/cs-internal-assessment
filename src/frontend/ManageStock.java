@@ -50,13 +50,6 @@ public class ManageStock extends javax.swing.JPanel {
     public ManageStock(JFrame window) {
         initComponents();
         this.window = window;
-        stocksTable.getColumnModel().getColumn(0).setCellRenderer(new StocksCellRenderer());
-        stocksTable.getColumnModel().getColumn(1).setCellRenderer(new StocksCellRenderer());
-        stocksTable.getColumnModel().getColumn(2).setCellRenderer(new StocksCellRenderer());
-        stocksTable.getColumnModel().getColumn(3).setCellRenderer(new StocksCellRenderer());
-        stocksTable.getColumnModel().getColumn(4).setCellRenderer(new StocksCellRenderer());
-        JTableHeader h = stocksTable.getTableHeader();
-        h.setDefaultRenderer(new StocksHeaderRenderer(stocksTable));
 
         localStock = stocks.clone();
         filtered = null;
@@ -141,6 +134,13 @@ public class ManageStock extends javax.swing.JPanel {
                 return types [columnIndex];
             }
         });
+        stocksTable.getColumnModel().getColumn(0).setCellRenderer(new StocksCellRenderer());
+        stocksTable.getColumnModel().getColumn(1).setCellRenderer(new StocksCellRenderer());
+        stocksTable.getColumnModel().getColumn(2).setCellRenderer(new StocksCellRenderer());
+        stocksTable.getColumnModel().getColumn(3).setCellRenderer(new StocksCellRenderer());
+        stocksTable.getColumnModel().getColumn(4).setCellRenderer(new StocksCellRenderer());
+        JTableHeader h = stocksTable.getTableHeader();
+        h.setDefaultRenderer(new StocksHeaderRenderer(stocksTable));
         jScrollPane1.setViewportView(stocksTable);
         if (stocksTable.getColumnModel().getColumnCount() > 0) {
             stocksTable.getColumnModel().getColumn(0).setResizable(false);
