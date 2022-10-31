@@ -49,4 +49,9 @@ public class ClientNode {
     public void setData(Client data) {
         this.data = data;
     }
+
+    @Override
+    public ClientNode clone() {
+        return new ClientNode(this.data);
+    }
 }

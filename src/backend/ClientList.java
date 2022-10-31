@@ -104,4 +104,34 @@ public class ClientList {
         }
         return ret;
     }
+
+    public Client getByID(int id) {
+        var node = first;
+        while (node != null) {
+            var c = node.getData();
+            if (c.equals(id)) {
+                return c;
+            }
+            node = node.getNext();
+        }
+        return null;
+    }
+
+    @Override
+    public ClientList clone() {
+        var ret = new ClientList(false);
+        if (first == null) {
+            return ret;
+        }
+
+        ret.first = first.clone();
+        var node = first.getNext();
+        var ret_node = ret.first;
+        while (node != null) {
+            ret_node.setNext(node.clone());
+            node = node.getNext();
+            ret_node = ret_node.getNext();
+        }
+        return ret;
+    }
 }
