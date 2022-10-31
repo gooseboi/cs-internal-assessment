@@ -170,6 +170,8 @@ public class EditOrder extends javax.swing.JPanel {
                 }
             });
 
+            amountSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
+
             stockList.setModel(new javax.swing.AbstractListModel<String>() {
                 String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
                 public int getSize() { return strings.length; }
@@ -199,7 +201,7 @@ public class EditOrder extends javax.swing.JPanel {
                                 .addComponent(addButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(deleteButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jTextField1)
-                                .addComponent(amountSpinner, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(amountSpinner, javax.swing.GroupLayout.Alignment.TRAILING))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createSequentialGroup()
@@ -243,7 +245,7 @@ public class EditOrder extends javax.swing.JPanel {
         }
 
         int amount = (int) amountSpinner.getValue();
-        if (amount <= 0) {
+        if (amount == 0) {
             showErrorDialog(this, "Must add 1 or more of the item!");
             return;
         }
@@ -251,6 +253,7 @@ public class EditOrder extends javax.swing.JPanel {
         ((DefaultListModel<String>) stockList.getModel()).remove(idx);
         Plant p = stocks.findPlant(value);
         orders.insert(new Order(p, amount));
+        amountSpinner.setValue(0);
         this.drawTable();
     }//GEN-LAST:event_addButtonActionPerformed
 
