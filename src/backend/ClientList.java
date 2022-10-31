@@ -105,6 +105,19 @@ public class ClientList {
         return ret;
     }
 
+    public ClientList getByNameSearch(String start) {
+        var ret = new ClientList(false);
+        var node = first;
+        while (node != null) {
+            var c = node.getData();
+            if (c.getName().startsWith(start) || c.getSurname().startsWith(start)) {
+                ret.insert(c);
+            }
+            node = node.getNext();
+        }
+        return ret;
+    }
+
     public Client getByID(int id) {
         var node = first;
         while (node != null) {
