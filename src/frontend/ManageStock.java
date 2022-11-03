@@ -33,6 +33,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import static backend.Main.showErrorDialog;
 import static backend.Main.showInformationDialog;
+import static backend.Main.showYesNoDialog;
+import static javax.swing.JOptionPane.NO_OPTION;
 
 /**
  *
@@ -315,9 +317,18 @@ public class ManageStock extends javax.swing.JPanel {
             showErrorDialog(this, "Please select a plant to delete!");
             return;
         }
+
+        if (showYesNoDialog(this, "Are you sure you want to delete the selected stock?") == NO_OPTION) {
+            return;
+        }
+
         String name = (String) stocksTable.getValueAt(selected, 0);
         localStock.delete(name);
-        stocks.delete(name);
+        if (stocks.delete(name)) {
+            showInformationDialog(this, "Stock successfully deleted");
+        } else {
+            showErrorDialog(this, "Could not delete stock");
+        }
         DefaultTableModel model = (DefaultTableModel) stocksTable.getModel();
         model.removeRow(selected);
     }//GEN-LAST:event_deleteButtonActionPerformed

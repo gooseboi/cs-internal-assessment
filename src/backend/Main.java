@@ -63,4 +63,8 @@ public class Main {
     public static void showErrorDialog(Component window, String message) {
         JOptionPane.showMessageDialog(window, message, "ERROR", JOptionPane.ERROR_MESSAGE);
     }
+
+    public static int showYesNoDialog(Component window, String message) {
+        return JOptionPane.showConfirmDialog(window, message, "CONFIRM", JOptionPane.YES_NO_OPTION);
+    }
 }
