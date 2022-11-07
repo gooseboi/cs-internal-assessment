@@ -193,7 +193,7 @@ public class AddClient extends javax.swing.JPanel {
         if (emailAddress == null || emailAddress.equals("")) {
             showErrorDialog(this, "Email Address must not be empty!");
             return;
-        } else if (!emailAddress.matches("[\\d\\w\\.]+@(.+\\.)+(.+)")) {
+        } else if (!emailAddress.matches("[\\w\\.]+@(.+\\.)+(.+)")) {
             showErrorDialog(this, "Invalid email adress!");
             return;
         }
