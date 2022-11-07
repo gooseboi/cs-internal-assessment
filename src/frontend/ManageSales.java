@@ -27,6 +27,10 @@ import static backend.Main.sales;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import frontend.tables.SalesCellRenderer;
+import static backend.Main.showErrorDialog;
+import static backend.Main.showInformationDialog;
+import static backend.Main.showYesNoDialog;
+import static javax.swing.JOptionPane.NO_OPTION;
 
 /**
  *
@@ -48,17 +52,21 @@ public class ManageSales extends javax.swing.JPanel {
 
     private void drawTable() {
         var node = sales.getFirst();
+        int i = 0;
         var model = (DefaultTableModel) salesTable.getModel();
         model.setRowCount(0);
         while (node != null) {
             Object[] curr = new Object[4];
-            curr[0] = String.valueOf(node.getData().getClient().getName());
-            curr[1] = node.getData().getOrders().accumulatePrice();
-            curr[2] = node.getData().getOrders().accumulateStock();
-            curr[3] = node.getData().getDate().toString();
+            var sale = node.getData();
+            curr[0] = String.valueOf(sale.getClient().getName());
+            curr[1] = sale.getOrders().accumulatePrice();
+            curr[2] = sale.getOrders().accumulateStock();
+            curr[3] = sale.getDate().toString();
+            ids[i] = sale.getId();
 
             model.addRow(curr);
             node = node.getNext();
+            i++;
         }
 
         salesTable.setModel(model);
@@ -208,7 +216,25 @@ public class ManageSales extends javax.swing.JPanel {
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        // TODO: Delete currently selected sale
+        int selected = salesTable.getSelectedRow();
+        if (selected == -1) {
+            showErrorDialog(this, "You must select a sale to delete!");
+            return;
+        }
+
+        if (showYesNoDialog(this, "Are you sure you want to delete the selected stock?") == NO_OPTION) {
+            return;
+        }
+
+        int id = ids[selected];
+        if (sales.delete(id)) {
+            showInformationDialog(this, "Sale successfully deleted");
+        } else {
+            showErrorDialog(this, "Could not delete sale");
+        }
+
+        DefaultTableModel model = (DefaultTableModel) salesTable.getModel();
+        model.removeRow(selected);
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
@@ -234,4 +260,8 @@ public class ManageSales extends javax.swing.JPanel {
     private javax.swing.JTable salesTable;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
+
+    // Wrong
+    int ids[] = new int[sales.size()];
+    // Actual end of variable declarations
 }
