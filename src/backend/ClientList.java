@@ -64,7 +64,7 @@ public class ClientList {
 
         var aux = first;
         while (aux.getNext() != null) {
-            if (aux.getData().equals(client)) {
+            if (aux.getData().all_equal(client)) {
                 return false;
             }
             aux = aux.getNext();

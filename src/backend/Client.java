@@ -56,7 +56,7 @@ public class Client {
     }
 
     public boolean all_equal(Client c) {
-        return this.name.equals(c.name) && this.surname.equals(c.surname) && (this.emailAddress.equals(c.emailAddress) || this.phoneNumber.equals(c.phoneNumber));
+        return this.emailAddress.equals(c.emailAddress) || this.phoneNumber.equals(c.phoneNumber);
     }
 
     public String getName() {
