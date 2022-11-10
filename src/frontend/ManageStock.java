@@ -396,18 +396,15 @@ public class ManageStock extends javax.swing.JPanel {
     private void sortList() {
         StockList list = (filtered == null ? localStock : filtered);
         switch (mode) {
-            case Name:
+            case Name ->
                 list.sortByName(orderDescending);
-                break;
-            case Available:
+            case Available ->
                 list.sortByAvailable(orderDescending);
-                break;
-            case Price:
+            case Price ->
                 list.sortByPrice(orderDescending);
-                break;
-            case BuyOrders:
+            case BuyOrders -> {
                 //localStock.sortByBuyOrders(orderDescending);
-                break;
+            }
         }
     }
 
