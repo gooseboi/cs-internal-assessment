@@ -26,6 +26,7 @@ import static backend.Main.clients;
 import javax.swing.JFrame;
 import static backend.Main.showInformationDialog;
 import static backend.Main.showErrorDialog;
+import backend.OrderList;
 
 /**
  *
@@ -34,6 +35,8 @@ import static backend.Main.showErrorDialog;
 public class AddClient extends javax.swing.JPanel {
 
     private final JFrame window;
+    private final OrderList orders;
+    private final OriginType origin;
 
     /**
      * Creates new form DeleteSale
@@ -41,6 +44,24 @@ public class AddClient extends javax.swing.JPanel {
     public AddClient(JFrame window) {
         initComponents();
         this.window = window;
+        origin = OriginType.ManageClients;
+        orders = null;
+    }
+
+    public AddClient(JFrame window, String name, OrderList orders) {
+        initComponents();
+        this.window = window;
+        nameTextField.setText(name);
+        this.orders = orders;
+        origin = OriginType.AddSale;
+    }
+
+    public AddClient(JFrame window, String name, OrderList orders, int marker) {
+        initComponents();
+        this.window = window;
+        nameTextField.setText(name);
+        this.orders = orders;
+        origin = OriginType.AddBuyOrder;
     }
 
     /**
@@ -164,7 +185,14 @@ public class AddClient extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        this.window.setContentPane(new ManageClients(window));
+        switch (origin) {
+            case AddSale ->
+                this.window.setContentPane(new AddSale(window, orders));
+            case AddBuyOrder ->
+                this.window.setContentPane(new AddBuyOrder(window, orders));
+            case ManageClients ->
+                this.window.setContentPane(new ManageClients(window));
+        }
         this.window.pack();
     }//GEN-LAST:event_backButtonActionPerformed
 
@@ -213,6 +241,12 @@ public class AddClient extends javax.swing.JPanel {
             showErrorDialog(this, "Client with the same fields already exists!");
         }
     }//GEN-LAST:event_saveButtonActionPerformed
+
+    enum OriginType {
+        AddSale,
+        AddBuyOrder,
+        ManageClients,
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;

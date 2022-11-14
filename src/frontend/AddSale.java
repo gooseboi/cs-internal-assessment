@@ -32,6 +32,8 @@ import java.util.Date;
 import javax.swing.DefaultListModel;
 import static backend.Main.showErrorDialog;
 import static backend.Main.showInformationDialog;
+import static backend.Main.showYesNoDialog;
+import static javax.swing.JOptionPane.YES_OPTION;
 
 /**
  *
@@ -265,6 +267,13 @@ public class AddSale extends javax.swing.JPanel {
             node = node.getNext();
             i++;
         }
+        if (i == 0) { // Empty list
+            if (showYesNoDialog(this, "Client has not been found!\n Would you like to add them?\n(This will keep the added orders)") == YES_OPTION) {
+                this.window.setContentPane(new AddClient(window, text, orders));
+                this.window.pack();
+            }
+            return;
+        }
         drawList();
     }//GEN-LAST:event_clientNameTextFieldActionPerformed
 
@@ -290,7 +299,6 @@ public class AddSale extends javax.swing.JPanel {
     private javax.swing.JButton saveButton;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
-
     // Wrong
     private ClientList localClients;
     private int[] ids = new int[clients.size()];
