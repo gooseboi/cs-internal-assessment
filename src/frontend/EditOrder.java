@@ -48,8 +48,6 @@ public class EditOrder extends javax.swing.JPanel {
      */
     public EditOrder(JFrame window, OrderList orders, String parent) {
         initComponents();
-        ordersTable.setRowSelectionAllowed(false);
-
         this.window = window;
         this.orders = orders;
         this.parent = parent;
@@ -144,6 +142,7 @@ public class EditOrder extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        ordersTable.setRowSelectionAllowed(false);
         ordersTable.getModel().addTableModelListener(
             new TableModelListener()
             {
