@@ -49,4 +49,9 @@ public class OrderNode {
     public void setData(Order data) {
         this.data = data;
     }
+
+    @Override
+    public OrderNode clone() {
+        return new OrderNode(this.data.clone());
+    }
 }

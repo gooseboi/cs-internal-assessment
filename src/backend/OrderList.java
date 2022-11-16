@@ -224,4 +224,22 @@ public class OrderList {
         }
         return ret;
     }
+
+    @Override
+    public OrderList clone() {
+        var ret = new OrderList();
+        if (first == null) {
+            return ret;
+        }
+
+        ret.first = first.clone();
+        var node = first.getNext();
+        var ret_node = ret.first;
+        while (node != null) {
+            ret_node.setNext(node.clone());
+            node = node.getNext();
+            ret_node = ret_node.getNext();
+        }
+        return ret;
+    }
 }

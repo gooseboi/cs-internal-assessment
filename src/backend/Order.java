@@ -58,4 +58,9 @@ public class Order {
     public void setNum(int num) {
         this.num = num;
     }
+
+    @Override
+    public Order clone() {
+        return new Order(this.plant, this.num);
+    }
 }
