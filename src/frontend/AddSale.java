@@ -275,6 +275,9 @@ public class AddSale extends javax.swing.JPanel {
             return;
         }
         drawList();
+        if (i == 1) {
+            clientList.setSelectedIndex(0);
+        }
     }//GEN-LAST:event_clientNameTextFieldActionPerformed
 
     private Client getSelectedClient() {
