@@ -33,6 +33,9 @@ import javax.swing.DefaultListModel;
 import static backend.Main.showErrorDialog;
 import static backend.Main.showInformationDialog;
 import static backend.Main.showYesNoDialog;
+import static backend.Main.showYesNoCancelDialog;
+import static javax.swing.JOptionPane.CANCEL_OPTION;
+import static javax.swing.JOptionPane.NO_OPTION;
 import static javax.swing.JOptionPane.YES_OPTION;
 
 /**
@@ -44,6 +47,7 @@ public class EditSale extends javax.swing.JPanel {
     private final JFrame window;
     private final Sale sale;
     private final OrderList orders;
+    private boolean changed = false;
 
     /**
      * Creates new form DeleteSale
@@ -68,6 +72,7 @@ public class EditSale extends javax.swing.JPanel {
         this.datePerformedDatePicker.setDate(s.getDate());
         drawList(clients);
         clientList.setSelectedIndex(this.findIdx(s.getId()));
+        changed = true;
     }
 
     private void drawList() {
@@ -86,6 +91,7 @@ public class EditSale extends javax.swing.JPanel {
         clientList.setModel(model);
         if (cs.size() == 1) {
             clientList.setSelectedIndex(0);
+            changed = false;
         }
     }
 
@@ -158,9 +164,20 @@ public class EditSale extends javax.swing.JPanel {
             public String getElementAt(int i) { return strings[i]; }
         });
         clientList.setModel(new DefaultListModel());
+        clientList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                clientListValueChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(clientList);
 
         foundClientsLabel.setText("Found Clients");
+
+        datePerformedDatePicker.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                datePerformedDatePickerMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -230,8 +247,24 @@ public class EditSale extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        this.window.setContentPane(new ManageSales(window));
-        this.window.pack();
+        System.out.println(changed);
+        if (!changed) {
+            this.window.setContentPane(new ManageSales(window));
+            this.window.pack();
+            return;
+        }
+
+        var res = showYesNoCancelDialog(this, "Unsaved changes detected!\n Would you like to save them?");
+        switch (res) {
+            case YES_OPTION:
+                this.save();
+            case NO_OPTION:
+                this.window.setContentPane(new ManageSales(window));
+                this.window.pack();
+                return;
+            case CANCEL_OPTION:
+                return;
+        }
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void editOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editOrdersActionPerformed
@@ -240,28 +273,9 @@ public class EditSale extends javax.swing.JPanel {
     }//GEN-LAST:event_editOrdersActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        Client c = getSelectedClient();
-        if (c == null) {
-            showErrorDialog(this, "You must select a client to associate the sale with!");
-            return;
-        }
-
-        if (sale.getOrders().size() == 0) {
-            showErrorDialog(this, "You must add some orders!");
-            return;
-        }
-
-        Date d = datePerformedDatePicker.getDate();
-        if (d == null) {
-            showErrorDialog(this, "You must select a date for the sale!");
-        }
-
-        Sale s = new Sale(orders, c, d, sale.getId());
-        if (sales.modify(s)) {
-            showInformationDialog(this, "Sale successfully added!");
-        } else {
-            showErrorDialog(this, "Sale could not be added");
-        }
+        this.save();
+        this.window.setContentPane(new ManageSales(window));
+        this.window.pack();
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void clientNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientNameTextFieldActionPerformed
@@ -289,6 +303,14 @@ public class EditSale extends javax.swing.JPanel {
         drawList();
     }//GEN-LAST:event_clientNameTextFieldActionPerformed
 
+    private void clientListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_clientListValueChanged
+        changed = true;
+    }//GEN-LAST:event_clientListValueChanged
+
+    private void datePerformedDatePickerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_datePerformedDatePickerMouseClicked
+        changed = true;
+    }//GEN-LAST:event_datePerformedDatePickerMouseClicked
+
     private Client getSelectedClient() {
         int selected = clientList.getSelectedIndex();
         if (selected == -1)
@@ -304,6 +326,32 @@ public class EditSale extends javax.swing.JPanel {
             }
         }
         return -1;
+    }
+
+    private void save() {
+        Client c = getSelectedClient();
+        if (c == null) {
+            showErrorDialog(this, "You must select a client to associate the sale with!");
+            return;
+        }
+
+        if (sale.getOrders().size() == 0) {
+            showErrorDialog(this, "You must add some orders!");
+            return;
+        }
+
+        Date d = datePerformedDatePicker.getDate();
+        if (d == null) {
+            showErrorDialog(this, "You must select a date for the sale!");
+        }
+
+        Sale s = new Sale(orders, c, d, sale.getId());
+        if (sales.modify(s)) {
+            showInformationDialog(this, "Sale successfully modified!");
+        } else {
+            showErrorDialog(this, "Sale could not be modified");
+        }
+        changed = false;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

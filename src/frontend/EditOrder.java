@@ -290,7 +290,7 @@ public class EditOrder extends javax.swing.JPanel {
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         if (this.sale != null) {
-            this.window.setContentPane(new EditSale(window, sale));
+            this.window.setContentPane(new EditSale(window, sale, orders));
             this.window.pack();
         } else if (this.buyOrder != null) {
             //TODO: this.window.setContentPane(new EditBuyOrder(window ,buyOrder));
