@@ -39,26 +39,35 @@ import static javax.swing.JOptionPane.YES_OPTION;
  *
  * @author chonk
  */
-public class AddSale extends javax.swing.JPanel {
+public class EditSale extends javax.swing.JPanel {
 
     private final JFrame window;
+    private final Sale sale;
     private final OrderList orders;
 
     /**
      * Creates new form DeleteSale
      */
-    public AddSale(JFrame window) {
+    public EditSale(JFrame window, Sale s) {
         initComponents();
         this.window = window;
-        this.orders = new OrderList();
+        this.sale = s;
+        this.orders = s.getOrders().clone();
+        this.clientNameTextField.setText(s.getClient().getName());
+        this.datePerformedDatePicker.setDate(s.getDate());
         drawList(clients);
+        clientList.setSelectedIndex(this.findIdx(s.getId()));
     }
 
-    public AddSale(JFrame window, OrderList orders) {
+    public EditSale(JFrame window, Sale s, OrderList orders) {
         initComponents();
         this.window = window;
+        this.sale = s;
         this.orders = orders;
+        this.clientNameTextField.setText(s.getClient().getName());
+        this.datePerformedDatePicker.setDate(s.getDate());
         drawList(clients);
+        clientList.setSelectedIndex(this.findIdx(s.getId()));
     }
 
     private void drawList() {
@@ -75,6 +84,9 @@ public class AddSale extends javax.swing.JPanel {
             node = node.getNext();
         }
         clientList.setModel(model);
+        if (cs.size() == 1) {
+            clientList.setSelectedIndex(0);
+        }
     }
 
     /**
@@ -101,7 +113,7 @@ public class AddSale extends javax.swing.JPanel {
 
         titleLabel.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titleLabel.setText("Add Sale");
+        titleLabel.setText("Edit Sale");
         titleLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         clientNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -223,7 +235,7 @@ public class AddSale extends javax.swing.JPanel {
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void editOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editOrdersActionPerformed
-        this.window.setContentPane(new EditOrder(window, orders, "addsale"));
+        this.window.setContentPane(new EditOrder(window, sale, orders));
         this.window.pack();
     }//GEN-LAST:event_editOrdersActionPerformed
 
@@ -234,7 +246,7 @@ public class AddSale extends javax.swing.JPanel {
             return;
         }
 
-        if (orders.size() == 0) {
+        if (sale.getOrders().size() == 0) {
             showErrorDialog(this, "You must add some orders!");
             return;
         }
@@ -244,8 +256,8 @@ public class AddSale extends javax.swing.JPanel {
             showErrorDialog(this, "You must select a date for the sale!");
         }
 
-        Sale sale = new Sale(orders, c, d);
-        if (sales.insert(sale)) {
+        Sale s = new Sale(orders, c, d, sale.getId());
+        if (sales.modify(s)) {
             showInformationDialog(this, "Sale successfully added!");
         } else {
             showErrorDialog(this, "Sale could not be added");
@@ -269,15 +281,12 @@ public class AddSale extends javax.swing.JPanel {
         }
         if (i == 0) { // Empty list
             if (showYesNoDialog(this, "Client has not been found!\n Would you like to add them?\n(This will keep the added orders)") == YES_OPTION) {
-                this.window.setContentPane(new AddClient(window, text, orders));
+                this.window.setContentPane(new AddClient(window, text, orders, sale));
                 this.window.pack();
             }
             return;
         }
         drawList();
-        if (i == 1) {
-            clientList.setSelectedIndex(0);
-        }
     }//GEN-LAST:event_clientNameTextFieldActionPerformed
 
     private Client getSelectedClient() {
@@ -286,6 +295,15 @@ public class AddSale extends javax.swing.JPanel {
             return null;
 
         return clients.getByID(ids[selected]);
+    }
+
+    private int findIdx(int id) {
+        for (int i = 0; i < ids.length; i++) {
+            if (ids[i] == id) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

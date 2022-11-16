@@ -30,6 +30,8 @@ import javax.swing.DefaultListModel;
 import static backend.Main.stocks;
 import backend.Order;
 import backend.Plant;
+import backend.BuyOrder;
+import backend.Sale;
 import static backend.Main.showErrorDialog;
 import static backend.Main.showInformationDialog;
 
@@ -42,6 +44,8 @@ public class EditOrder extends javax.swing.JPanel {
     private final JFrame window;
     private final String parent;
     private final OrderList orders;
+    private Sale sale = null;
+    private BuyOrder buyOrder = null;
 
     /**
      * Creates new form EditOrder
@@ -51,6 +55,34 @@ public class EditOrder extends javax.swing.JPanel {
         this.window = window;
         this.orders = orders;
         this.parent = parent;
+
+        this.drawTable();
+        DefaultListModel<String> model = new DefaultListModel();
+        stockList.setModel(model);
+        this.drawList();
+    }
+
+    public EditOrder(JFrame window, Sale sale) {
+        initComponents();
+        parent = null;
+
+        this.window = window;
+        this.orders = sale.getOrders();
+        this.sale = sale;
+
+        this.drawTable();
+        DefaultListModel<String> model = new DefaultListModel();
+        stockList.setModel(model);
+        this.drawList();
+    }
+
+    public EditOrder(JFrame window, Sale sale, OrderList orders) {
+        initComponents();
+        parent = null;
+
+        this.window = window;
+        this.orders = orders;
+        this.sale = sale;
 
         this.drawTable();
         DefaultListModel<String> model = new DefaultListModel();
@@ -257,7 +289,13 @@ public class EditOrder extends javax.swing.JPanel {
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        if (this.parent.equals("addsale")) {
+        if (this.sale != null) {
+            this.window.setContentPane(new EditSale(window, sale));
+            this.window.pack();
+        } else if (this.buyOrder != null) {
+            //TODO: this.window.setContentPane(new EditBuyOrder(window ,buyOrder));
+            this.window.pack();
+        } else if (this.parent.equals("addsale")) {
             this.window.setContentPane(new AddSale(window, orders));
             this.window.pack();
         } else if (this.parent.equals("addbuyorder")) {

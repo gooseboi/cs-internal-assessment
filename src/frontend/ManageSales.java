@@ -245,7 +245,14 @@ public class ManageSales extends javax.swing.JPanel {
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void modifyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyButtonActionPerformed
-        this.window.setContentPane(new EditOrder(window, null, "managesales"));
+        int idx = salesTable.getSelectedRow();
+        if (idx == -1) {
+            showErrorDialog(this, "You must select a client to modify!");
+            return;
+        }
+        int id = ids[idx];
+        var s = sales.getByID(id);
+        this.window.setContentPane(new EditSale(window, s));
         this.window.pack();
     }//GEN-LAST:event_modifyButtonActionPerformed
 

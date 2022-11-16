@@ -21,12 +21,14 @@ SOFTWARE.
  */
 package frontend;
 
+import backend.BuyOrder;
 import backend.Client;
 import static backend.Main.clients;
 import javax.swing.JFrame;
 import static backend.Main.showInformationDialog;
 import static backend.Main.showErrorDialog;
 import backend.OrderList;
+import backend.Sale;
 
 /**
  *
@@ -37,6 +39,8 @@ public class AddClient extends javax.swing.JPanel {
     private final JFrame window;
     private final OrderList orders;
     private final OriginType origin;
+    private Sale sale = null;
+    private BuyOrder buyOrder = null;
 
     /**
      * Creates new form DeleteSale
@@ -62,6 +66,15 @@ public class AddClient extends javax.swing.JPanel {
         nameTextField.setText(name);
         this.orders = orders;
         origin = OriginType.AddBuyOrder;
+    }
+
+    public AddClient(JFrame window, String name, OrderList orders, Sale sale) {
+        initComponents();
+        this.window = window;
+        nameTextField.setText(name);
+        this.orders = orders;
+        this.sale = sale;
+        origin = OriginType.EditSale;
     }
 
     /**
@@ -192,6 +205,8 @@ public class AddClient extends javax.swing.JPanel {
                 this.window.setContentPane(new AddBuyOrder(window, orders));
             case ManageClients ->
                 this.window.setContentPane(new ManageClients(window));
+            case EditSale ->
+                this.window.setContentPane(new EditSale(window, sale, orders));
         }
         this.window.pack();
     }//GEN-LAST:event_backButtonActionPerformed
@@ -246,6 +261,7 @@ public class AddClient extends javax.swing.JPanel {
         AddSale,
         AddBuyOrder,
         ManageClients,
+        EditSale,
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

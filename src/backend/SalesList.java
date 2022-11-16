@@ -82,6 +82,18 @@ public class SalesList {
         return ret;
     }
 
+    public Sale getByID(int id) {
+        var aux = first;
+        while (aux != null) {
+            var s = aux.getData();
+            if (s.equals(id)) {
+                return s;
+            }
+            aux = aux.getNext();
+        }
+        return null;
+    }
+
     public int size() {
         SalesNode aux = first;
         int counter = 0;
