@@ -30,6 +30,7 @@ import frontend.tables.SalesCellRenderer;
 import static backend.Main.showErrorDialog;
 import static backend.Main.showInformationDialog;
 import static backend.Main.showYesNoDialog;
+import java.text.SimpleDateFormat;
 import static javax.swing.JOptionPane.NO_OPTION;
 
 /**
@@ -55,13 +56,14 @@ public class ManageSales extends javax.swing.JPanel {
         int i = 0;
         var model = (DefaultTableModel) salesTable.getModel();
         model.setRowCount(0);
+        var formatter = new SimpleDateFormat("E d/M/y");
         while (node != null) {
             Object[] curr = new Object[4];
             var sale = node.getData();
             curr[0] = String.valueOf(sale.getClient().getName());
             curr[1] = sale.getOrders().accumulatePrice();
             curr[2] = sale.getOrders().accumulateStock();
-            curr[3] = sale.getDate().toString();
+            curr[3] = formatter.format(sale.getDate());
             ids[i] = sale.getId();
 
             model.addRow(curr);
