@@ -25,6 +25,7 @@ import backend.ClientList;
 import static backend.Main.buyOrders;
 import static backend.Main.clients;
 import static backend.Main.sales;
+import frontend.tables.ClientsCellRenderer;
 import java.text.SimpleDateFormat;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
@@ -152,6 +153,11 @@ public class ManageClients extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        clientsTable.getColumnModel().getColumn(0).setCellRenderer(new ClientsCellRenderer());
+        clientsTable.getColumnModel().getColumn(1).setCellRenderer(new ClientsCellRenderer());
+        clientsTable.getColumnModel().getColumn(2).setCellRenderer(new ClientsCellRenderer());
+        clientsTable.getColumnModel().getColumn(3).setCellRenderer(new ClientsCellRenderer());
+        clientsTable.getColumnModel().getColumn(4).setCellRenderer(new ClientsCellRenderer());
         jScrollPane1.setViewportView(clientsTable);
 
         deleteButton.setText("Delete");

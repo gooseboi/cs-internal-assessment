@@ -177,6 +177,9 @@
               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="clientsTable.getColumnModel().getColumn(0).setCellRenderer(new ClientsCellRenderer());&#xa;clientsTable.getColumnModel().getColumn(1).setCellRenderer(new ClientsCellRenderer());&#xa;clientsTable.getColumnModel().getColumn(2).setCellRenderer(new ClientsCellRenderer());&#xa;clientsTable.getColumnModel().getColumn(3).setCellRenderer(new ClientsCellRenderer());&#xa;clientsTable.getColumnModel().getColumn(4).setCellRenderer(new ClientsCellRenderer());"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>
