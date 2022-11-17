@@ -102,6 +102,7 @@ public class ManageClients extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        inclusionButtonGroup = new javax.swing.ButtonGroup();
         titleLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         clientsTable = new javax.swing.JTable();
@@ -185,9 +186,21 @@ public class ManageClients extends javax.swing.JPanel {
 
         includeLabel.setText("Include:");
 
+        inclusionButtonGroup.add(salesRadioButton);
         salesRadioButton.setText("Sales");
+        salesRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salesRadioButtonActionPerformed(evt);
+            }
+        });
 
+        inclusionButtonGroup.add(bothRadioButton);
         bothRadioButton.setText("Both");
+        bothRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bothRadioButtonActionPerformed(evt);
+            }
+        });
 
         addButton.setText("Add");
         addButton.addActionListener(new java.awt.event.ActionListener() {
@@ -196,6 +209,7 @@ public class ManageClients extends javax.swing.JPanel {
             }
         });
 
+        inclusionButtonGroup.add(buyOrderRadioButton1);
         buyOrderRadioButton1.setText("Buy Orders");
         buyOrderRadioButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -294,12 +308,20 @@ public class ManageClients extends javax.swing.JPanel {
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void buyOrderRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyOrderRadioButton1ActionPerformed
-        // TODO add your handling code here:
+        this.drawTable(DrawType.BuyOrders);
     }//GEN-LAST:event_buyOrderRadioButton1ActionPerformed
 
     private void searchTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTypeComboBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_searchTypeComboBoxActionPerformed
+
+    private void salesRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salesRadioButtonActionPerformed
+        this.drawTable(DrawType.Sales);
+    }//GEN-LAST:event_salesRadioButtonActionPerformed
+
+    private void bothRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bothRadioButtonActionPerformed
+        this.drawTable(DrawType.Both);
+    }//GEN-LAST:event_bothRadioButtonActionPerformed
 
     enum DrawType {
         BuyOrders,
@@ -315,6 +337,7 @@ public class ManageClients extends javax.swing.JPanel {
     private javax.swing.JTable clientsTable;
     private javax.swing.JButton deleteButton;
     private javax.swing.JLabel includeLabel;
+    private javax.swing.ButtonGroup inclusionButtonGroup;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton markAsSaleButton;
     private javax.swing.JRadioButton salesRadioButton;
