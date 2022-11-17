@@ -21,7 +21,13 @@ SOFTWARE.
  */
 package frontend;
 
+import backend.ClientList;
+import static backend.Main.buyOrders;
+import static backend.Main.clients;
+import static backend.Main.sales;
+import java.text.SimpleDateFormat;
 import javax.swing.JFrame;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -37,6 +43,54 @@ public class ManageClients extends javax.swing.JPanel {
     public ManageClients(JFrame window) {
         initComponents();
         this.window = window;
+        filtered = null;
+        this.drawTable(DrawType.Both);
+    }
+
+    private void drawTable(DrawType t) {
+        var node = (filtered == null ? clients : filtered).getFirst();
+        DefaultTableModel model = (DefaultTableModel) clientsTable.getModel();
+        model.setRowCount(0);
+        var formatter = new SimpleDateFormat("E d/M/y");
+
+        while (node != null) {
+            var client = node.getData();
+
+            if (t == DrawType.Sales || t == DrawType.Both) {
+                var s = sales.getSalesByClient(client);
+                var temps = s.getFirst();
+                while (temps != null) {
+                    Object[] curr = new Object[5];
+                    var sale = temps.getData();
+                    curr[0] = "Sale";
+                    curr[1] = client.getName();
+                    curr[2] = sale.getOrders().accumulatePrice();
+                    curr[3] = sale.getOrders().accumulateStock();
+                    curr[4] = formatter.format(sale.getDate());
+                    model.addRow(curr);
+                    temps = temps.getNext();
+                }
+            }
+
+            if (t == DrawType.BuyOrders || t == DrawType.Both) {
+                var b = buyOrders.getOrdersByClient(client);
+                var tempb = b.getFirst();
+                while (tempb != null) {
+                    Object[] curr = new Object[5];
+                    var buyOrder = tempb.getData();
+                    curr[0] = "Buy Order";
+                    curr[1] = client.getName();
+                    curr[2] = buyOrder.getOrders().accumulatePrice();
+                    curr[3] = buyOrder.getOrders().accumulateStock();
+                    curr[4] = formatter.format(buyOrder.getDate());
+                    model.addRow(curr);
+                    tempb = tempb.getNext();
+                }
+            }
+            node = node.getNext();
+        }
+
+        clientsTable.setModel(model);
     }
 
     /**
@@ -58,9 +112,10 @@ public class ManageClients extends javax.swing.JPanel {
         searchTypeComboBox = new javax.swing.JComboBox<>();
         includeLabel = new javax.swing.JLabel();
         salesRadioButton = new javax.swing.JRadioButton();
-        buyOrderRadioButton = new javax.swing.JRadioButton();
+        bothRadioButton = new javax.swing.JRadioButton();
         searchTextField = new javax.swing.JTextField();
         addButton = new javax.swing.JButton();
+        buyOrderRadioButton1 = new javax.swing.JRadioButton();
 
         setPreferredSize(new java.awt.Dimension(700, 500));
 
@@ -122,17 +177,29 @@ public class ManageClients extends javax.swing.JPanel {
         searchLabel.setText("Search by:");
 
         searchTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Name", "Minimum price", "Maximum price", "Maximum ordered", "Minimum ordered"}));
+        searchTypeComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchTypeComboBoxActionPerformed(evt);
+            }
+        });
 
         includeLabel.setText("Include:");
 
         salesRadioButton.setText("Sales");
 
-        buyOrderRadioButton.setText("Buy Orders");
+        bothRadioButton.setText("Both");
 
         addButton.setText("Add");
         addButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addButtonActionPerformed(evt);
+            }
+        });
+
+        buyOrderRadioButton1.setText("Buy Orders");
+        buyOrderRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buyOrderRadioButton1ActionPerformed(evt);
             }
         });
 
@@ -143,38 +210,37 @@ public class ManageClients extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(261, 261, 261)
+                        .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(38, 38, 38)
                         .addComponent(backButton)
-                        .addGap(127, 127, 127))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(41, 41, 41)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(searchLabel)
-                    .addComponent(includeLabel))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(4, 4, 4)
-                        .addComponent(salesRadioButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(buyOrderRadioButton))
-                    .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(markAsSaleButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(searchTypeComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(70, 70, 70))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(261, 261, 261)
-                .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(127, 127, 127)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(searchLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(searchTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(searchTextField))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(60, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 589, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(62, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 589, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(30, 30, 30)
+                            .addComponent(includeLabel)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(salesRadioButton)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(buyOrderRadioButton1)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(bothRadioButton)
+                            .addGap(27, 27, 27)
+                            .addComponent(markAsSaleButton))))
                 .addGap(51, 51, 51))
         );
         layout.setVerticalGroup(
@@ -184,30 +250,28 @@ public class ManageClients extends javax.swing.JPanel {
                 .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addButton)
+                    .addComponent(includeLabel)
+                    .addComponent(salesRadioButton)
+                    .addComponent(buyOrderRadioButton1)
+                    .addComponent(bothRadioButton)
+                    .addComponent(markAsSaleButton))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(addButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
-                        .addComponent(backButton)
-                        .addGap(37, 37, 37))
+                        .addComponent(deleteButton))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(7, 7, 7)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(buyOrderRadioButton)
-                            .addComponent(salesRadioButton)
-                            .addComponent(includeLabel)
-                            .addComponent(markAsSaleButton))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(searchLabel)
-                                    .addComponent(deleteButton)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(searchTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(searchTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(searchLabel))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addComponent(backButton)
+                .addGap(37, 37, 37))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -229,10 +293,25 @@ public class ManageClients extends javax.swing.JPanel {
         this.window.pack();
     }//GEN-LAST:event_addButtonActionPerformed
 
+    private void buyOrderRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyOrderRadioButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buyOrderRadioButton1ActionPerformed
+
+    private void searchTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTypeComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchTypeComboBoxActionPerformed
+
+    enum DrawType {
+        BuyOrders,
+        Sales,
+        Both,
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
     private javax.swing.JButton backButton;
-    private javax.swing.JRadioButton buyOrderRadioButton;
+    private javax.swing.JRadioButton bothRadioButton;
+    private javax.swing.JRadioButton buyOrderRadioButton1;
     private javax.swing.JTable clientsTable;
     private javax.swing.JButton deleteButton;
     private javax.swing.JLabel includeLabel;
@@ -244,4 +323,9 @@ public class ManageClients extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> searchTypeComboBox;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
+
+    // Wrong
+    private ClientList filtered;
+    private int[] ids = new int[clients.size()];
+    // Actual end of variable declaration
 }
