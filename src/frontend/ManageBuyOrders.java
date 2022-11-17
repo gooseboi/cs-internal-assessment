@@ -21,7 +21,16 @@ SOFTWARE.
  */
 package frontend;
 
+import static backend.Main.buyOrders;
+import static backend.Main.sales;
+import static backend.Main.showErrorDialog;
+import static backend.Main.showInformationDialog;
+import static backend.Main.showYesNoDialog;
+import frontend.tables.BuyOrderCellRenderer;
+import java.text.SimpleDateFormat;
 import javax.swing.JFrame;
+import static javax.swing.JOptionPane.NO_OPTION;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -37,6 +46,30 @@ public class ManageBuyOrders extends javax.swing.JPanel {
     public ManageBuyOrders(JFrame window) {
         initComponents();
         this.window = window;
+        this.drawTable();
+    }
+
+    private void drawTable() {
+        var node = buyOrders.getFirst();
+        int i = 0;
+        var model = (DefaultTableModel) buyOrdersTable.getModel();
+        model.setRowCount(0);
+        var formatter = new SimpleDateFormat("E d/M/y");
+        while (node != null) {
+            Object[] curr = new Object[4];
+            var sale = node.getData();
+            curr[0] = String.valueOf(sale.getClient().getName());
+            curr[1] = sale.getOrders().accumulatePrice();
+            curr[2] = sale.getOrders().accumulateStock();
+            curr[3] = formatter.format(sale.getDate());
+            ids[i] = sale.getId();
+
+            model.addRow(curr);
+            node = node.getNext();
+            i++;
+        }
+
+        buyOrdersTable.setModel(model);
     }
 
     /**
@@ -50,7 +83,7 @@ public class ManageBuyOrders extends javax.swing.JPanel {
 
         titleLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        salesTable = new javax.swing.JTable();
+        buyOrdersTable = new javax.swing.JTable();
         backButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
         addButton = new javax.swing.JButton();
@@ -64,8 +97,8 @@ public class ManageBuyOrders extends javax.swing.JPanel {
         titleLabel.setText("Manage Buy Orders");
         titleLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        salesTable.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        salesTable.setModel(new javax.swing.table.DefaultTableModel(
+        buyOrdersTable.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        buyOrdersTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -91,12 +124,16 @@ public class ManageBuyOrders extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(salesTable);
-        if (salesTable.getColumnModel().getColumnCount() > 0) {
-            salesTable.getColumnModel().getColumn(0).setResizable(false);
-            salesTable.getColumnModel().getColumn(1).setResizable(false);
-            salesTable.getColumnModel().getColumn(2).setResizable(false);
-            salesTable.getColumnModel().getColumn(3).setResizable(false);
+        buyOrdersTable.getColumnModel().getColumn(0).setCellRenderer(new BuyOrderCellRenderer());
+        buyOrdersTable.getColumnModel().getColumn(1).setCellRenderer(new BuyOrderCellRenderer());
+        buyOrdersTable.getColumnModel().getColumn(2).setCellRenderer(new BuyOrderCellRenderer());
+        buyOrdersTable.getColumnModel().getColumn(3).setCellRenderer(new BuyOrderCellRenderer());
+        jScrollPane1.setViewportView(buyOrdersTable);
+        if (buyOrdersTable.getColumnModel().getColumnCount() > 0) {
+            buyOrdersTable.getColumnModel().getColumn(0).setResizable(false);
+            buyOrdersTable.getColumnModel().getColumn(1).setResizable(false);
+            buyOrdersTable.getColumnModel().getColumn(2).setResizable(false);
+            buyOrdersTable.getColumnModel().getColumn(3).setResizable(false);
         }
 
         backButton.setText("Back");
@@ -144,21 +181,21 @@ public class ManageBuyOrders extends javax.swing.JPanel {
                         .addGap(38, 38, 38)
                         .addComponent(backButton))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(113, 113, 113)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(127, 127, 127)
-                        .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27)
-                        .addComponent(modifyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27)
-                        .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(24, 24, 24)
-                        .addComponent(soldButton))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(243, 243, 243)
-                        .addComponent(titleLabel)))
-                .addContainerGap(116, Short.MAX_VALUE))
+                        .addComponent(titleLabel))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(113, 113, 113)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(28, 28, 28)
+                                .addComponent(modifyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(27, 27, 27)
+                                .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(soldButton))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(119, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -173,7 +210,7 @@ public class ManageBuyOrders extends javax.swing.JPanel {
                     .addComponent(addButton)
                     .addComponent(modifyButton)
                     .addComponent(soldButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
                 .addComponent(backButton)
                 .addGap(37, 37, 37))
         );
@@ -185,8 +222,25 @@ public class ManageBuyOrders extends javax.swing.JPanel {
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        // Delete currently selected window
-    }//GEN-LAST:event_deleteButtonActionPerformed
+        int selected = buyOrdersTable.getSelectedRow();
+        if (selected == -1) {
+            showErrorDialog(this, "You must select a buy order to delete!");
+            return;
+        }
+
+        if (showYesNoDialog(this, "Are you sure you want to delete the selected buy order?") == NO_OPTION) {
+            return;
+        }
+
+        int id = ids[selected];
+        if (buyOrders.delete(id)) {
+            showInformationDialog(this, "Buy Order successfully deleted");
+        } else {
+            showErrorDialog(this, "Could not delete Buy Order");
+        }
+
+        DefaultTableModel model = (DefaultTableModel) buyOrdersTable.getModel();
+        model.removeRow(selected);    }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         this.window.setContentPane(new AddBuyOrder(window));
@@ -194,7 +248,14 @@ public class ManageBuyOrders extends javax.swing.JPanel {
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void modifyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyButtonActionPerformed
-        this.window.setContentPane(new EditOrder(window, null, "manageorders"));
+        int idx = buyOrdersTable.getSelectedRow();
+        if (idx == -1) {
+            showErrorDialog(this, "You must select a client to modify!");
+            return;
+        }
+        int id = ids[idx];
+        var b = buyOrders.getByID(id);
+        this.window.setContentPane(new EditBuyOrder(window, b));
         this.window.pack();
     }//GEN-LAST:event_modifyButtonActionPerformed
 
@@ -205,11 +266,15 @@ public class ManageBuyOrders extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
     private javax.swing.JButton backButton;
+    private javax.swing.JTable buyOrdersTable;
     private javax.swing.JButton deleteButton;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton modifyButton;
-    private javax.swing.JTable salesTable;
     private javax.swing.JButton soldButton;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
+
+    // Wrong
+    int ids[] = new int[sales.size()];
+    // Actual end of variable declarations
 }

@@ -21,42 +21,60 @@ SOFTWARE.
  */
 package frontend;
 
+import backend.BuyOrder;
 import backend.Client;
 import backend.ClientList;
 import static backend.Main.buyOrders;
+import static backend.Main.sales;
 import static backend.Main.clients;
 import javax.swing.JFrame;
 import backend.OrderList;
-import backend.BuyOrder;
+import backend.Sale;
 import java.util.Date;
 import javax.swing.DefaultListModel;
 import static backend.Main.showErrorDialog;
 import static backend.Main.showInformationDialog;
+import static backend.Main.showYesNoDialog;
+import static backend.Main.showYesNoCancelDialog;
+import static javax.swing.JOptionPane.CANCEL_OPTION;
+import static javax.swing.JOptionPane.NO_OPTION;
+import static javax.swing.JOptionPane.YES_OPTION;
 
 /**
  *
  * @author chonk
  */
-public class AddBuyOrder extends javax.swing.JPanel {
+public class EditBuyOrder extends javax.swing.JPanel {
 
     private final JFrame window;
+    private final BuyOrder buyOrder;
     private final OrderList orders;
+    private boolean changed = false;
 
     /**
      * Creates new form DeleteSale
      */
-    public AddBuyOrder(JFrame window) {
+    public EditBuyOrder(JFrame window, BuyOrder b) {
         initComponents();
         this.window = window;
-        this.orders = new OrderList();
+        this.buyOrder = b;
+        this.orders = b.getOrders().clone();
+        this.clientNameTextField.setText(b.getClient().getName());
+        this.datePerformedDatePicker.setDate(b.getDate());
         drawList(clients);
+        clientList.setSelectedIndex(this.findIdx(b.getId()));
     }
 
-    public AddBuyOrder(JFrame window, OrderList orders) {
+    public EditBuyOrder(JFrame window, BuyOrder b, OrderList orders) {
         initComponents();
         this.window = window;
+        this.buyOrder = b;
         this.orders = orders;
+        this.clientNameTextField.setText(b.getClient().getName());
+        this.datePerformedDatePicker.setDate(b.getDate());
         drawList(clients);
+        clientList.setSelectedIndex(this.findIdx(b.getId()));
+        changed = true;
     }
 
     private void drawList() {
@@ -73,6 +91,10 @@ public class AddBuyOrder extends javax.swing.JPanel {
             node = node.getNext();
         }
         clientList.setModel(model);
+        if (cs.size() == 1) {
+            clientList.setSelectedIndex(0);
+            changed = false;
+        }
     }
 
     /**
@@ -99,7 +121,7 @@ public class AddBuyOrder extends javax.swing.JPanel {
 
         titleLabel.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titleLabel.setText("Add Buy Order");
+        titleLabel.setText("Edit Sale");
         titleLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         clientNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -144,9 +166,20 @@ public class AddBuyOrder extends javax.swing.JPanel {
             public String getElementAt(int i) { return strings[i]; }
         });
         clientList.setModel(new DefaultListModel());
+        clientList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                clientListValueChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(clientList);
 
         foundClientsLabel.setText("Found Clients");
+
+        datePerformedDatePicker.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                datePerformedDatePickerMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -216,38 +249,34 @@ public class AddBuyOrder extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        this.window.setContentPane(new ManageBuyOrders(window));
-        this.window.pack();
+        if (!changed) {
+            this.window.setContentPane(new ManageBuyOrders(window));
+            this.window.pack();
+            return;
+        }
+
+        var res = showYesNoCancelDialog(this, "Unsaved changes detected!\n Would you like to save them?");
+        switch (res) {
+            case YES_OPTION:
+                this.save();
+            case NO_OPTION:
+                this.window.setContentPane(new ManageBuyOrders(window));
+                this.window.pack();
+                return;
+            case CANCEL_OPTION:
+                return;
+        }
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void editOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editOrdersActionPerformed
-        this.window.setContentPane(new EditOrder(window, orders, "addbuyorder"));
+        this.window.setContentPane(new EditOrder(window, buyOrder, orders));
         this.window.pack();
     }//GEN-LAST:event_editOrdersActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        Client c = getSelectedClient();
-        if (c == null) {
-            showErrorDialog(this, "You must select a client to associate the buy order with!");
-            return;
-        }
-
-        if (orders.size() == 0) {
-            showErrorDialog(this, "You must add some orders!");
-            return;
-        }
-
-        Date d = datePerformedDatePicker.getDate();
-        if (d == null) {
-            showErrorDialog(this, "You must select a date for the buy order!");
-        }
-
-        BuyOrder buyOrder = new BuyOrder(c, d, orders);
-        if (buyOrders.insert(buyOrder)) {
-            showInformationDialog(this, "Buy order successfully added!");
-        } else {
-            showErrorDialog(this, "Buy order could not be added");
-        }
+        this.save();
+        this.window.setContentPane(new ManageBuyOrders(window));
+        this.window.pack();
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void clientNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientNameTextFieldActionPerformed
@@ -265,8 +294,23 @@ public class AddBuyOrder extends javax.swing.JPanel {
             node = node.getNext();
             i++;
         }
+        if (i == 0) { // Empty list
+            if (showYesNoDialog(this, "Client has not been found!\n Would you like to add them?\n(This will keep the added orders)") == YES_OPTION) {
+                this.window.setContentPane(new AddClient(window, text, orders, buyOrder));
+                this.window.pack();
+            }
+            return;
+        }
         drawList();
     }//GEN-LAST:event_clientNameTextFieldActionPerformed
+
+    private void clientListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_clientListValueChanged
+        changed = true;
+    }//GEN-LAST:event_clientListValueChanged
+
+    private void datePerformedDatePickerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_datePerformedDatePickerMouseClicked
+        changed = true;
+    }//GEN-LAST:event_datePerformedDatePickerMouseClicked
 
     private Client getSelectedClient() {
         int selected = clientList.getSelectedIndex();
@@ -274,6 +318,41 @@ public class AddBuyOrder extends javax.swing.JPanel {
             return null;
 
         return clients.getByID(ids[selected]);
+    }
+
+    private int findIdx(int id) {
+        for (int i = 0; i < ids.length; i++) {
+            if (ids[i] == id) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private void save() {
+        Client c = getSelectedClient();
+        if (c == null) {
+            showErrorDialog(this, "You must select a client to associate the buy order with!");
+            return;
+        }
+
+        if (buyOrder.getOrders().size() == 0) {
+            showErrorDialog(this, "You must add some orders!");
+            return;
+        }
+
+        Date d = datePerformedDatePicker.getDate();
+        if (d == null) {
+            showErrorDialog(this, "You must select a date for the buy order!");
+        }
+
+        BuyOrder b = new BuyOrder(c, d, orders, buyOrder.getId());
+        if (buyOrders.modify(b)) {
+            showInformationDialog(this, "Buy Order successfully modified!");
+        } else {
+            showErrorDialog(this, "Buy Order could not be modified");
+        }
+        changed = false;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -290,7 +369,6 @@ public class AddBuyOrder extends javax.swing.JPanel {
     private javax.swing.JButton saveButton;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
-
     // Wrong
     private ClientList localClients;
     private int[] ids = new int[clients.size()];

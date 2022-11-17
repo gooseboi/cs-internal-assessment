@@ -62,12 +62,12 @@ public class EditOrder extends javax.swing.JPanel {
         this.drawList();
     }
 
-    public EditOrder(JFrame window, Sale sale) {
+    public EditOrder(JFrame window, Sale sale, OrderList orders) {
         initComponents();
         parent = null;
 
         this.window = window;
-        this.orders = sale.getOrders();
+        this.orders = orders;
         this.sale = sale;
 
         this.drawTable();
@@ -76,13 +76,13 @@ public class EditOrder extends javax.swing.JPanel {
         this.drawList();
     }
 
-    public EditOrder(JFrame window, Sale sale, OrderList orders) {
+    public EditOrder(JFrame window, BuyOrder buyOrder, OrderList orders) {
         initComponents();
         parent = null;
 
         this.window = window;
         this.orders = orders;
-        this.sale = sale;
+        this.buyOrder = buyOrder;
 
         this.drawTable();
         DefaultListModel<String> model = new DefaultListModel();
@@ -293,7 +293,7 @@ public class EditOrder extends javax.swing.JPanel {
             this.window.setContentPane(new EditSale(window, sale, orders));
             this.window.pack();
         } else if (this.buyOrder != null) {
-            //TODO: this.window.setContentPane(new EditBuyOrder(window ,buyOrder));
+            this.window.setContentPane(new EditBuyOrder(window, buyOrder, orders));
             this.window.pack();
         } else if (this.parent.equals("addsale")) {
             this.window.setContentPane(new AddSale(window, orders));

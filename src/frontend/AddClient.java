@@ -77,6 +77,15 @@ public class AddClient extends javax.swing.JPanel {
         origin = OriginType.EditSale;
     }
 
+    public AddClient(JFrame window, String name, OrderList orders, BuyOrder buyOrder) {
+        initComponents();
+        this.window = window;
+        nameTextField.setText(name);
+        this.orders = orders;
+        this.buyOrder = buyOrder;
+        origin = OriginType.EditBuyOrder;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -207,6 +216,8 @@ public class AddClient extends javax.swing.JPanel {
                 this.window.setContentPane(new ManageClients(window));
             case EditSale ->
                 this.window.setContentPane(new EditSale(window, sale, orders));
+            case EditBuyOrder ->
+                this.window.setContentPane(new EditBuyOrder(window, buyOrder, orders));
         }
         this.window.pack();
     }//GEN-LAST:event_backButtonActionPerformed
@@ -262,6 +273,7 @@ public class AddClient extends javax.swing.JPanel {
         AddBuyOrder,
         ManageClients,
         EditSale,
+        EditBuyOrder,
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

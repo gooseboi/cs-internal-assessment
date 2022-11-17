@@ -83,6 +83,18 @@ public class BuyOrderList {
         return ret;
     }
 
+    public BuyOrder getByID(int id) {
+        var aux = first;
+        while (aux != null) {
+            var bo = aux.getData();
+            if (bo.getId() == id) {
+                return bo;
+            }
+            aux = aux.getNext();
+        }
+        return null;
+    }
+
     public int size() {
         BuyOrderNode aux = first;
         int counter = 0;
@@ -135,6 +147,19 @@ public class BuyOrderList {
         while (aux.getNext() != null) {
             if (aux.getNext().getData().equals(id)) {
                 aux.setNext(aux.getNext().getNext());
+                didChange = true;
+                return true;
+            }
+            aux = aux.getNext();
+        }
+        return false;
+    }
+
+    public boolean modify(BuyOrder buyOrder) {
+        var aux = first;
+        while (aux != null) {
+            if (aux.getData().equals(buyOrder)) {
+                aux.setData(buyOrder);
                 didChange = true;
                 return true;
             }

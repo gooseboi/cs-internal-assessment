@@ -48,6 +48,13 @@ public class BuyOrder {
         this.id = GLOBAL_BUYORDER_ID++;
     }
 
+    public BuyOrder(Client client, Date date, OrderList list, int id) {
+        this.client = client;
+        this.date = date;
+        this.orders = list;
+        this.id = id;
+    }
+
     public boolean equals(BuyOrder order) {
         return this.id == order.id;
     }
