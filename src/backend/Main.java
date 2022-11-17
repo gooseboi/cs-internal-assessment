@@ -40,7 +40,6 @@ public class Main {
     public static int GLOBAL_BUYORDER_ID = 0;
     public static int GLOBAL_CLIENT_ID = 0;
 
-    // TODO: Track if the OrderList of a sale or buy order changed
     public static boolean didChange = false;
 
     /**

@@ -28,6 +28,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.DefaultListModel;
 import static backend.Main.stocks;
+import static backend.Main.didChange;
 import backend.Order;
 import backend.Plant;
 import backend.BuyOrder;
@@ -55,6 +56,7 @@ public class EditOrder extends javax.swing.JPanel {
         this.window = window;
         this.orders = orders;
         this.parent = parent;
+        didChange = true;
 
         this.drawTable();
         DefaultListModel<String> model = new DefaultListModel();
@@ -65,6 +67,7 @@ public class EditOrder extends javax.swing.JPanel {
     public EditOrder(JFrame window, Sale sale, OrderList orders) {
         initComponents();
         parent = null;
+        didChange = true;
 
         this.window = window;
         this.orders = orders;
@@ -79,6 +82,7 @@ public class EditOrder extends javax.swing.JPanel {
     public EditOrder(JFrame window, BuyOrder buyOrder, OrderList orders) {
         initComponents();
         parent = null;
+        didChange = true;
 
         this.window = window;
         this.orders = orders;
