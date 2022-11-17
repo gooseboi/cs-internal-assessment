@@ -38,7 +38,6 @@ public class Sale {
     public Sale(OrderList orders, Client client, Date date, int id) {
         this(orders, client, date);
         this.id = id;
-        GLOBAL_SALE_ID--;
     }
 
     public Sale(OrderList orders, Client client, Date date) {
