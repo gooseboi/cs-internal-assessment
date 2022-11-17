@@ -244,7 +244,7 @@ public class AddClient extends javax.swing.JPanel {
             return;
         }
 
-        if (emailAddress == null || emailAddress.equals("")) {
+        if (emailAddress == null || surname.isBlank() || surname.isEmpty()) {
             showErrorDialog(this, "Email Address must not be empty!");
             return;
         } else if (!emailAddress.matches("[\\w\\.]+@(.+\\.)+(.+)")) {
