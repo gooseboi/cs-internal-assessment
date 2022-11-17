@@ -25,9 +25,13 @@ import backend.ClientList;
 import static backend.Main.buyOrders;
 import static backend.Main.clients;
 import static backend.Main.sales;
+import static backend.Main.showErrorDialog;
+import static backend.Main.showInformationDialog;
+import static backend.Main.showYesNoDialog;
 import frontend.tables.ClientsCellRenderer;
 import java.text.SimpleDateFormat;
 import javax.swing.JFrame;
+import static javax.swing.JOptionPane.NO_OPTION;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -53,6 +57,7 @@ public class ManageClients extends javax.swing.JPanel {
         DefaultTableModel model = (DefaultTableModel) clientsTable.getModel();
         model.setRowCount(0);
         var formatter = new SimpleDateFormat("E d/M/y");
+        int idx = 0;
 
         while (node != null) {
             var client = node.getData();
@@ -70,6 +75,8 @@ public class ManageClients extends javax.swing.JPanel {
                     curr[4] = formatter.format(sale.getDate());
                     model.addRow(curr);
                     temps = temps.getNext();
+                    ids[idx] = sale.getId();
+                    idx++;
                 }
             }
 
@@ -86,6 +93,8 @@ public class ManageClients extends javax.swing.JPanel {
                     curr[4] = formatter.format(buyOrder.getDate());
                     model.addRow(curr);
                     tempb = tempb.getNext();
+                    ids[idx] = buyOrder.getId();
+                    idx++;
                 }
             }
             node = node.getNext();
@@ -296,7 +305,35 @@ public class ManageClients extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        // Delete currently selected window
+        int idx = clientsTable.getSelectedRow();
+        if (idx == -1) {
+            showErrorDialog(this, "You must select a sale or buy order to delete!");
+            return;
+        }
+
+        if (showYesNoDialog(this, "Are you sure you want to delete the selected movement?") == NO_OPTION) {
+            return;
+        }
+
+        String type = (String) clientsTable.getValueAt(idx, 0);
+        int id = ids[idx];
+        if (type.equals("Sale")) {
+            if (sales.delete(id)) {
+                showInformationDialog(this, "Successfully deleted sale");
+                var model = (DefaultTableModel) clientsTable.getModel();
+                model.removeRow(id);
+            } else {
+                showErrorDialog(this, "Could not delete sale!");
+            }
+        } else {
+            if (buyOrders.delete(id)) {
+                showInformationDialog(this, "Successfully deleted buy order");
+                var model = (DefaultTableModel) clientsTable.getModel();
+                model.removeRow(id);
+            } else {
+                showErrorDialog(this, "Could not delete buy order!");
+            }
+        }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
@@ -355,6 +392,6 @@ public class ManageClients extends javax.swing.JPanel {
 
     // Wrong
     private ClientList filtered;
-    private int[] ids = new int[clients.size()];
+    private int[] ids = new int[sales.size() + buyOrders.size()];
     // Actual end of variable declaration
 }
