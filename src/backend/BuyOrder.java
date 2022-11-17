@@ -94,4 +94,8 @@ public class BuyOrder {
     public void setId(int id) {
         this.id = id;
     }
+
+    public Sale toSale() {
+        return new Sale(this.orders, this.client, this.date);
+    }
 }

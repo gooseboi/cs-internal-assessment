@@ -22,6 +22,7 @@ SOFTWARE.
 package frontend;
 
 import static backend.Main.buyOrders;
+import static backend.Main.sales;
 import static backend.Main.showErrorDialog;
 import static backend.Main.showInformationDialog;
 import static backend.Main.showYesNoDialog;
@@ -259,7 +260,26 @@ public class ManageBuyOrders extends javax.swing.JPanel {
     }//GEN-LAST:event_modifyButtonActionPerformed
 
     private void soldButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_soldButtonActionPerformed
-        // TODO add your handling code here:
+        int idx = buyOrdersTable.getSelectedRow();
+        if (idx == -1) {
+            showErrorDialog(this, "You must select a buy order to mark!");
+        }
+        var b = buyOrders.getByID(ids[idx]);
+        var s = b.toSale();
+
+        if (!buyOrders.delete(b)) {
+            showErrorDialog(this, "Could not delete buy order!");
+            return;
+        }
+
+        if (sales.insert(s)) {
+            showInformationDialog(this, "Succesfully marked as a sale!");
+        } else {
+            showErrorDialog(this, "Could not mark as a sale!");
+            return;
+        }
+        var model = (DefaultTableModel) buyOrdersTable.getModel();
+        model.removeRow(idx);
     }//GEN-LAST:event_soldButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
