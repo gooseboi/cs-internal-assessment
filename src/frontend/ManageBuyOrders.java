@@ -22,7 +22,6 @@ SOFTWARE.
 package frontend;
 
 import static backend.Main.buyOrders;
-import static backend.Main.sales;
 import static backend.Main.showErrorDialog;
 import static backend.Main.showInformationDialog;
 import static backend.Main.showYesNoDialog;
@@ -250,7 +249,7 @@ public class ManageBuyOrders extends javax.swing.JPanel {
     private void modifyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyButtonActionPerformed
         int idx = buyOrdersTable.getSelectedRow();
         if (idx == -1) {
-            showErrorDialog(this, "You must select a client to modify!");
+            showErrorDialog(this, "You must select a buy order to modify!");
             return;
         }
         int id = ids[idx];
@@ -275,6 +274,6 @@ public class ManageBuyOrders extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     // Wrong
-    int ids[] = new int[sales.size()];
+    int ids[] = new int[buyOrders.size()];
     // Actual end of variable declarations
 }
