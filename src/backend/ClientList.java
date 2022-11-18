@@ -36,6 +36,19 @@ public class ClientList {
         this.isGlobal = isGlobal;
     }
 
+    public ClientList(boolean isGlobal, ClientList list) {
+        this.isGlobal = isGlobal;
+
+        this.first = list.first.clone();
+        var node = this.first;
+        var list_node = list.first.getNext();
+        while (list_node != null) {
+            node.setNext(list_node.clone());
+            node = node.getNext();
+            list_node = list_node.getNext();
+        }
+    }
+
     public ClientNode getFirst() {
         return first;
     }

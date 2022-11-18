@@ -37,6 +37,19 @@ public class BuyOrderList {
         this.isGlobal = isGlobal;
     }
 
+    public BuyOrderList(boolean isGlobal, BuyOrderList list) {
+        this.isGlobal = isGlobal;
+
+        this.first = list.first.clone();
+        var node = this.first;
+        var list_node = list.first.getNext();
+        while (list_node != null) {
+            node.setNext(list_node.clone());
+            node = node.getNext();
+            list_node = list_node.getNext();
+        }
+    }
+
     public BuyOrderList getOrdersByClient(Client c) {
         BuyOrderList ret = new BuyOrderList(false);
         BuyOrderNode aux = first;
