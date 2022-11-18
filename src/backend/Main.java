@@ -22,6 +22,7 @@ SOFTWARE.
 package backend;
 
 import java.awt.Component;
+import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -31,6 +32,11 @@ import javax.swing.JOptionPane;
 public class Main {
 
     public static JFrame mainWindow;
+
+    public static String stocksFile = "stocks";
+    public static String clientsFile = "clients";
+    public static String salesFile = "sales";
+    public static String buyOrdersFile = "buy_orders";
     public static SalesList sales = new SalesList(true);
     public static BuyOrderList buyOrders = new BuyOrderList(true);
     public static StockList stocks = new StockList(true);
@@ -53,6 +59,49 @@ public class Main {
         mainWindow.pack();
         mainWindow.setLocationRelativeTo(null);
         mainWindow.setVisible(true);
+
+        var saver = new Saver();
+        try {
+            var list = saver.readStocks(stocksFile);
+            if (list != null) {
+                stocks = new StockList(true, list);
+            }
+        } catch (IOException e) {
+            showErrorDialog(mainWindow, "Error reading stock file!");
+        }
+
+        try {
+            var list = saver.readClients(clientsFile);
+            if (list != null) {
+                clients = new ClientList(true, list);
+            }
+        } catch (IOException e) {
+            showErrorDialog(mainWindow, "Error reading clients file!");
+        }
+
+        if (!stocks.empty() && !clients.empty()) {
+            try {
+                var list = saver.readSales(salesFile);
+                if (list != null) {
+                    sales = new SalesList(true, list);
+                }
+            } catch (IOException e) {
+                showErrorDialog(mainWindow, "Error reading sales file!");
+            }
+
+            try {
+                var list = saver.readBuyOrders(buyOrdersFile);
+                if (list != null) {
+                    buyOrders = new BuyOrderList(true, list);
+                }
+            } catch (IOException e) {
+                showErrorDialog(mainWindow, "Error reading buy orders file!");
+            }
+        } else {
+            showErrorDialog(mainWindow, "Failed reading stocks and clients file,\nso sales and buy orders cannot be read!");
+        }
+
+        mainWindow.addWindowListener(saver);
     }
 
     public static void showInformationDialog(Component window, String message) {

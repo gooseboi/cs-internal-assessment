@@ -90,6 +90,18 @@ public class StockList {
         return ret;
     }
 
+    public Plant getPlantByName(String plantName) {
+        var aux = first;
+        while (aux != null) {
+            var p = aux.getData().getPlant();
+            if (p.equals(plantName)) {
+                return p;
+            }
+            aux = aux.getNext();
+        }
+        return null;
+    }
+
     public int size() {
         StockNode aux = first;
         int counter = 0;

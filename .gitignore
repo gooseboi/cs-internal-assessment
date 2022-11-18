@@ -1,2 +1,6 @@
 build/
 dist/
+clients
+sales
+stocks
+buy_orders

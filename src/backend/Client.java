@@ -43,6 +43,14 @@ public class Client {
         this.id = GLOBAL_CLIENT_ID++;
     }
 
+    public Client(String name, String surname, String phoneNumber, String emailAddress, int id) {
+        this.name = name;
+        this.surname = surname;
+        this.phoneNumber = phoneNumber;
+        this.emailAddress = emailAddress;
+        this.id = id;
+    }
+
     public boolean equals(Client client) {
         return this.id == client.id;
     }
