@@ -105,6 +105,18 @@ public class StockList {
         return null;
     }
 
+    public Stock getStockByPlant(Plant p) {
+        var aux = first;
+        while (aux != null) {
+            var stock = aux.getData();
+            if (stock.equals(p)) {
+                return stock;
+            }
+            aux = aux.getNext();
+        }
+        return null;
+    }
+
     public Plant getPlantByName(String plantName) {
         var aux = first;
         while (aux != null) {

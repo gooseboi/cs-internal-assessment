@@ -27,6 +27,7 @@ import static backend.Main.sales;
 import static backend.Main.showErrorDialog;
 import static backend.Main.showInformationDialog;
 import static backend.Main.showYesNoDialog;
+import static backend.Main.stocks;
 import frontend.tables.ClientsCellRenderer;
 import java.text.SimpleDateFormat;
 import javax.swing.JFrame;
@@ -580,6 +581,22 @@ public class ManageClients extends javax.swing.JPanel {
         } else {
             showErrorDialog(this, "Could not mark as a sale!");
             return;
+        }
+
+        var node = s.getOrders().getFirst();
+        while (node != null) {
+            var p = node.getData().getPlant();
+            var st = stocks.getStockByPlant(p);
+            int currStock = st.getStock();
+            int num = node.getData().getNum();
+            if (currStock < num) {
+                currStock = 0;
+            } else {
+                currStock -= num;
+            }
+            st.setStock(currStock);
+            stocks.modify(st);
+            node = node.getNext();
         }
         this.drawTable(this.getDrawType());
     }//GEN-LAST:event_markAsSaleButtonActionPerformed

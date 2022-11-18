@@ -33,6 +33,7 @@ import javax.swing.DefaultListModel;
 import static backend.Main.showErrorDialog;
 import static backend.Main.showInformationDialog;
 import static backend.Main.showYesNoDialog;
+import static backend.Main.stocks;
 import static javax.swing.JOptionPane.YES_OPTION;
 
 /**
@@ -249,6 +250,22 @@ public class AddSale extends javax.swing.JPanel {
             showInformationDialog(this, "Sale successfully added!");
         } else {
             showErrorDialog(this, "Sale could not be added");
+        }
+
+        var node = orders.getFirst();
+        while (node != null) {
+            var p = node.getData().getPlant();
+            var s = stocks.getStockByPlant(p);
+            int currStock = s.getStock();
+            int num = node.getData().getNum();
+            if (currStock < num) {
+                currStock = 0;
+            } else {
+                currStock -= num;
+            }
+            s.setStock(currStock);
+            stocks.modify(s);
+            node = node.getNext();
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 
