@@ -249,7 +249,6 @@ public class Saver implements WindowListener {
                 var sale = node.getData();
                 var client = sale.getClient();
                 String outLine = String.format("%d,%s,%s\n", client.getID(), saveOrder(sale), formatter.format(sale.getDate()));
-                System.out.println(outLine);
                 writer.write(outLine);
                 node = node.getNext();
             }

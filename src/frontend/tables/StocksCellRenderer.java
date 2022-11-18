@@ -42,7 +42,6 @@ public class StocksCellRenderer extends DefaultTableCellRenderer {
         l.setVerticalAlignment(JLabel.CENTER);
         if (col == 4) {
             // TODO: Make the cell red if too many buyorders exist
-            System.out.println(value);
         }
 
         return l;
