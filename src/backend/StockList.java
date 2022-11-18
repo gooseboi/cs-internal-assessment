@@ -54,6 +54,9 @@ public class StockList {
 
     public StockList(boolean isGlobal, StockList list) {
         this.isGlobal = isGlobal;
+        if (list.first == null) {
+            return;
+        }
 
         this.first = list.first.clone();
         var node = this.first;

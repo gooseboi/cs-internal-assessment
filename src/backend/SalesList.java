@@ -40,6 +40,10 @@ public class SalesList {
     public SalesList(boolean isGlobal, SalesList list) {
         this.isGlobal = isGlobal;
 
+        if (list.first == null) {
+            return;
+        }
+
         this.first = list.first.clone();
         var node = this.first;
         var list_node = list.first.getNext();

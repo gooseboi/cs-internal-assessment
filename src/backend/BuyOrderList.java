@@ -40,6 +40,10 @@ public class BuyOrderList {
     public BuyOrderList(boolean isGlobal, BuyOrderList list) {
         this.isGlobal = isGlobal;
 
+        if (list.first == null) {
+            return;
+        }
+
         this.first = list.first.clone();
         var node = this.first;
         var list_node = list.first.getNext();
