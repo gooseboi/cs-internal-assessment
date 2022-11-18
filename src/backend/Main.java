@@ -65,6 +65,8 @@ public class Main {
             var list = saver.readStocks(stocksFile);
             if (list != null) {
                 stocks = new StockList(true, list);
+            } else {
+                showErrorDialog(mainWindow, "Could not find previous stocks file");
             }
         } catch (IOException e) {
             showErrorDialog(mainWindow, "Error reading stock file!");
@@ -74,6 +76,8 @@ public class Main {
             var list = saver.readClients(clientsFile);
             if (list != null) {
                 clients = new ClientList(true, list);
+            } else {
+                showErrorDialog(mainWindow, "Could not find previous clients file");
             }
         } catch (IOException e) {
             showErrorDialog(mainWindow, "Error reading clients file!");
