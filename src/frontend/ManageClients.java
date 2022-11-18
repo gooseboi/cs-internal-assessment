@@ -126,7 +126,7 @@ public class ManageClients extends javax.swing.JPanel {
         bothRadioButton = new javax.swing.JRadioButton();
         searchTextField = new javax.swing.JTextField();
         addButton = new javax.swing.JButton();
-        buyOrderRadioButton1 = new javax.swing.JRadioButton();
+        buyOrderRadioButton = new javax.swing.JRadioButton();
 
         setPreferredSize(new java.awt.Dimension(700, 500));
 
@@ -225,11 +225,11 @@ public class ManageClients extends javax.swing.JPanel {
             }
         });
 
-        inclusionButtonGroup.add(buyOrderRadioButton1);
-        buyOrderRadioButton1.setText("Buy Orders");
-        buyOrderRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+        inclusionButtonGroup.add(buyOrderRadioButton);
+        buyOrderRadioButton.setText("Buy Orders");
+        buyOrderRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buyOrderRadioButton1ActionPerformed(evt);
+                buyOrderRadioButtonActionPerformed(evt);
             }
         });
 
@@ -266,7 +266,7 @@ public class ManageClients extends javax.swing.JPanel {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addComponent(salesRadioButton)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(buyOrderRadioButton1)
+                            .addComponent(buyOrderRadioButton)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addComponent(bothRadioButton)
                             .addGap(27, 27, 27)
@@ -285,7 +285,7 @@ public class ManageClients extends javax.swing.JPanel {
                     .addComponent(addButton)
                     .addComponent(includeLabel)
                     .addComponent(salesRadioButton)
-                    .addComponent(buyOrderRadioButton1)
+                    .addComponent(buyOrderRadioButton)
                     .addComponent(bothRadioButton)
                     .addComponent(markAsSaleButton))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -365,7 +365,7 @@ public class ManageClients extends javax.swing.JPanel {
             showErrorDialog(this, "Could not mark as a sale!");
             return;
         }
-        if (buyOrderRadioButton1.isSelected()) {
+        if (buyOrderRadioButton.isSelected()) {
             this.drawTable(DrawType.BuyOrders);
         } else if (bothRadioButton.isSelected()) {
             this.drawTable(DrawType.Both);
@@ -377,9 +377,9 @@ public class ManageClients extends javax.swing.JPanel {
         this.window.pack();
     }//GEN-LAST:event_addButtonActionPerformed
 
-    private void buyOrderRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyOrderRadioButton1ActionPerformed
+    private void buyOrderRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyOrderRadioButtonActionPerformed
         this.drawTable(DrawType.BuyOrders);
-    }//GEN-LAST:event_buyOrderRadioButton1ActionPerformed
+    }//GEN-LAST:event_buyOrderRadioButtonActionPerformed
 
     private void searchTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTypeComboBoxActionPerformed
     }//GEN-LAST:event_searchTypeComboBoxActionPerformed
@@ -402,7 +402,7 @@ public class ManageClients extends javax.swing.JPanel {
     private javax.swing.JButton addButton;
     private javax.swing.JButton backButton;
     private javax.swing.JRadioButton bothRadioButton;
-    private javax.swing.JRadioButton buyOrderRadioButton1;
+    private javax.swing.JRadioButton buyOrderRadioButton;
     private javax.swing.JTable clientsTable;
     private javax.swing.JButton deleteButton;
     private javax.swing.JLabel includeLabel;

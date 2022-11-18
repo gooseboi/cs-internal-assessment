@@ -60,7 +60,7 @@
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="salesRadioButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="buyOrderRadioButton1" min="-2" max="-2" attributes="0"/>
+                          <Component id="buyOrderRadioButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="bothRadioButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
@@ -84,7 +84,7 @@
                   <Component id="addButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="includeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="salesRadioButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="buyOrderRadioButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="buyOrderRadioButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="bothRadioButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="markAsSaleButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
@@ -265,7 +265,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addButtonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JRadioButton" name="buyOrderRadioButton1">
+    <Component class="javax.swing.JRadioButton" name="buyOrderRadioButton">
       <Properties>
         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
           <ComponentRef name="inclusionButtonGroup"/>
@@ -273,7 +273,7 @@
         <Property name="text" type="java.lang.String" value="Buy Orders"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buyOrderRadioButton1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buyOrderRadioButtonActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
