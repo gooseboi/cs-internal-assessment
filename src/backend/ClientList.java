@@ -101,6 +101,19 @@ public class ClientList {
         }
     }
 
+    public boolean modify(Client c) {
+        var aux = first;
+        while (aux != null) {
+            if (aux.getData().equals(c)) {
+                aux.setData(c);
+                didChange = true;
+                return true;
+            }
+            aux = aux.getNext();
+        }
+        return false;
+    }
+
     public boolean delete(int id) {
         if (first == null)
             return false;
