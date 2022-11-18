@@ -145,7 +145,7 @@
                 <Column editable="true" title="Plant Name" type="java.lang.String"/>
                 <Column editable="true" title="Total Available" type="java.lang.Integer"/>
                 <Column editable="true" title="Growth Conditions" type="java.lang.String"/>
-                <Column editable="true" title="Price per unit" type="java.lang.Integer"/>
+                <Column editable="true" title="Price per unit" type="java.lang.Double"/>
                 <Column editable="true" title="Buy Orders" type="java.lang.Integer"/>
               </Table>
             </Property>
@@ -183,7 +183,7 @@
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="stocksTable.getColumnModel().getColumn(0).setCellRenderer(new StocksCellRenderer());&#xa;stocksTable.getColumnModel().getColumn(1).setCellRenderer(new StocksCellRenderer());&#xa;stocksTable.getColumnModel().getColumn(2).setCellRenderer(new StocksCellRenderer());&#xa;stocksTable.getColumnModel().getColumn(3).setCellRenderer(new StocksCellRenderer());&#xa;stocksTable.getColumnModel().getColumn(4).setCellRenderer(new StocksCellRenderer());&#xa;JTableHeader h = stocksTable.getTableHeader();&#xa;h.setDefaultRenderer(new StocksHeaderRenderer(stocksTable));"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="stocksTable.getColumnModel().getColumn(0).setCellRenderer(new StocksCellRenderer());&#xa;stocksTable.getColumnModel().getColumn(1).setCellRenderer(new StocksCellRenderer());&#xa;stocksTable.getColumnModel().getColumn(2).setCellRenderer(new StocksCellRenderer());&#xa;stocksTable.getColumnModel().getColumn(3).setCellRenderer(new StocksCellRenderer());&#xa;stocksTable.getColumnModel().getColumn(4).setCellRenderer(new StocksCellRenderer());&#xa;JTableHeader h = stocksTable.getTableHeader();&#xa;h.setDefaultRenderer(new StocksHeaderRenderer(stocksTable));&#xa;&#xa;stocksTable.getModel().addTableModelListener(&#xa;new TableModelListener() &#xa;{&#xa;    public void tableChanged(TableModelEvent evt) &#xa;    {&#xa;        onCellChanged(evt);&#xa;    }&#xa;});"/>
           </AuxValues>
         </Component>
       </SubComponents>

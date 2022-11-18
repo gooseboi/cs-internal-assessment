@@ -176,6 +176,17 @@ public class BuyOrderList {
         return false;
     }
 
+    public boolean deletePlant(String plantName) {
+        var node = first;
+        while (node != null) {
+            if (node.getData().getOrders().delete(plantName)) {
+                return true;
+            }
+            node = node.getNext();
+        }
+        return false;
+    }
+
     public boolean modify(BuyOrder buyOrder) {
         var aux = first;
         while (aux != null) {

@@ -80,7 +80,7 @@ public class StockList {
         return ret;
     }
 
-    public StockList getStockByName(String plantName) {
+    public StockList getStocksByName(String plantName) {
         StockList ret = new StockList(false);
         StockNode aux = first;
         while (aux != null) {
@@ -91,6 +91,18 @@ public class StockList {
             aux = aux.getNext();
         }
         return ret;
+    }
+
+    public Stock getStockByName(String plantName) {
+        var aux = first;
+        while (aux != null) {
+            var p = aux.getData();
+            if (p.equals(plantName)) {
+                return p;
+            }
+            aux = aux.getNext();
+        }
+        return null;
     }
 
     public Plant getPlantByName(String plantName) {
