@@ -175,6 +175,35 @@ public class SalesList {
         return false;
     }
 
+    private boolean deleteClientHelper(int id) {
+        if (first == null)
+            return false;
+        else if (first.getData().getClient().equals(id)) {
+            first = first.getNext();
+            didChange = true;
+            return true;
+        }
+
+        var aux = first;
+        while (aux != null && aux.getNext() != null) {
+            if (aux.getNext().getData().getClient().equals(id)) {
+                aux.setNext(aux.getNext().getNext());
+                didChange = true;
+                return true;
+            }
+            aux = aux.getNext();
+        }
+        return false;
+    }
+
+    public boolean deleteClient(int id) {
+        boolean did = false;
+        while (deleteClientHelper(id)) {
+            did = true;
+        }
+        return did;
+    }
+
     public boolean deletePlant(String plantName) {
         var node = first;
         while (node != null) {

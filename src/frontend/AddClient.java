@@ -213,7 +213,7 @@ public class AddClient extends javax.swing.JPanel {
             case AddBuyOrder ->
                 this.window.setContentPane(new AddBuyOrder(window, orders));
             case ManageClients ->
-                this.window.setContentPane(new ManageClients(window));
+                this.window.setContentPane(new ManageClientsMovements(window));
             case EditSale ->
                 this.window.setContentPane(new EditSale(window, sale, orders));
             case EditBuyOrder ->

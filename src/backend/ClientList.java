@@ -101,6 +101,27 @@ public class ClientList {
         }
     }
 
+    public boolean delete(int id) {
+        if (first == null)
+            return false;
+        else if (first.getData().equals(id)) {
+            first = first.getNext();
+            didChange = true;
+            return true;
+        }
+
+        var aux = first;
+        while (aux.getNext() != null) {
+            if (aux.getNext().getData().equals(id)) {
+                aux.setNext(aux.getNext().getNext());
+                didChange = true;
+                return true;
+            }
+            aux = aux.getNext();
+        }
+        return false;
+    }
+
     public boolean contains(Client c) {
         var node = this.first;
         while (node != null) {

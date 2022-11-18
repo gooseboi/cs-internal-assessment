@@ -163,7 +163,7 @@ public class MainMenu extends javax.swing.JPanel {
     }//GEN-LAST:event_ordersButtonActionPerformed
 
     private void clientsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientsButtonActionPerformed
-        window.setContentPane(new ManageClients(window));
+        window.setContentPane(new ManageClientsMovements(window));
         window.pack();
     }//GEN-LAST:event_clientsButtonActionPerformed
 
