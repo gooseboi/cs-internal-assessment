@@ -344,11 +344,14 @@ public class ManageClients extends javax.swing.JPanel {
         int idx = clientsTable.getSelectedRow();
         if (idx == -1) {
             showErrorDialog(this, "You must select a buy order to mark!");
+            return;
         }
 
         if (((String) clientsTable.getValueAt(idx, 0)).equals("Sale")) {
             showErrorDialog(this, "Cannot mark a sale as a sale!");
+            return;
         }
+
         var b = buyOrders.getByID(ids[idx]);
         var s = b.toSale();
 
