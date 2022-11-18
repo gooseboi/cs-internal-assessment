@@ -97,6 +97,8 @@ public class Main {
             } catch (IOException e) {
                 showErrorDialog(mainWindow, "Error reading buy orders file!");
             }
+
+            showInformationDialog(mainWindow, "Data successfully loaded!");
         } else {
             showErrorDialog(mainWindow, "Failed reading stocks and clients file,\nso sales and buy orders cannot be read!");
         }
