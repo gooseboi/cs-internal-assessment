@@ -52,6 +52,10 @@ public class Saver implements WindowListener {
             var list = new StockList(false);
             var line = reader.readLine();
             while (line != null) {
+                if (line.isEmpty() || line.isBlank()) {
+                    continue;
+                }
+
                 String[] vals = line.split(",");
                 String name = vals[0];
                 String growthConditions = vals[1];
@@ -75,6 +79,10 @@ public class Saver implements WindowListener {
             var list = new ClientList(false);
             var line = reader.readLine();
             while (line != null) {
+                if (line.isEmpty() || line.isBlank()) {
+                    continue;
+                }
+
                 String[] vals = line.split(",");
                 int id = Integer.parseInt(vals[0]);
                 String name = vals[1];
@@ -101,6 +109,10 @@ public class Saver implements WindowListener {
 
             var line = reader.readLine();
             while (line != null) {
+                if (line.isEmpty() || line.isBlank()) {
+                    continue;
+                }
+
                 String[] vals = line.split(",");
                 int clientID = Integer.parseInt(vals[0]);
                 var client = clients.getByID(clientID);
@@ -126,6 +138,10 @@ public class Saver implements WindowListener {
 
             var line = reader.readLine();
             while (line != null) {
+                if (line.isEmpty() || line.isBlank()) {
+                    continue;
+                }
+
                 String[] vals = line.split(",");
                 int clientID = Integer.parseInt(vals[0]);
                 var client = clients.getByID(clientID);
