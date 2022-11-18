@@ -211,6 +211,7 @@ public class ManageClients extends javax.swing.JPanel {
 
         inclusionButtonGroup.add(bothRadioButton);
         bothRadioButton.setText("Both");
+        bothRadioButton.setSelected(true);
         bothRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bothRadioButtonActionPerformed(evt);
@@ -355,7 +356,6 @@ public class ManageClients extends javax.swing.JPanel {
     }//GEN-LAST:event_buyOrderRadioButton1ActionPerformed
 
     private void searchTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTypeComboBoxActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_searchTypeComboBoxActionPerformed
 
     private void salesRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salesRadioButtonActionPerformed
