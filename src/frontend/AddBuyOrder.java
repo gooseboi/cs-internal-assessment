@@ -242,6 +242,11 @@ public class AddBuyOrder extends javax.swing.JPanel {
             showErrorDialog(this, "You must select a date for the buy order!");
         }
 
+        if (d.before(new Date())) {
+            showErrorDialog(this, "Buy Orders must be due for after today!");
+            return;
+        }
+
         BuyOrder buyOrder = new BuyOrder(c, d, orders);
         if (buyOrders.insert(buyOrder)) {
             showInformationDialog(this, "Buy order successfully added!");
