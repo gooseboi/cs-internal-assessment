@@ -21,7 +21,6 @@ SOFTWARE.
  */
 package frontend;
 
-import backend.ClientList;
 import static backend.Main.buyOrders;
 import static backend.Main.clients;
 import static backend.Main.sales;
@@ -48,12 +47,11 @@ public class ManageClients extends javax.swing.JPanel {
     public ManageClients(JFrame window) {
         initComponents();
         this.window = window;
-        filtered = null;
         this.drawTable(DrawType.Both);
     }
 
     private void drawTable(DrawType t) {
-        var node = (filtered == null ? clients : filtered).getFirst();
+        var node = clients.getFirst();
         DefaultTableModel model = (DefaultTableModel) clientsTable.getModel();
         model.setRowCount(0);
         var formatter = new SimpleDateFormat("E d/M/y");
@@ -417,7 +415,6 @@ public class ManageClients extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     // Wrong
-    private ClientList filtered;
     private int[] ids = new int[sales.size() + buyOrders.size()];
     // Actual end of variable declaration
 }
