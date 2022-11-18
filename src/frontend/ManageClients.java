@@ -343,7 +343,33 @@ public class ManageClients extends javax.swing.JPanel {
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void markAsSaleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_markAsSaleButtonActionPerformed
-        // TODO add your handling code here:
+        int idx = clientsTable.getSelectedRow();
+        if (idx == -1) {
+            showErrorDialog(this, "You must select a buy order to mark!");
+        }
+
+        if (((String) clientsTable.getValueAt(idx, 0)).equals("Sale")) {
+            showErrorDialog(this, "Cannot mark a sale as a sale!");
+        }
+        var b = buyOrders.getByID(ids[idx]);
+        var s = b.toSale();
+
+        if (!buyOrders.delete(b)) {
+            showErrorDialog(this, "Could not delete buy order!");
+            return;
+        }
+
+        if (sales.insert(s)) {
+            showInformationDialog(this, "Succesfully marked as a sale!");
+        } else {
+            showErrorDialog(this, "Could not mark as a sale!");
+            return;
+        }
+        if (buyOrderRadioButton1.isSelected()) {
+            this.drawTable(DrawType.BuyOrders);
+        } else if (bothRadioButton.isSelected()) {
+            this.drawTable(DrawType.Both);
+        }
     }//GEN-LAST:event_markAsSaleButtonActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
