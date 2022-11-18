@@ -101,6 +101,215 @@ public class ManageClients extends javax.swing.JPanel {
         clientsTable.setModel(model);
     }
 
+    private void drawTable(DrawType t, String name) {
+        var node = clients.getFirst();
+        DefaultTableModel model = (DefaultTableModel) clientsTable.getModel();
+        model.setRowCount(0);
+        var formatter = new SimpleDateFormat("E d/M/y");
+        int idx = 0;
+
+        while (node != null) {
+            var client = node.getData();
+            if (!client.getName().toUpperCase().startsWith(name.toUpperCase())) {
+                node = node.getNext();
+                continue;
+            }
+
+            if (t == DrawType.Sales || t == DrawType.Both) {
+                var s = sales.getSalesByClient(client);
+                var temps = s.getFirst();
+                while (temps != null) {
+                    Object[] curr = new Object[5];
+                    var sale = temps.getData();
+                    curr[0] = "Sale";
+                    curr[1] = client.getName();
+                    curr[2] = sale.getOrders().accumulatePrice();
+                    curr[3] = sale.getOrders().accumulateStock();
+                    curr[4] = formatter.format(sale.getDate());
+                    model.addRow(curr);
+                    temps = temps.getNext();
+                    ids[idx] = sale.getId();
+                    idx++;
+                }
+            }
+
+            if (t == DrawType.BuyOrders || t == DrawType.Both) {
+                var b = buyOrders.getOrdersByClient(client);
+                var tempb = b.getFirst();
+                while (tempb != null) {
+                    Object[] curr = new Object[5];
+                    var buyOrder = tempb.getData();
+                    curr[0] = "Buy Order";
+                    curr[1] = client.getName();
+                    curr[2] = buyOrder.getOrders().accumulatePrice();
+                    curr[3] = buyOrder.getOrders().accumulateStock();
+                    curr[4] = formatter.format(buyOrder.getDate());
+                    model.addRow(curr);
+                    tempb = tempb.getNext();
+                    ids[idx] = buyOrder.getId();
+                    idx++;
+                }
+            }
+            node = node.getNext();
+        }
+
+        clientsTable.setModel(model);
+    }
+
+    private void drawTable(DrawType t, double price, OrderType type) {
+        var node = clients.getFirst();
+        DefaultTableModel model = (DefaultTableModel) clientsTable.getModel();
+        model.setRowCount(0);
+        var formatter = new SimpleDateFormat("E d/M/y");
+        int idx = 0;
+
+        while (node != null) {
+            var client = node.getData();
+
+            if (t == DrawType.Sales || t == DrawType.Both) {
+                var s = sales.getSalesByClient(client);
+                var temps = s.getFirst();
+                while (temps != null) {
+                    Object[] curr = new Object[5];
+                    var sale = temps.getData();
+
+                    if (type == OrderType.Max) {
+                        if (sale.getOrders().accumulatePrice() < price) {
+                            temps = temps.getNext();
+                            continue;
+                        }
+                    } else if (type == OrderType.Min) {
+                        if (sale.getOrders().accumulatePrice() > price) {
+                            temps = temps.getNext();
+                            continue;
+                        }
+                    }
+
+                    curr[0] = "Sale";
+                    curr[1] = client.getName();
+                    curr[2] = sale.getOrders().accumulatePrice();
+                    curr[3] = sale.getOrders().accumulateStock();
+                    curr[4] = formatter.format(sale.getDate());
+                    model.addRow(curr);
+                    temps = temps.getNext();
+                    ids[idx] = sale.getId();
+                    idx++;
+                }
+            }
+
+            if (t == DrawType.BuyOrders || t == DrawType.Both) {
+                var b = buyOrders.getOrdersByClient(client);
+                var tempb = b.getFirst();
+                while (tempb != null) {
+                    Object[] curr = new Object[5];
+                    var buyOrder = tempb.getData();
+
+                    if (type == OrderType.Max) {
+                        if (buyOrder.getOrders().accumulatePrice() < price) {
+                            tempb = tempb.getNext();
+                            continue;
+                        }
+                    } else if (type == OrderType.Min) {
+                        if (buyOrder.getOrders().accumulatePrice() > price) {
+                            tempb = tempb.getNext();
+                            continue;
+                        }
+                    }
+
+                    curr[0] = "Buy Order";
+                    curr[1] = client.getName();
+                    curr[2] = buyOrder.getOrders().accumulatePrice();
+                    curr[3] = buyOrder.getOrders().accumulateStock();
+                    curr[4] = formatter.format(buyOrder.getDate());
+                    model.addRow(curr);
+                    tempb = tempb.getNext();
+                    ids[idx] = buyOrder.getId();
+                    idx++;
+                }
+            }
+            node = node.getNext();
+        }
+
+        clientsTable.setModel(model);
+    }
+
+    private void drawTable(DrawType t, int stock, OrderType type) {
+        var node = clients.getFirst();
+        DefaultTableModel model = (DefaultTableModel) clientsTable.getModel();
+        model.setRowCount(0);
+        var formatter = new SimpleDateFormat("E d/M/y");
+        int idx = 0;
+
+        while (node != null) {
+            var client = node.getData();
+
+            if (t == DrawType.Sales || t == DrawType.Both) {
+                var s = sales.getSalesByClient(client);
+                var temps = s.getFirst();
+                while (temps != null) {
+                    Object[] curr = new Object[5];
+                    var sale = temps.getData();
+
+                    if (type == OrderType.Max) {
+                        if (sale.getOrders().accumulateStock() > stock) {
+                            temps = temps.getNext();
+                            continue;
+                        }
+                    } else if (type == OrderType.Min) {
+                        if (sale.getOrders().accumulateStock() < stock) {
+                            temps = temps.getNext();
+                            continue;
+                        }
+                    }
+
+                    curr[0] = "Sale";
+                    curr[1] = client.getName();
+                    curr[2] = sale.getOrders().accumulatePrice();
+                    curr[3] = sale.getOrders().accumulateStock();
+                    curr[4] = formatter.format(sale.getDate());
+                    model.addRow(curr);
+                    temps = temps.getNext();
+                    ids[idx] = sale.getId();
+                    idx++;
+                }
+            }
+
+            if (t == DrawType.BuyOrders || t == DrawType.Both) {
+                var b = buyOrders.getOrdersByClient(client);
+                var tempb = b.getFirst();
+                while (tempb != null) {
+                    Object[] curr = new Object[5];
+                    var buyOrder = tempb.getData();
+
+                    if (type == OrderType.Max) {
+                        if (buyOrder.getOrders().accumulateStock() > stock) {
+                            tempb = tempb.getNext();
+                            continue;
+                        }
+                    } else if (type == OrderType.Min) {
+                        if (buyOrder.getOrders().accumulateStock() < stock) {
+                            tempb = tempb.getNext();
+                            continue;
+                        }
+                    }
+
+                    curr[0] = "Buy Order";
+                    curr[1] = client.getName();
+                    curr[2] = buyOrder.getOrders().accumulatePrice();
+                    curr[3] = buyOrder.getOrders().accumulateStock();
+                    curr[4] = formatter.format(buyOrder.getDate());
+                    model.addRow(curr);
+                    tempb = tempb.getNext();
+                    ids[idx] = buyOrder.getId();
+                    idx++;
+                }
+            }
+            node = node.getNext();
+        }
+
+        clientsTable.setModel(model);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -213,6 +422,12 @@ public class ManageClients extends javax.swing.JPanel {
         bothRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bothRadioButtonActionPerformed(evt);
+            }
+        });
+
+        searchTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchTextFieldActionPerformed(evt);
             }
         });
 
@@ -366,11 +581,7 @@ public class ManageClients extends javax.swing.JPanel {
             showErrorDialog(this, "Could not mark as a sale!");
             return;
         }
-        if (buyOrderRadioButton.isSelected()) {
-            this.drawTable(DrawType.BuyOrders);
-        } else if (bothRadioButton.isSelected()) {
-            this.drawTable(DrawType.Both);
-        }
+        this.drawTable(this.getDrawType());
     }//GEN-LAST:event_markAsSaleButtonActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
@@ -393,10 +604,80 @@ public class ManageClients extends javax.swing.JPanel {
         this.drawTable(DrawType.Both);
     }//GEN-LAST:event_bothRadioButtonActionPerformed
 
+    private void searchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTextFieldActionPerformed
+        String val = searchTextField.getText();
+        if (val == null || val.isEmpty() || val.isBlank()) {
+            this.drawTable(this.getDrawType());
+            return;
+        }
+        var type = this.getDrawType();
+        switch ((String) searchTypeComboBox.getSelectedItem()) {
+            case "Name" ->
+                this.drawTable(type, val);
+            case "Minimum price" -> {
+                double p;
+                try {
+                    p = Double.parseDouble(val);
+                } catch (NumberFormatException e) {
+                    showErrorDialog(this, "Invalid number entered!");
+                    return;
+                }
+                this.drawTable(type, p, OrderType.Max);
+            }
+            case "Maximum price" -> {
+                double p;
+                try {
+                    p = Double.parseDouble(val);
+                } catch (NumberFormatException e) {
+                    showErrorDialog(this, "Invalid number entered!");
+                    return;
+                }
+                this.drawTable(type, p, OrderType.Min);
+            }
+            case "Maximum ordered" -> {
+                int s;
+                try {
+                    s = Integer.parseInt(val);
+                } catch (NumberFormatException e) {
+                    showErrorDialog(this, "Invalid number entered!");
+                    return;
+                }
+                this.drawTable(type, s, OrderType.Max);
+            }
+            case "Minimum ordered" -> {
+                int s;
+                try {
+                    s = Integer.parseInt(val);
+                } catch (NumberFormatException e) {
+                    showErrorDialog(this, "Invalid number entered!");
+                    return;
+                }
+                this.drawTable(type, s, OrderType.Min);
+            }
+
+        }
+    }//GEN-LAST:event_searchTextFieldActionPerformed
+
+    private DrawType getDrawType() {
+        if (salesRadioButton.isSelected()) {
+            return DrawType.Sales;
+        } else if (buyOrderRadioButton.isSelected()) {
+            return DrawType.BuyOrders;
+        } else if (bothRadioButton.isSelected()) {
+            return DrawType.Both;
+        }
+        return null;
+    }
+
     enum DrawType {
         BuyOrders,
         Sales,
         Both,
+    }
+
+    enum OrderType {
+        Max,
+        Min,
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
