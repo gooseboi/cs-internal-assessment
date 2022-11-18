@@ -342,6 +342,10 @@ public class EditSale extends javax.swing.JPanel {
         Date d = datePerformedDatePicker.getDate();
         if (d == null) {
             showErrorDialog(this, "You must select a date for the sale!");
+            return;
+        } else if (d.after(new Date())) {
+            showErrorDialog(this, "Date cannot be in the future!");
+            return;
         }
 
         Sale s = new Sale(orders, c, d, sale.getId());
