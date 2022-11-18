@@ -41,10 +41,14 @@ public class StocksCellRenderer extends DefaultTableCellRenderer {
         l.setHorizontalAlignment(JLabel.CENTER);
         l.setVerticalAlignment(JLabel.CENTER);
         if (col == 4) {
-            // TODO: Make the cell red if too many buyorders exist
+            int stock = Integer.parseInt((String) table.getValueAt(row, 1));
+            int bo = Integer.parseInt(l.getText());
+            if (stock < bo) {
+                l.setBackground(Color.red);
+            } else {
+                l.setBackground(Color.white);
+            }
         }
-
         return l;
-
     }
 }
