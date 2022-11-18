@@ -21,7 +21,14 @@ SOFTWARE.
  */
 package frontend;
 
+import backend.Main;
+import static backend.Main.showInformationDialog;
+import static backend.Main.showYesNoCancelDialog;
+import backend.Saver;
 import javax.swing.JFrame;
+import static javax.swing.JOptionPane.CANCEL_OPTION;
+import static javax.swing.JOptionPane.NO_OPTION;
+import static javax.swing.JOptionPane.YES_OPTION;
 
 /**
  *
@@ -55,6 +62,7 @@ public class MainMenu extends javax.swing.JPanel {
         salesButton = new javax.swing.JButton();
         ordersButton = new javax.swing.JButton();
         clientsButton = new javax.swing.JButton();
+        saveAndExitButton = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(700, 500));
 
@@ -91,6 +99,13 @@ public class MainMenu extends javax.swing.JPanel {
             }
         });
 
+        saveAndExitButton.setText("Save and Exit");
+        saveAndExitButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveAndExitButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -107,7 +122,11 @@ public class MainMenu extends javax.swing.JPanel {
                                 .addComponent(salesButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(stockButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(ordersButton, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(231, Short.MAX_VALUE))
+                .addContainerGap(226, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(saveAndExitButton)
+                .addGap(52, 52, 52))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -122,7 +141,9 @@ public class MainMenu extends javax.swing.JPanel {
                 .addComponent(ordersButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(clientsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(118, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                .addComponent(saveAndExitButton)
+                .addGap(41, 41, 41))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -146,11 +167,29 @@ public class MainMenu extends javax.swing.JPanel {
         window.pack();
     }//GEN-LAST:event_clientsButtonActionPerformed
 
+    private void saveAndExitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAndExitButtonActionPerformed
+        var saver = new Saver();
+        while (!saver.save()) {
+            switch (showYesNoCancelDialog(window, "Saving failed!\nWould you like to try again?")) {
+                case YES_OPTION:
+                    break;
+                case NO_OPTION:
+                    window.dispose();
+                case CANCEL_OPTION:
+                    return;
+            }
+        }
+
+        showInformationDialog(window, "Saved correctly!");
+        window.dispose();
+    }//GEN-LAST:event_saveAndExitButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton clientsButton;
     private javax.swing.JLabel menuLabel;
     private javax.swing.JButton ordersButton;
     private javax.swing.JButton salesButton;
+    private javax.swing.JButton saveAndExitButton;
     private javax.swing.JButton stockButton;
     // End of variables declaration//GEN-END:variables
 }
