@@ -344,6 +344,9 @@ public class EditBuyOrder extends javax.swing.JPanel {
         Date d = datePerformedDatePicker.getDate();
         if (d == null) {
             showErrorDialog(this, "You must select a date for the buy order!");
+        } else if (d.before(new Date())) {
+            showErrorDialog(this, "Date cannot be in the future!");
+            return;
         }
 
         BuyOrder b = new BuyOrder(c, d, orders, buyOrder.getId());
