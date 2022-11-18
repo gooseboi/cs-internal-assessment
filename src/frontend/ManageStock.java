@@ -466,14 +466,7 @@ public class ManageStock extends javax.swing.JPanel {
             }
             this.drawTable();
         }
-
-        /*if (orders.modify(name, num)) {
-            showInformationDialog(this, "Order modified successfully");
-        } else {
-            showErrorDialog(this, "Failed modifying order!(What?)");
-        }*/
     }
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
