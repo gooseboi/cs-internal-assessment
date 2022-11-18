@@ -63,6 +63,10 @@ public class ClientList {
         return counter;
     }
 
+    public boolean empty() {
+        return this.first == null;
+    }
+
     public boolean insert(Client client) {
         if (this.contains(client)) {
             return false;

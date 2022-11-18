@@ -117,6 +117,10 @@ public class SalesList {
         return counter;
     }
 
+    public boolean empty() {
+        return this.first == null;
+    }
+
     public boolean insert(Sale sale) {
         if (first == null) {
             first = new SalesNode(sale);

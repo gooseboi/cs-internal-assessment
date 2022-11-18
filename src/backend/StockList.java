@@ -100,6 +100,10 @@ public class StockList {
         return counter;
     }
 
+    public boolean empty() {
+        return this.first == null;
+    }
+
     public StockNode getFirst() {
         return first;
     }

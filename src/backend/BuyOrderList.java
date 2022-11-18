@@ -118,6 +118,10 @@ public class BuyOrderList {
         return counter;
     }
 
+    public boolean empty() {
+        return this.first == null;
+    }
+
     public boolean insert(BuyOrder order) {
         if (first == null) {
             first = new BuyOrderNode(order);
