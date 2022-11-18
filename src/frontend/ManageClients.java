@@ -190,7 +190,7 @@ public class ManageClients extends javax.swing.JPanel {
 
         searchLabel.setText("Search by:");
 
-        searchTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Name", "Minimum price", "Maximum price", "Maximum ordered", "Minimum ordered"}));
+        searchTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Name", "Minimum price", "Maximum price", "Minimum ordered", "Maximum ordered"}));
         searchTypeComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchTypeComboBoxActionPerformed(evt);

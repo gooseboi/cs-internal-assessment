@@ -215,7 +215,7 @@
     <Component class="javax.swing.JComboBox" name="searchTypeComboBox">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] { &quot;Name&quot;, &quot;Minimum price&quot;, &quot;Maximum price&quot;, &quot;Maximum ordered&quot;, &quot;Minimum ordered&quot;})" type="code"/>
+          <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] { &quot;Name&quot;, &quot;Minimum price&quot;, &quot;Maximum price&quot;, &quot;Minimum ordered&quot;, &quot;Maximum ordered&quot;})" type="code"/>
         </Property>
       </Properties>
       <Events>
