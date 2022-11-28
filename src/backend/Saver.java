@@ -262,9 +262,9 @@ public class Saver implements WindowListener {
             var node = buyOrders.getFirst();
             var formatter = new SimpleDateFormat("d/M/y");
             while (node != null) {
-                var sale = node.getData();
-                var client = sale.getClient();
-                String outLine = String.format("%d,%s,%s\n", client.getID(), saveOrder(sale), formatter.format(sale.getDate()));
+                var buyOrder = node.getData();
+                var client = buyOrder.getClient();
+                String outLine = String.format("%d,%s,%s\n", client.getID(), saveOrder(buyOrder), formatter.format(buyOrder.getDate()));
                 writer.write(outLine);
                 node = node.getNext();
             }

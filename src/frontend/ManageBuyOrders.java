@@ -58,12 +58,12 @@ public class ManageBuyOrders extends javax.swing.JPanel {
         var formatter = new SimpleDateFormat("E d/M/y");
         while (node != null) {
             Object[] curr = new Object[4];
-            var sale = node.getData();
-            curr[0] = String.valueOf(sale.getClient().getName());
-            curr[1] = sale.getOrders().accumulatePrice();
-            curr[2] = sale.getOrders().accumulateStock();
-            curr[3] = formatter.format(sale.getDate());
-            ids[i] = sale.getId();
+            var buyOrder = node.getData();
+            curr[0] = String.valueOf(buyOrder.getClient().getName());
+            curr[1] = buyOrder.getOrders().accumulatePrice();
+            curr[2] = buyOrder.getOrders().accumulateStock();
+            curr[3] = formatter.format(buyOrder.getDate());
+            ids[i] = buyOrder.getId();
 
             model.addRow(curr);
             node = node.getNext();
