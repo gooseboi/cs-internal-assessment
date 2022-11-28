@@ -28,6 +28,7 @@ import static backend.Main.clients;
 import javax.swing.JFrame;
 import backend.OrderList;
 import backend.BuyOrder;
+import backend.ClientNode;
 import java.util.Date;
 import javax.swing.DefaultListModel;
 import static backend.Main.showErrorDialog;
@@ -64,11 +65,11 @@ public class AddBuyOrder extends javax.swing.JPanel {
     }
 
     private void drawList(ClientList cs) {
-        var node = cs.getFirst();
-        var model = (DefaultListModel<String>) clientList.getModel();
+        ClientNode node = cs.getFirst();
+        DefaultListModel<String> model = (DefaultListModel) clientList.getModel();
         model.clear();
         while (node != null) {
-            var c = node.getData();
+            Client c = node.getData();
             model.addElement(c.getName() + ' ' + c.getSurname() + '-' + c.getEmailAddress());
             node = node.getNext();
         }
@@ -263,7 +264,7 @@ public class AddBuyOrder extends javax.swing.JPanel {
         }
 
         localClients = clients.getByNameSearch(text);
-        var node = localClients.getFirst();
+        ClientNode node = localClients.getFirst();
         int i = 0;
         while (node != null) {
             ids[i] = node.getData().getID();

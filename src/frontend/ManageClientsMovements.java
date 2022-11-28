@@ -21,6 +21,11 @@ SOFTWARE.
  */
 package frontend;
 
+import backend.BuyOrder;
+import backend.BuyOrderList;
+import backend.BuyOrderNode;
+import backend.Client;
+import backend.ClientNode;
 import static backend.Main.buyOrders;
 import static backend.Main.clients;
 import static backend.Main.sales;
@@ -28,6 +33,12 @@ import static backend.Main.showErrorDialog;
 import static backend.Main.showInformationDialog;
 import static backend.Main.showYesNoDialog;
 import static backend.Main.stocks;
+import backend.OrderNode;
+import backend.Plant;
+import backend.Sale;
+import backend.SalesList;
+import backend.SalesNode;
+import backend.Stock;
 import frontend.tables.ClientsCellRenderer;
 import java.text.SimpleDateFormat;
 import javax.swing.JFrame;
@@ -52,21 +63,21 @@ public class ManageClientsMovements extends javax.swing.JPanel {
     }
 
     private void drawTable(DrawType t) {
-        var node = clients.getFirst();
+        ClientNode node = clients.getFirst();
         DefaultTableModel model = (DefaultTableModel) clientsTable.getModel();
         model.setRowCount(0);
-        var formatter = new SimpleDateFormat("E d/M/y");
+        SimpleDateFormat formatter = new SimpleDateFormat("E d/M/y");
         int idx = 0;
 
         while (node != null) {
-            var client = node.getData();
+            Client client = node.getData();
 
             if (t == DrawType.Sales || t == DrawType.Both) {
-                var s = sales.getSalesByClient(client);
-                var temps = s.getFirst();
+                SalesList s = sales.getSalesByClient(client);
+                SalesNode temps = s.getFirst();
                 while (temps != null) {
                     Object[] curr = new Object[5];
-                    var sale = temps.getData();
+                    Sale sale = temps.getData();
                     curr[0] = "Sale";
                     curr[1] = client.getName();
                     curr[2] = sale.getOrders().accumulatePrice();
@@ -80,11 +91,11 @@ public class ManageClientsMovements extends javax.swing.JPanel {
             }
 
             if (t == DrawType.BuyOrders || t == DrawType.Both) {
-                var b = buyOrders.getOrdersByClient(client);
-                var tempb = b.getFirst();
+                BuyOrderList b = buyOrders.getOrdersByClient(client);
+                BuyOrderNode tempb = b.getFirst();
                 while (tempb != null) {
                     Object[] curr = new Object[5];
-                    var buyOrder = tempb.getData();
+                    BuyOrder buyOrder = tempb.getData();
                     curr[0] = "Buy Order";
                     curr[1] = client.getName();
                     curr[2] = buyOrder.getOrders().accumulatePrice();
@@ -103,25 +114,25 @@ public class ManageClientsMovements extends javax.swing.JPanel {
     }
 
     private void drawTable(DrawType t, String name) {
-        var node = clients.getFirst();
+        ClientNode node = clients.getFirst();
         DefaultTableModel model = (DefaultTableModel) clientsTable.getModel();
         model.setRowCount(0);
-        var formatter = new SimpleDateFormat("E d/M/y");
+        SimpleDateFormat formatter = new SimpleDateFormat("E d/M/y");
         int idx = 0;
 
         while (node != null) {
-            var client = node.getData();
+            Client client = node.getData();
             if (!client.getName().toUpperCase().startsWith(name.toUpperCase())) {
                 node = node.getNext();
                 continue;
             }
 
             if (t == DrawType.Sales || t == DrawType.Both) {
-                var s = sales.getSalesByClient(client);
-                var temps = s.getFirst();
+                SalesList s = sales.getSalesByClient(client);
+                SalesNode temps = s.getFirst();
                 while (temps != null) {
                     Object[] curr = new Object[5];
-                    var sale = temps.getData();
+                    Sale sale = temps.getData();
                     curr[0] = "Sale";
                     curr[1] = client.getName();
                     curr[2] = sale.getOrders().accumulatePrice();
@@ -135,11 +146,11 @@ public class ManageClientsMovements extends javax.swing.JPanel {
             }
 
             if (t == DrawType.BuyOrders || t == DrawType.Both) {
-                var b = buyOrders.getOrdersByClient(client);
-                var tempb = b.getFirst();
+                BuyOrderList b = buyOrders.getOrdersByClient(client);
+                BuyOrderNode tempb = b.getFirst();
                 while (tempb != null) {
                     Object[] curr = new Object[5];
-                    var buyOrder = tempb.getData();
+                    BuyOrder buyOrder = tempb.getData();
                     curr[0] = "Buy Order";
                     curr[1] = client.getName();
                     curr[2] = buyOrder.getOrders().accumulatePrice();
@@ -158,21 +169,21 @@ public class ManageClientsMovements extends javax.swing.JPanel {
     }
 
     private void drawTable(DrawType t, double price, OrderType type) {
-        var node = clients.getFirst();
+        ClientNode node = clients.getFirst();
         DefaultTableModel model = (DefaultTableModel) clientsTable.getModel();
         model.setRowCount(0);
-        var formatter = new SimpleDateFormat("E d/M/y");
+        SimpleDateFormat formatter = new SimpleDateFormat("E d/M/y");
         int idx = 0;
 
         while (node != null) {
-            var client = node.getData();
+            Client client = node.getData();
 
             if (t == DrawType.Sales || t == DrawType.Both) {
-                var s = sales.getSalesByClient(client);
-                var temps = s.getFirst();
+                SalesList s = sales.getSalesByClient(client);
+                SalesNode temps = s.getFirst();
                 while (temps != null) {
                     Object[] curr = new Object[5];
-                    var sale = temps.getData();
+                    Sale sale = temps.getData();
 
                     if (type == OrderType.Max) {
                         if (sale.getOrders().accumulatePrice() < price) {
@@ -199,11 +210,11 @@ public class ManageClientsMovements extends javax.swing.JPanel {
             }
 
             if (t == DrawType.BuyOrders || t == DrawType.Both) {
-                var b = buyOrders.getOrdersByClient(client);
-                var tempb = b.getFirst();
+                BuyOrderList b = buyOrders.getOrdersByClient(client);
+                BuyOrderNode tempb = b.getFirst();
                 while (tempb != null) {
                     Object[] curr = new Object[5];
-                    var buyOrder = tempb.getData();
+                    BuyOrder buyOrder = tempb.getData();
 
                     if (type == OrderType.Max) {
                         if (buyOrder.getOrders().accumulatePrice() < price) {
@@ -235,21 +246,21 @@ public class ManageClientsMovements extends javax.swing.JPanel {
     }
 
     private void drawTable(DrawType t, int stock, OrderType type) {
-        var node = clients.getFirst();
+        ClientNode node = clients.getFirst();
         DefaultTableModel model = (DefaultTableModel) clientsTable.getModel();
         model.setRowCount(0);
-        var formatter = new SimpleDateFormat("E d/M/y");
+        SimpleDateFormat formatter = new SimpleDateFormat("E d/M/y");
         int idx = 0;
 
         while (node != null) {
-            var client = node.getData();
+            Client client = node.getData();
 
             if (t == DrawType.Sales || t == DrawType.Both) {
-                var s = sales.getSalesByClient(client);
-                var temps = s.getFirst();
+                SalesList s = sales.getSalesByClient(client);
+                SalesNode temps = s.getFirst();
                 while (temps != null) {
                     Object[] curr = new Object[5];
-                    var sale = temps.getData();
+                    Sale sale = temps.getData();
 
                     if (type == OrderType.Max) {
                         if (sale.getOrders().accumulateStock() > stock) {
@@ -276,11 +287,11 @@ public class ManageClientsMovements extends javax.swing.JPanel {
             }
 
             if (t == DrawType.BuyOrders || t == DrawType.Both) {
-                var b = buyOrders.getOrdersByClient(client);
-                var tempb = b.getFirst();
+                BuyOrderList b = buyOrders.getOrdersByClient(client);
+                BuyOrderNode tempb = b.getFirst();
                 while (tempb != null) {
                     Object[] curr = new Object[5];
-                    var buyOrder = tempb.getData();
+                    BuyOrder buyOrder = tempb.getData();
 
                     if (type == OrderType.Max) {
                         if (buyOrder.getOrders().accumulateStock() > stock) {
@@ -548,7 +559,7 @@ public class ManageClientsMovements extends javax.swing.JPanel {
         if (type.equals("Sale")) {
             if (sales.delete(id)) {
                 showInformationDialog(this, "Successfully deleted sale");
-                var model = (DefaultTableModel) clientsTable.getModel();
+                DefaultTableModel model = (DefaultTableModel) clientsTable.getModel();
                 model.removeRow(id);
             } else {
                 showErrorDialog(this, "Could not delete sale!");
@@ -556,7 +567,7 @@ public class ManageClientsMovements extends javax.swing.JPanel {
         } else {
             if (buyOrders.delete(id)) {
                 showInformationDialog(this, "Successfully deleted buy order");
-                var model = (DefaultTableModel) clientsTable.getModel();
+                DefaultTableModel model = (DefaultTableModel) clientsTable.getModel();
                 model.removeRow(id);
             } else {
                 showErrorDialog(this, "Could not delete buy order!");
@@ -581,8 +592,8 @@ public class ManageClientsMovements extends javax.swing.JPanel {
             return;
         }
 
-        var b = buyOrders.getByID(ids[idx]);
-        var s = b.toSale();
+        BuyOrder b = buyOrders.getByID(ids[idx]);
+        Sale s = b.toSale();
 
         if (!buyOrders.delete(b)) {
             showErrorDialog(this, "Could not delete buy order!");
@@ -596,10 +607,11 @@ public class ManageClientsMovements extends javax.swing.JPanel {
             return;
         }
 
-        var node = s.getOrders().getFirst();
+        // TODO: Refactor this
+        OrderNode node = s.getOrders().getFirst();
         while (node != null) {
-            var p = node.getData().getPlant();
-            var st = stocks.getStockByPlant(p);
+            Plant p = node.getData().getPlant();
+            Stock st = stocks.getStockByPlant(p);
             int currStock = st.getStock();
             int num = node.getData().getNum();
             if (currStock < num) {
@@ -640,11 +652,12 @@ public class ManageClientsMovements extends javax.swing.JPanel {
             this.drawTable(this.getDrawType());
             return;
         }
-        var type = this.getDrawType();
+        DrawType type = this.getDrawType();
         switch ((String) searchTypeComboBox.getSelectedItem()) {
-            case "Name" ->
+            case "Name":
                 this.drawTable(type, val);
-            case "Minimum price" -> {
+                break;
+            case "Minimum price": {
                 double p;
                 try {
                     p = Double.parseDouble(val);
@@ -654,7 +667,8 @@ public class ManageClientsMovements extends javax.swing.JPanel {
                 }
                 this.drawTable(type, p, OrderType.Max);
             }
-            case "Maximum price" -> {
+            break;
+            case "Maximum price": {
                 double p;
                 try {
                     p = Double.parseDouble(val);
@@ -664,7 +678,8 @@ public class ManageClientsMovements extends javax.swing.JPanel {
                 }
                 this.drawTable(type, p, OrderType.Min);
             }
-            case "Maximum ordered" -> {
+            break;
+            case "Maximum ordered": {
                 int s;
                 try {
                     s = Integer.parseInt(val);
@@ -674,7 +689,8 @@ public class ManageClientsMovements extends javax.swing.JPanel {
                 }
                 this.drawTable(type, s, OrderType.Max);
             }
-            case "Minimum ordered" -> {
+            break;
+            case "Minimum ordered": {
                 int s;
                 try {
                     s = Integer.parseInt(val);
@@ -684,7 +700,7 @@ public class ManageClientsMovements extends javax.swing.JPanel {
                 }
                 this.drawTable(type, s, OrderType.Min);
             }
-
+            break;
         }
     }//GEN-LAST:event_searchTextFieldActionPerformed
 

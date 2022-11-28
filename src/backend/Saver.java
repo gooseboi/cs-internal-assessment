@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import static backend.Main.showYesNoCancelDialog;
+import java.util.Date;
 
 /**
  *
@@ -49,8 +50,8 @@ public class Saver implements WindowListener {
     public StockList readStocks(String filePath) throws IOException {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
-            var list = new StockList(false);
-            var line = reader.readLine();
+            StockList list = new StockList(false);
+            String line = reader.readLine();
             while (line != null) {
                 if (line.isEmpty() || line.isBlank()) {
                     continue;
@@ -61,7 +62,7 @@ public class Saver implements WindowListener {
                 String growthConditions = vals[1];
                 double price = Double.parseDouble(vals[2]);
                 int available = Integer.parseInt(vals[3]);
-                var stock = new Stock(new Plant(name, price, growthConditions), available);
+                Stock stock = new Stock(new Plant(name, price, growthConditions), available);
                 list.insert(stock);
                 line = reader.readLine();
             }
@@ -76,8 +77,8 @@ public class Saver implements WindowListener {
     public ClientList readClients(String filePath) throws IOException {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
-            var list = new ClientList(false);
-            var line = reader.readLine();
+            ClientList list = new ClientList(false);
+            String line = reader.readLine();
             while (line != null) {
                 if (line.isEmpty() || line.isBlank()) {
                     continue;
@@ -89,7 +90,7 @@ public class Saver implements WindowListener {
                 String surname = vals[2];
                 String emailAddress = vals[3];
                 String phoneNumber = vals[4];
-                var client = new Client(name, surname, phoneNumber, emailAddress, id);
+                Client client = new Client(name, surname, phoneNumber, emailAddress, id);
                 list.insert(client);
                 line = reader.readLine();
             }
@@ -104,10 +105,10 @@ public class Saver implements WindowListener {
     public SalesList readSales(String filePath) throws IOException {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
-            var list = new SalesList(false);
-            var formatter = new SimpleDateFormat("d/M/y");
+            SalesList list = new SalesList(false);
+            SimpleDateFormat formatter = new SimpleDateFormat("d/M/y");
 
-            var line = reader.readLine();
+            String line = reader.readLine();
             while (line != null) {
                 if (line.isEmpty() || line.isBlank()) {
                     continue;
@@ -115,10 +116,10 @@ public class Saver implements WindowListener {
 
                 String[] vals = line.split(",");
                 int clientID = Integer.parseInt(vals[0]);
-                var client = clients.getByID(clientID);
-                var orders = readOrder(vals[1]);
-                var date = formatter.parse(vals[2]);
-                var sale = new Sale(orders, client, date);
+                Client client = clients.getByID(clientID);
+                OrderList orders = readOrder(vals[1]);
+                Date date = formatter.parse(vals[2]);
+                Sale sale = new Sale(orders, client, date);
                 list.insert(sale);
                 line = reader.readLine();
             }
@@ -133,10 +134,10 @@ public class Saver implements WindowListener {
     public BuyOrderList readBuyOrders(String filePath) throws IOException {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
-            var list = new BuyOrderList(false);
-            var formatter = new SimpleDateFormat("d/M/y");
+            BuyOrderList list = new BuyOrderList(false);
+            SimpleDateFormat formatter = new SimpleDateFormat("d/M/y");
 
-            var line = reader.readLine();
+            String line = reader.readLine();
             while (line != null) {
                 if (line.isEmpty() || line.isBlank()) {
                     continue;
@@ -144,10 +145,10 @@ public class Saver implements WindowListener {
 
                 String[] vals = line.split(",");
                 int clientID = Integer.parseInt(vals[0]);
-                var client = clients.getByID(clientID);
-                var orders = readOrder(vals[1]);
-                var date = formatter.parse(vals[2]);
-                var buyOrder = new BuyOrder(client, date, orders);
+                Client client = clients.getByID(clientID);
+                OrderList orders = readOrder(vals[1]);
+                Date date = formatter.parse(vals[2]);
+                BuyOrder buyOrder = new BuyOrder(client, date, orders);
                 list.insert(buyOrder);
                 line = reader.readLine();
             }
@@ -166,7 +167,7 @@ public class Saver implements WindowListener {
             String[] split = o[i].split(":");
             String name = split[0];
             int num = Integer.parseInt(split[1]);
-            var p = stocks.getPlantByName(name);
+            Plant p = stocks.getPlantByName(name);
             orders.insert(new Order(p, num));
         }
         return orders;
@@ -176,10 +177,10 @@ public class Saver implements WindowListener {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
 
-            var node = stocks.getFirst();
+            StockNode node = stocks.getFirst();
             while (node != null) {
-                var stock = node.getData();
-                var p = stock.getPlant();
+                Stock stock = node.getData();
+                Plant p = stock.getPlant();
                 String outLine = String.format("%s,%s,%s,%s\n", p.getName(), p.getGrowthCondition(), p.getPrice(), stock.getStock());
                 writer.write(outLine);
                 node = node.getNext();
@@ -194,14 +195,14 @@ public class Saver implements WindowListener {
     }
 
     private String saveOrder(Sale sale) {
-        var orders = sale.getOrders();
+        OrderList orders = sale.getOrders();
 
-        var node = orders.getFirst();
+        OrderNode node = orders.getFirst();
         String ret = "";
         boolean first = true;
         while (node != null) {
-            var order = node.getData();
-            var orderString = String.format("%s:%s", order.getPlant().getName(), order.getNum());
+            Order order = node.getData();
+            String orderString = String.format("%s:%s", order.getPlant().getName(), order.getNum());
             if (first) {
                 ret = orderString;
                 first = false;
@@ -214,14 +215,14 @@ public class Saver implements WindowListener {
     }
 
     private String saveOrder(BuyOrder buyOrder) {
-        var orders = buyOrder.getOrders();
+        OrderList orders = buyOrder.getOrders();
 
-        var node = orders.getFirst();
+        OrderNode node = orders.getFirst();
         String ret = "";
         boolean first = true;
         while (node != null) {
-            var order = node.getData();
-            var orderString = String.format("%s:%s", order.getPlant().getName(), order.getNum());
+            Order order = node.getData();
+            String orderString = String.format("%s:%s", order.getPlant().getName(), order.getNum());
             if (first) {
                 ret = orderString;
                 first = false;
@@ -237,11 +238,11 @@ public class Saver implements WindowListener {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
 
-            var node = sales.getFirst();
-            var formatter = new SimpleDateFormat("d/M/y");
+            SalesNode node = sales.getFirst();
+            SimpleDateFormat formatter = new SimpleDateFormat("d/M/y");
             while (node != null) {
-                var sale = node.getData();
-                var client = sale.getClient();
+                Sale sale = node.getData();
+                Client client = sale.getClient();
                 String outLine = String.format("%d,%s,%s\n", client.getID(), saveOrder(sale), formatter.format(sale.getDate()));
                 writer.write(outLine);
                 node = node.getNext();
@@ -259,11 +260,11 @@ public class Saver implements WindowListener {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
 
-            var node = buyOrders.getFirst();
-            var formatter = new SimpleDateFormat("d/M/y");
+            BuyOrderNode node = buyOrders.getFirst();
+            SimpleDateFormat formatter = new SimpleDateFormat("d/M/y");
             while (node != null) {
-                var buyOrder = node.getData();
-                var client = buyOrder.getClient();
+                BuyOrder buyOrder = node.getData();
+                Client client = buyOrder.getClient();
                 String outLine = String.format("%d,%s,%s\n", client.getID(), saveOrder(buyOrder), formatter.format(buyOrder.getDate()));
                 writer.write(outLine);
                 node = node.getNext();
@@ -281,9 +282,9 @@ public class Saver implements WindowListener {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
 
-            var node = clients.getFirst();
+            ClientNode node = clients.getFirst();
             while (node != null) {
-                var client = node.getData();
+                Client client = node.getData();
                 String outLine = String.format("%d,%s,%s,%s,%s\n", client.getID(), client.getName(), client.getSurname(), client.getEmailAddress(), client.getPhoneNumber());
                 writer.write(outLine);
                 node = node.getNext();

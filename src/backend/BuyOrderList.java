@@ -45,8 +45,8 @@ public class BuyOrderList {
         }
 
         this.first = list.first.clone();
-        var node = this.first;
-        var list_node = list.first.getNext();
+        BuyOrderNode node = this.first;
+        BuyOrderNode list_node = list.first.getNext();
         while (list_node != null) {
             node.setNext(list_node.clone());
             node = node.getNext();
@@ -101,9 +101,9 @@ public class BuyOrderList {
     }
 
     public BuyOrder getByID(int id) {
-        var aux = first;
+        BuyOrderNode aux = first;
         while (aux != null) {
-            var bo = aux.getData();
+            BuyOrder bo = aux.getData();
             if (bo.getId() == id) {
                 return bo;
             }
@@ -185,7 +185,7 @@ public class BuyOrderList {
             return true;
         }
 
-        var aux = first;
+        BuyOrderNode aux = first;
         while (aux != null && aux.getNext() != null) {
             if (aux.getNext().getData().getClient().equals(id)) {
                 aux.setNext(aux.getNext().getNext());
@@ -206,7 +206,7 @@ public class BuyOrderList {
     }
 
     public boolean deletePlant(String plantName) {
-        var node = first;
+        BuyOrderNode node = first;
         while (node != null) {
             if (node.getData().getOrders().delete(plantName)) {
                 return true;
@@ -217,7 +217,7 @@ public class BuyOrderList {
     }
 
     public boolean modify(BuyOrder buyOrder) {
-        var aux = first;
+        BuyOrderNode aux = first;
         while (aux != null) {
             if (aux.getData().equals(buyOrder)) {
                 aux.setData(buyOrder);
@@ -247,10 +247,10 @@ public class BuyOrderList {
     }
 
     public ClientList findClient(String clientName) {
-        var aux = first;
+        BuyOrderNode aux = first;
         ClientList ret = new ClientList(false);
         while (aux != null) {
-            var c = aux.getData().getClient();
+            Client c = aux.getData().getClient();
             if (c.equals(clientName))
                 ret.insert(c);
             aux = aux.getNext();
@@ -260,13 +260,13 @@ public class BuyOrderList {
 
     @Override
     public BuyOrderList clone() {
-        var ret = new BuyOrderList(false);
-        var node = first;
+        BuyOrderList ret = new BuyOrderList(false);
+        BuyOrderNode node = first;
         if (node == null) {
             return ret;
         }
 
-        var ret_node = ret.first;
+        BuyOrderNode ret_node = ret.first;
         ret_node = new BuyOrderNode(node.getData());
         while (node != null) {
             ret_node.setNext(node.clone());

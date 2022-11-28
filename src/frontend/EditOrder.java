@@ -35,6 +35,8 @@ import backend.BuyOrder;
 import backend.Sale;
 import static backend.Main.showErrorDialog;
 import static backend.Main.showInformationDialog;
+import backend.OrderNode;
+import backend.StockNode;
 
 /**
  *
@@ -95,8 +97,8 @@ public class EditOrder extends javax.swing.JPanel {
     }
 
     private void drawTable() {
-        var node = orders.getFirst();
-        var model = (DefaultTableModel) ordersTable.getModel();
+        OrderNode node = orders.getFirst();
+        DefaultTableModel model = (DefaultTableModel) ordersTable.getModel();
         model.setRowCount(0);
         while (node != null) {
             String[] curr = new String[2];
@@ -111,11 +113,11 @@ public class EditOrder extends javax.swing.JPanel {
     }
 
     private void drawList() {
-        var node = stocks.getFirst();
+        StockNode node = stocks.getFirst();
         DefaultListModel<String> model = (DefaultListModel<String>) stockList.getModel();
         model.clear();
         while (node != null) {
-            var p = node.getData().getPlant();
+            Plant p = node.getData().getPlant();
             if (!orders.contains(p)) {
                 model.addElement(p.getName());
             }

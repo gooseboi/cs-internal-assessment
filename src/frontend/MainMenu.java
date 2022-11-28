@@ -168,7 +168,7 @@ public class MainMenu extends javax.swing.JPanel {
     }//GEN-LAST:event_clientsButtonActionPerformed
 
     private void saveAndExitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAndExitButtonActionPerformed
-        var saver = new Saver();
+        Saver saver = new Saver();
         while (!saver.save()) {
             switch (showYesNoCancelDialog(window, "Saving failed!\nWould you like to try again?")) {
                 case YES_OPTION:

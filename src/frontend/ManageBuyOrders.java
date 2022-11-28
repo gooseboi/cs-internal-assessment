@@ -21,12 +21,18 @@ SOFTWARE.
  */
 package frontend;
 
+import backend.BuyOrder;
+import backend.BuyOrderNode;
 import static backend.Main.buyOrders;
 import static backend.Main.sales;
 import static backend.Main.showErrorDialog;
 import static backend.Main.showInformationDialog;
 import static backend.Main.showYesNoDialog;
 import static backend.Main.stocks;
+import backend.OrderNode;
+import backend.Plant;
+import backend.Sale;
+import backend.Stock;
 import frontend.tables.BuyOrderCellRenderer;
 import java.text.SimpleDateFormat;
 import javax.swing.JFrame;
@@ -51,14 +57,14 @@ public class ManageBuyOrders extends javax.swing.JPanel {
     }
 
     private void drawTable() {
-        var node = buyOrders.getFirst();
+        BuyOrderNode node = buyOrders.getFirst();
         int i = 0;
-        var model = (DefaultTableModel) buyOrdersTable.getModel();
+        DefaultTableModel model = (DefaultTableModel) buyOrdersTable.getModel();
         model.setRowCount(0);
-        var formatter = new SimpleDateFormat("E d/M/y");
+        SimpleDateFormat formatter = new SimpleDateFormat("E d/M/y");
         while (node != null) {
             Object[] curr = new Object[4];
-            var buyOrder = node.getData();
+            BuyOrder buyOrder = node.getData();
             curr[0] = String.valueOf(buyOrder.getClient().getName());
             curr[1] = buyOrder.getOrders().accumulatePrice();
             curr[2] = buyOrder.getOrders().accumulateStock();
@@ -255,7 +261,7 @@ public class ManageBuyOrders extends javax.swing.JPanel {
             return;
         }
         int id = ids[idx];
-        var b = buyOrders.getByID(id);
+        BuyOrder b = buyOrders.getByID(id);
         this.window.setContentPane(new EditBuyOrder(window, b));
         this.window.pack();
     }//GEN-LAST:event_modifyButtonActionPerformed
@@ -265,8 +271,8 @@ public class ManageBuyOrders extends javax.swing.JPanel {
         if (idx == -1) {
             showErrorDialog(this, "You must select a buy order to mark!");
         }
-        var b = buyOrders.getByID(ids[idx]);
-        var s = b.toSale();
+        BuyOrder b = buyOrders.getByID(ids[idx]);
+        Sale s = b.toSale();
 
         if (!buyOrders.delete(b)) {
             showErrorDialog(this, "Could not delete buy order!");
@@ -280,10 +286,11 @@ public class ManageBuyOrders extends javax.swing.JPanel {
             return;
         }
 
-        var node = s.getOrders().getFirst();
+        // TODO: Refactor this
+        OrderNode node = s.getOrders().getFirst();
         while (node != null) {
-            var p = node.getData().getPlant();
-            var st = stocks.getStockByPlant(p);
+            Plant p = node.getData().getPlant();
+            Stock st = stocks.getStockByPlant(p);
             int currStock = st.getStock();
             int num = node.getData().getNum();
             if (currStock < num) {
@@ -295,7 +302,7 @@ public class ManageBuyOrders extends javax.swing.JPanel {
             stocks.modify(st);
             node = node.getNext();
         }
-        var model = (DefaultTableModel) buyOrdersTable.getModel();
+        DefaultTableModel model = (DefaultTableModel) buyOrdersTable.getModel();
         model.removeRow(idx);
     }//GEN-LAST:event_soldButtonActionPerformed
 

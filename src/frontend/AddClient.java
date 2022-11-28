@@ -208,16 +208,21 @@ public class AddClient extends javax.swing.JPanel {
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         switch (origin) {
-            case AddSale ->
+            case AddSale:
                 this.window.setContentPane(new AddSale(window, orders));
-            case AddBuyOrder ->
+                break;
+            case AddBuyOrder:
                 this.window.setContentPane(new AddBuyOrder(window, orders));
-            case ManageClients ->
+                break;
+            case ManageClients:
                 this.window.setContentPane(new ManageClientsMovements(window));
-            case EditSale ->
+                break;
+            case EditSale:
                 this.window.setContentPane(new EditSale(window, sale, orders));
-            case EditBuyOrder ->
+                break;
+            case EditBuyOrder:
                 this.window.setContentPane(new EditBuyOrder(window, buyOrder, orders));
+                break;
         }
         this.window.pack();
     }//GEN-LAST:event_backButtonActionPerformed

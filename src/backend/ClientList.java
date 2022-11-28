@@ -44,8 +44,8 @@ public class ClientList {
         }
 
         this.first = list.first.clone();
-        var node = this.first;
-        var list_node = list.first.getNext();
+        ClientNode node = this.first;
+        ClientNode list_node = list.first.getNext();
         while (list_node != null) {
             node.setNext(list_node.clone());
             node = node.getNext();
@@ -58,7 +58,7 @@ public class ClientList {
     }
 
     public int size() {
-        var aux = first;
+        ClientNode aux = first;
         int counter = 0;
         while (aux != null) {
             counter++;
@@ -83,7 +83,7 @@ public class ClientList {
             return true;
         }
 
-        var aux = first;
+        ClientNode aux = first;
         while (aux.getNext() != null) {
             if (aux.getData().all_equal(client)) {
                 return false;
@@ -102,7 +102,7 @@ public class ClientList {
     }
 
     public boolean modify(Client c) {
-        var aux = first;
+        ClientNode aux = first;
         while (aux != null) {
             if (aux.getData().equals(c)) {
                 aux.setData(c);
@@ -123,7 +123,7 @@ public class ClientList {
             return true;
         }
 
-        var aux = first;
+        ClientNode aux = first;
         while (aux.getNext() != null) {
             if (aux.getNext().getData().equals(id)) {
                 aux.setNext(aux.getNext().getNext());
@@ -136,9 +136,9 @@ public class ClientList {
     }
 
     public boolean contains(Client c) {
-        var node = this.first;
+        ClientNode node = this.first;
         while (node != null) {
-            var d = node.getData();
+            Client d = node.getData();
             if (d.all_equal(c)) {
                 return true;
             }
@@ -148,10 +148,10 @@ public class ClientList {
     }
 
     public ClientList getByName(String clientName) {
-        var ret = new ClientList(false);
-        var node = first;
+        ClientList ret = new ClientList(false);
+        ClientNode node = first;
         while (node != null) {
-            var c = node.getData();
+            Client c = node.getData();
             if (c.equals(clientName)) {
                 ret.insert(c);
             }
@@ -161,10 +161,10 @@ public class ClientList {
     }
 
     public ClientList getByNameSearch(String start) {
-        var ret = new ClientList(false);
-        var node = first;
+        ClientList ret = new ClientList(false);
+        ClientNode node = first;
         while (node != null) {
-            var c = node.getData();
+            Client c = node.getData();
             if (c.getName().startsWith(start) || c.getSurname().startsWith(start)) {
                 ret.insert(c);
             }
@@ -174,9 +174,9 @@ public class ClientList {
     }
 
     public Client getByID(int id) {
-        var node = first;
+        ClientNode node = first;
         while (node != null) {
-            var c = node.getData();
+            Client c = node.getData();
             if (c.equals(id)) {
                 return c;
             }
@@ -187,14 +187,14 @@ public class ClientList {
 
     @Override
     public ClientList clone() {
-        var ret = new ClientList(false);
+        ClientList ret = new ClientList(false);
         if (first == null) {
             return ret;
         }
 
         ret.first = first.clone();
-        var node = first.getNext();
-        var ret_node = ret.first;
+        ClientNode node = first.getNext();
+        ClientNode ret_node = ret.first;
         while (node != null) {
             ret_node.setNext(node.clone());
             node = node.getNext();

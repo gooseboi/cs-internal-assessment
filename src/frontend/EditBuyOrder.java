@@ -24,6 +24,7 @@ package frontend;
 import backend.BuyOrder;
 import backend.Client;
 import backend.ClientList;
+import backend.ClientNode;
 import static backend.Main.buyOrders;
 import static backend.Main.sales;
 import static backend.Main.clients;
@@ -82,11 +83,11 @@ public class EditBuyOrder extends javax.swing.JPanel {
     }
 
     private void drawList(ClientList cs) {
-        var node = cs.getFirst();
-        var model = (DefaultListModel<String>) clientList.getModel();
+        ClientNode node = cs.getFirst();
+        DefaultListModel<String> model = (DefaultListModel) clientList.getModel();
         model.clear();
         while (node != null) {
-            var c = node.getData();
+            Client c = node.getData();
             model.addElement(c.getName() + ' ' + c.getSurname() + '-' + c.getEmailAddress());
             node = node.getNext();
         }
@@ -255,8 +256,7 @@ public class EditBuyOrder extends javax.swing.JPanel {
             return;
         }
 
-        var res = showYesNoCancelDialog(this, "Unsaved changes detected!\n Would you like to save them?");
-        switch (res) {
+        switch (showYesNoCancelDialog(this, "Unsaved changes detected!\n Would you like to save them?")) {
             case YES_OPTION:
                 this.save();
             case NO_OPTION:
@@ -287,7 +287,7 @@ public class EditBuyOrder extends javax.swing.JPanel {
         }
 
         localClients = clients.getByNameSearch(text);
-        var node = localClients.getFirst();
+        ClientNode node = localClients.getFirst();
         int i = 0;
         while (node != null) {
             ids[i] = node.getData().getID();

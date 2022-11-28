@@ -60,7 +60,7 @@ public class OrderList {
             return true;
         }
 
-        var aux = first;
+        OrderNode aux = first;
         while (aux.getNext() != null) {
             if (aux.getData().equals(order))
                 return false;
@@ -151,9 +151,9 @@ public class OrderList {
     }
 
     public boolean modify(Order order) {
-        var aux = first;
+        OrderNode aux = first;
         while (aux != null) {
-            var o = aux.getData();
+            Order o = aux.getData();
             if (o.equals(order)) {
                 o.setNum(order.getNum());
                 return true;
@@ -164,9 +164,9 @@ public class OrderList {
     }
 
     public boolean modify(String plantName, int num) {
-        var aux = first;
+        OrderNode aux = first;
         while (aux != null) {
-            var o = aux.getData();
+            Order o = aux.getData();
             if (o.getPlant().equals(plantName)) {
                 o.setNum(num);
                 return true;
@@ -180,7 +180,7 @@ public class OrderList {
         OrderNode aux = first;
         while (aux != null) {
             if (aux.getData().equals(order)) {
-                var o = aux.getData();
+                Order o = aux.getData();
                 o.setNum(o.getNum() + order.getNum());
                 return true;
             }
@@ -227,14 +227,14 @@ public class OrderList {
 
     @Override
     public OrderList clone() {
-        var ret = new OrderList();
+        OrderList ret = new OrderList();
         if (first == null) {
             return ret;
         }
 
         ret.first = first.clone();
-        var node = first.getNext();
-        var ret_node = ret.first;
+        OrderNode node = first.getNext();
+        OrderNode ret_node = ret.first;
         while (node != null) {
             ret_node.setNext(node.clone());
             node = node.getNext();

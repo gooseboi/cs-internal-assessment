@@ -30,6 +30,9 @@ import frontend.tables.SalesCellRenderer;
 import static backend.Main.showErrorDialog;
 import static backend.Main.showInformationDialog;
 import static backend.Main.showYesNoDialog;
+import backend.Sale;
+import backend.SalesList;
+import backend.SalesNode;
 import java.text.SimpleDateFormat;
 import static javax.swing.JOptionPane.NO_OPTION;
 
@@ -52,14 +55,14 @@ public class ManageSales extends javax.swing.JPanel {
     }
 
     private void drawTable() {
-        var node = sales.getFirst();
+        SalesNode node = sales.getFirst();
         int i = 0;
-        var model = (DefaultTableModel) salesTable.getModel();
+        DefaultTableModel model = (DefaultTableModel) salesTable.getModel();
         model.setRowCount(0);
-        var formatter = new SimpleDateFormat("E d/M/y");
+        SimpleDateFormat formatter = new SimpleDateFormat("E d/M/y");
         while (node != null) {
             Object[] curr = new Object[4];
-            var sale = node.getData();
+            Sale sale = node.getData();
             curr[0] = String.valueOf(sale.getClient().getName());
             curr[1] = sale.getOrders().accumulatePrice();
             curr[2] = sale.getOrders().accumulateStock();
@@ -251,7 +254,7 @@ public class ManageSales extends javax.swing.JPanel {
             return;
         }
         int id = ids[idx];
-        var s = sales.getByID(id);
+        Sale s = sales.getByID(id);
         this.window.setContentPane(new EditSale(window, s));
         this.window.pack();
     }//GEN-LAST:event_modifyButtonActionPerformed

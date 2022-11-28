@@ -35,6 +35,8 @@ import frontend.tables.StocksHeaderRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import static backend.Main.showYesNoDialog;
+import backend.Plant;
+import backend.Stock;
 import static javax.swing.JOptionPane.NO_OPTION;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -73,8 +75,8 @@ public class ManageStock extends javax.swing.JPanel {
         model.setRowCount(0);
         while (node != null) {
             String[] curr = new String[5];
-            var data = node.getData();
-            var p = data.getPlant();
+            Stock data = node.getData();
+            Plant p = data.getPlant();
             curr[0] = p.getName();
             curr[1] = String.valueOf(data.getStock());
             curr[2] = p.getGrowthCondition();
@@ -410,15 +412,18 @@ public class ManageStock extends javax.swing.JPanel {
     private void sortList() {
         StockList list = (filtered == null ? localStock : filtered);
         switch (mode) {
-            case Name ->
+            case Name:
                 list.sortByName(orderDescending);
-            case Available ->
+                break;
+            case Available:
                 list.sortByAvailable(orderDescending);
-            case Price ->
+                break;
+            case Price:
                 list.sortByPrice(orderDescending);
-            case BuyOrders -> {
-                //localStock.sortByBuyOrders(orderDescending);
-            }
+                break;
+            case BuyOrders:
+                // TODO: localStock.sortByBuyOrders(orderDescending);
+                break;
         }
     }
 
@@ -435,11 +440,12 @@ public class ManageStock extends javax.swing.JPanel {
             assert evt.getFirstRow() == evt.getLastRow() : "First row is not last row";
             int col = evt.getColumn();
             switch (col) {
-                case 0 ->
+                case 0:
                     showErrorDialog(this, "TODO");
-                case 1 -> {
-                    var name = (String) stocksTable.getValueAt(row, 0);
-                    var s = stocks.getStockByName(name);
+                    break;
+                case 1: {
+                    String name = (String) stocksTable.getValueAt(row, 0);
+                    Stock s = stocks.getStockByName(name);
                     int stock = (int) stocksTable.getValueAt(row, col);
 
                     s.setStock(stock);
@@ -449,11 +455,14 @@ public class ManageStock extends javax.swing.JPanel {
                         showErrorDialog(this, "Error modifying stock!");
                     }
                 }
-                case 2 -> {
+                break;
+                case 2: {
+                    // TODO
                 }
-                case 3 -> {
-                    var name = (String) stocksTable.getValueAt(row, 0);
-                    var s = stocks.getStockByName(name);
+                break;
+                case 3: {
+                    String name = (String) stocksTable.getValueAt(row, 0);
+                    Stock s = stocks.getStockByName(name);
                     double price = (double) stocksTable.getValueAt(row, col);
 
                     s.getPlant().setPrice(price);
@@ -463,6 +472,7 @@ public class ManageStock extends javax.swing.JPanel {
                         showErrorDialog(this, "Error modifying stock!");
                     }
                 }
+                break;
             }
             this.drawTable();
         }

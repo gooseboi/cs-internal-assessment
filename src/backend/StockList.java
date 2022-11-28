@@ -45,7 +45,7 @@ public class StockList {
             return;
         }
 
-        var node = this.first;
+        StockNode node = this.first;
         for (int i = 1; i < arr.length; i++) {
             node.setNext(new StockNode(arr[i]));
             node = node.getNext();
@@ -59,8 +59,8 @@ public class StockList {
         }
 
         this.first = list.first.clone();
-        var node = this.first;
-        var list_node = list.first.getNext();
+        StockNode node = this.first;
+        StockNode list_node = list.first.getNext();
         while (list_node != null) {
             node.setNext(list_node.clone());
             node = node.getNext();
@@ -84,7 +84,7 @@ public class StockList {
         StockList ret = new StockList(false);
         StockNode aux = first;
         while (aux != null) {
-            var p = aux.getData().getPlant();
+            Plant p = aux.getData().getPlant();
             if (p.getName().toUpperCase().startsWith(plantName.toUpperCase())) {
                 ret.insert(aux.getData());
             }
@@ -94,11 +94,11 @@ public class StockList {
     }
 
     public Stock getStockByName(String plantName) {
-        var aux = first;
+        StockNode aux = first;
         while (aux != null) {
-            var p = aux.getData();
-            if (p.equals(plantName)) {
-                return p;
+            Stock s = aux.getData();
+            if (s.equals(plantName)) {
+                return s;
             }
             aux = aux.getNext();
         }
@@ -106,9 +106,9 @@ public class StockList {
     }
 
     public Stock getStockByPlant(Plant p) {
-        var aux = first;
+        StockNode aux = first;
         while (aux != null) {
-            var stock = aux.getData();
+            Stock stock = aux.getData();
             if (stock.equals(p)) {
                 return stock;
             }
@@ -118,9 +118,9 @@ public class StockList {
     }
 
     public Plant getPlantByName(String plantName) {
-        var aux = first;
+        StockNode aux = first;
         while (aux != null) {
-            var p = aux.getData().getPlant();
+            Plant p = aux.getData().getPlant();
             if (p.equals(plantName)) {
                 return p;
             }
@@ -277,14 +277,14 @@ public class StockList {
 
     @Override
     public StockList clone() {
-        var ret = new StockList(false);
+        StockList ret = new StockList(false);
         if (first == null) {
             return ret;
         }
 
         ret.first = first.clone();
-        var node = first.getNext();
-        var ret_node = ret.first;
+        StockNode node = first.getNext();
+        StockNode ret_node = ret.first;
         while (node != null) {
             ret_node.setNext(node.clone());
             node = node.getNext();
@@ -294,7 +294,7 @@ public class StockList {
     }
 
     public Stock[] toArray() {
-        var node = first;
+        StockNode node = first;
         int s = this.size();
         Stock[] ret = new Stock[s];
         int top = 0;
@@ -309,15 +309,15 @@ public class StockList {
         BiPredicate<Stock, Stock> pred;
         if (orderDescending) {
             pred = (s1, s2) -> {
-                var n1 = s1.getPlant().getName();
-                var n2 = s2.getPlant().getName();
+                String n1 = s1.getPlant().getName();
+                String n2 = s2.getPlant().getName();
                 boolean res = n1.compareTo(n2) > 0;
                 return res;
             };
         } else {
             pred = (s1, s2) -> {
-                var n1 = s1.getPlant().getName();
-                var n2 = s2.getPlant().getName();
+                String n1 = s1.getPlant().getName();
+                String n2 = s2.getPlant().getName();
                 boolean res = n1.compareTo(n2) < 0;
                 return res;
             };
@@ -329,14 +329,14 @@ public class StockList {
         BiPredicate<Stock, Stock> pred;
         if (orderDescending) {
             pred = (s1, s2) -> {
-                var p1 = s1.getPlant().getPrice();
-                var p2 = s2.getPlant().getPrice();
+                double p1 = s1.getPlant().getPrice();
+                double p2 = s2.getPlant().getPrice();
                 return p1 > p2;
             };
         } else {
             pred = (s1, s2) -> {
-                var p1 = s1.getPlant().getPrice();
-                var p2 = s2.getPlant().getPrice();
+                double p1 = s1.getPlant().getPrice();
+                double p2 = s2.getPlant().getPrice();
                 return p1 < p2;
             };
         }
@@ -347,14 +347,14 @@ public class StockList {
         BiPredicate<Stock, Stock> pred;
         if (orderDescending) {
             pred = (s1, s2) -> {
-                var n1 = s1.getStock();
-                var n2 = s2.getStock();
+                int n1 = s1.getStock();
+                int n2 = s2.getStock();
                 return n1 > n2;
             };
         } else {
             pred = (s1, s2) -> {
-                var n1 = s1.getStock();
-                var n2 = s2.getStock();
+                int n1 = s1.getStock();
+                int n2 = s2.getStock();
                 return n1 < n2;
             };
         }
@@ -372,7 +372,7 @@ public class StockList {
         }
 
         BiConsumer<Integer, Integer> swap = (Integer i, Integer j) -> {
-            var temp = arr[i];
+            Stock temp = arr[i];
             arr[i] = arr[j];
             arr[j] = temp;
         };

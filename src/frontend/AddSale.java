@@ -23,6 +23,7 @@ package frontend;
 
 import backend.Client;
 import backend.ClientList;
+import backend.ClientNode;
 import static backend.Main.sales;
 import static backend.Main.clients;
 import javax.swing.JFrame;
@@ -34,6 +35,9 @@ import static backend.Main.showErrorDialog;
 import static backend.Main.showInformationDialog;
 import static backend.Main.showYesNoDialog;
 import static backend.Main.stocks;
+import backend.OrderNode;
+import backend.Plant;
+import backend.Stock;
 import static javax.swing.JOptionPane.YES_OPTION;
 
 /**
@@ -67,11 +71,11 @@ public class AddSale extends javax.swing.JPanel {
     }
 
     private void drawList(ClientList cs) {
-        var node = cs.getFirst();
-        var model = (DefaultListModel<String>) clientList.getModel();
+        ClientNode node = cs.getFirst();
+        DefaultListModel model = (DefaultListModel) clientList.getModel();
         model.clear();
         while (node != null) {
-            var c = node.getData();
+            Client c = node.getData();
             model.addElement(c.getName() + ' ' + c.getSurname() + '-' + c.getEmailAddress());
             node = node.getNext();
         }
@@ -256,10 +260,10 @@ public class AddSale extends javax.swing.JPanel {
             showErrorDialog(this, "Sale could not be added");
         }
 
-        var node = orders.getFirst();
+        OrderNode node = orders.getFirst();
         while (node != null) {
-            var p = node.getData().getPlant();
-            var s = stocks.getStockByPlant(p);
+            Plant p = node.getData().getPlant();
+            Stock s = stocks.getStockByPlant(p);
             int currStock = s.getStock();
             int num = node.getData().getNum();
             if (currStock < num) {
@@ -281,7 +285,7 @@ public class AddSale extends javax.swing.JPanel {
         }
 
         localClients = clients.getByNameSearch(text);
-        var node = localClients.getFirst();
+        ClientNode node = localClients.getFirst();
         int i = 0;
         while (node != null) {
             ids[i] = node.getData().getID();

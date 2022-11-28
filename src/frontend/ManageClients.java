@@ -21,6 +21,8 @@ SOFTWARE.
  */
 package frontend;
 
+import backend.Client;
+import backend.ClientNode;
 import static backend.Main.buyOrders;
 import static backend.Main.clients;
 import static backend.Main.sales;
@@ -54,13 +56,13 @@ public class ManageClients extends javax.swing.JPanel {
     }
 
     private void drawTable() {
-        var node = clients.getFirst();
+        ClientNode node = clients.getFirst();
         DefaultTableModel model = (DefaultTableModel) clientsTable.getModel();
         model.setRowCount(0);
         int idx = 0;
 
         while (node != null) {
-            var client = node.getData();
+            Client client = node.getData();
             String[] curr = new String[4];
             curr[0] = client.getName();
             curr[1] = client.getSurname();
@@ -76,38 +78,38 @@ public class ManageClients extends javax.swing.JPanel {
     }
 
     private void drawTable(DrawType type, String val) {
-        var node = clients.getFirst();
+        ClientNode node = clients.getFirst();
         DefaultTableModel model = (DefaultTableModel) clientsTable.getModel();
         model.setRowCount(0);
         int idx = 0;
 
         while (node != null) {
-            var client = node.getData();
+            Client client = node.getData();
             switch (type) {
-                case Name -> {
+                case Name:
                     if (!client.getName().toUpperCase().startsWith(val.toUpperCase())) {
                         node = node.getNext();
                         continue;
                     }
-                }
-                case Surname -> {
+                    break;
+                case Surname:
                     if (!client.getSurname().toUpperCase().startsWith(val.toUpperCase())) {
                         node = node.getNext();
                         continue;
                     }
-                }
-                case EmailAddress -> {
+                    break;
+                case EmailAddress:
                     if (!client.getEmailAddress().toUpperCase().contains(val.toUpperCase())) {
                         node = node.getNext();
                         continue;
                     }
-                }
-                case PhoneNumber -> {
+                    break;
+                case PhoneNumber:
                     if (!client.getPhoneNumber().toUpperCase().startsWith(val.toUpperCase())) {
                         node = node.getNext();
                         continue;
                     }
-                }
+                    break;
             }
 
             String[] curr = new String[4];
@@ -312,10 +314,10 @@ public class ManageClients extends javax.swing.JPanel {
             int row = evt.getFirstRow();
             assert evt.getFirstRow() == evt.getLastRow() : "First row is not last row";
             int col = evt.getColumn();
-            var client = clients.getByID(ids[row]);
+            Client client = clients.getByID(ids[row]);
             String val = (String) clientsTable.getValueAt(row, col);
             switch (col) {
-                case 0 -> {
+                case 0:
                     if (val == null || val.isBlank() || val.isEmpty()) {
                         showErrorDialog(this, "Name must not be empty!");
                         return;
@@ -324,8 +326,8 @@ public class ManageClients extends javax.swing.JPanel {
                         return;
                     }
                     client.setName(val);
-                }
-                case 1 -> {
+                    break;
+                case 1:
                     if (val == null || val.isBlank() || val.isEmpty()) {
                         showErrorDialog(this, "Surname must not be empty!");
                         return;
@@ -334,8 +336,8 @@ public class ManageClients extends javax.swing.JPanel {
                         return;
                     }
                     client.setSurname(val);
-                }
-                case 2 -> {
+                    break;
+                case 2:
                     if (val == null || val.isBlank() || val.isEmpty()) {
                         showErrorDialog(this, "Email Address must not be empty!");
                         return;
@@ -344,8 +346,8 @@ public class ManageClients extends javax.swing.JPanel {
                         return;
                     }
                     client.setEmailAddress(val);
-                }
-                case 3 -> {
+                    break;
+                case 3:
                     if (val == null || val.isBlank() || val.isEmpty()) {
                         showErrorDialog(this, "Phone Number must not be empty!");
                         return;
@@ -354,7 +356,7 @@ public class ManageClients extends javax.swing.JPanel {
                         return;
                     }
                     client.setPhoneNumber(val);
-                }
+                    break;
             }
             if (clients.modify(client)) {
                 showInformationDialog(this, "Client successfuly modified!");
@@ -372,14 +374,18 @@ public class ManageClients extends javax.swing.JPanel {
             return;
         }
         switch ((String) searchTypeComboBox.getSelectedItem()) {
-            case "Name" ->
+            case "Name":
                 this.drawTable(DrawType.Name, val);
-            case "Surname" ->
+                break;
+            case "Surname":
                 this.drawTable(DrawType.Surname, val);
-            case "Email Address" ->
+                break;
+            case "Email Address":
                 this.drawTable(DrawType.EmailAddress, val);
-            case "Phone Number" ->
+                break;
+            case "Phone Number":
                 this.drawTable(DrawType.PhoneNumber, val);
+                break;
         }
     }//GEN-LAST:event_searchTextFieldActionPerformed
 

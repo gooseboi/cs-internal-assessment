@@ -60,9 +60,9 @@ public class Main {
         mainWindow.setLocationRelativeTo(null);
         mainWindow.setVisible(true);
 
-        var saver = new Saver();
+        Saver saver = new Saver();
         try {
-            var list = saver.readStocks(stocksFile);
+            StockList list = saver.readStocks(stocksFile);
             if (list != null) {
                 stocks = new StockList(true, list);
             } else {
@@ -73,7 +73,7 @@ public class Main {
         }
 
         try {
-            var list = saver.readClients(clientsFile);
+            ClientList list = saver.readClients(clientsFile);
             if (list != null) {
                 clients = new ClientList(true, list);
             } else {
@@ -85,7 +85,7 @@ public class Main {
 
         if (!stocks.empty() && !clients.empty()) {
             try {
-                var list = saver.readSales(salesFile);
+                SalesList list = saver.readSales(salesFile);
                 if (list != null) {
                     sales = new SalesList(true, list);
                 }
@@ -94,7 +94,7 @@ public class Main {
             }
 
             try {
-                var list = saver.readBuyOrders(buyOrdersFile);
+                BuyOrderList list = saver.readBuyOrders(buyOrdersFile);
                 if (list != null) {
                     buyOrders = new BuyOrderList(true, list);
                 }

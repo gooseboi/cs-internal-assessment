@@ -45,8 +45,8 @@ public class SalesList {
         }
 
         this.first = list.first.clone();
-        var node = this.first;
-        var list_node = list.first.getNext();
+        SalesNode node = this.first;
+        SalesNode list_node = list.first.getNext();
         while (list_node != null) {
             node.setNext(list_node.clone());
             node = node.getNext();
@@ -100,9 +100,9 @@ public class SalesList {
     }
 
     public Sale getByID(int id) {
-        var aux = first;
+        SalesNode aux = first;
         while (aux != null) {
-            var s = aux.getData();
+            Sale s = aux.getData();
             if (s.equals(id)) {
                 return s;
             }
@@ -133,7 +133,7 @@ public class SalesList {
             return true;
         }
 
-        var aux = first;
+        SalesNode aux = first;
         while (aux.getNext() != null) {
             if (aux.getData().equals(sale))
                 return false;
@@ -184,7 +184,7 @@ public class SalesList {
             return true;
         }
 
-        var aux = first;
+        SalesNode aux = first;
         while (aux != null && aux.getNext() != null) {
             if (aux.getNext().getData().getClient().equals(id)) {
                 aux.setNext(aux.getNext().getNext());
@@ -205,7 +205,7 @@ public class SalesList {
     }
 
     public boolean deletePlant(String plantName) {
-        var node = first;
+        SalesNode node = first;
         while (node != null) {
             if (node.getData().getOrders().delete(plantName)) {
                 return true;
@@ -244,10 +244,10 @@ public class SalesList {
     }
 
     public ClientList findClient(String clientName) {
-        var aux = first;
+        SalesNode aux = first;
         ClientList ret = new ClientList(false);
         while (aux != null) {
-            var c = aux.getData().getClient();
+            Client c = aux.getData().getClient();
             if (c.equals(clientName))
                 ret.insert(c);
             aux = aux.getNext();
@@ -257,14 +257,14 @@ public class SalesList {
 
     @Override
     public SalesList clone() {
-        var ret = new SalesList(false);
+        SalesList ret = new SalesList(false);
         if (first == null) {
             return ret;
         }
 
         ret.first = first.clone();
-        var node = first.getNext();
-        var ret_node = ret.first;
+        SalesNode node = first.getNext();
+        SalesNode ret_node = ret.first;
         while (node != null) {
             ret_node.setNext(node.clone());
             node = node.getNext();
