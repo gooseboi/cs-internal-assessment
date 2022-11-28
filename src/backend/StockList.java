@@ -353,8 +353,8 @@ public class StockList {
             };
         } else {
             pred = (s1, s2) -> {
-                var n1 = s1.getPlant().getPrice();
-                var n2 = s2.getPlant().getPrice();
+                var n1 = s1.getStock();
+                var n2 = s2.getStock();
                 return n1 < n2;
             };
         }
