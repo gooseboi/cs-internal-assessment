@@ -35,6 +35,10 @@ import backend.BuyOrder;
 import backend.Sale;
 import static backend.Main.showErrorDialog;
 import static backend.Main.showInformationDialog;
+import static backend.Main.showYesNoCancelDialog;
+import static javax.swing.JOptionPane.YES_OPTION;
+import static javax.swing.JOptionPane.NO_OPTION;
+import static javax.swing.JOptionPane.CANCEL_OPTION;
 import backend.OrderNode;
 import backend.StockNode;
 import java.util.Date;
@@ -47,7 +51,9 @@ public class EditOrder extends javax.swing.JPanel {
 
     private final JFrame window;
     private final String parent;
-    private final OrderList orders;
+    private OrderList orders;
+    private final OrderList newOrders;
+    private boolean localChange = false;
     private final Date date;
     private Sale sale = null;
     private BuyOrder buyOrder = null;
@@ -59,8 +65,8 @@ public class EditOrder extends javax.swing.JPanel {
         initComponents();
         this.window = window;
         this.orders = orders;
+        this.newOrders = orders.clone();
         this.parent = parent;
-        didChange = true;
         this.date = date;
 
         this.drawTable();
@@ -72,10 +78,10 @@ public class EditOrder extends javax.swing.JPanel {
     public EditOrder(JFrame window, Sale sale, OrderList orders) {
         initComponents();
         parent = null;
-        didChange = true;
 
         this.window = window;
         this.orders = orders;
+        this.newOrders = orders.clone();
         this.sale = sale;
         this.date = null;
 
@@ -88,10 +94,10 @@ public class EditOrder extends javax.swing.JPanel {
     public EditOrder(JFrame window, BuyOrder buyOrder, OrderList orders) {
         initComponents();
         parent = null;
-        didChange = true;
 
         this.window = window;
         this.orders = orders;
+        this.newOrders = orders.clone();
         this.buyOrder = buyOrder;
         this.date = null;
 
@@ -102,7 +108,7 @@ public class EditOrder extends javax.swing.JPanel {
     }
 
     private void drawTable() {
-        OrderNode node = orders.getFirst();
+        OrderNode node = newOrders.getFirst();
         DefaultTableModel model = (DefaultTableModel) ordersTable.getModel();
         model.setRowCount(0);
         while (node != null) {
@@ -123,7 +129,7 @@ public class EditOrder extends javax.swing.JPanel {
         model.clear();
         while (node != null) {
             Plant p = node.getData().getPlant();
-            if (!orders.contains(p)) {
+            if (!newOrders.contains(p)) {
                 model.addElement(p.getName());
             }
             node = node.getNext();
@@ -151,6 +157,7 @@ public class EditOrder extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         stockList = new javax.swing.JList<>();
         orderAmountLabel = new javax.swing.JLabel();
+        saveButton = new javax.swing.JButton();
 
         backButton.setText("Back");
         backButton.addActionListener(new java.awt.event.ActionListener() {
@@ -226,6 +233,13 @@ public class EditOrder extends javax.swing.JPanel {
             orderAmountLabel.setText("Order Amount");
             orderAmountLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
+            saveButton.setText("Save");
+            saveButton.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    saveButtonActionPerformed(evt);
+                }
+            });
+
             javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
             this.setLayout(layout);
             layout.setHorizontalGroup(
@@ -233,10 +247,15 @@ public class EditOrder extends javax.swing.JPanel {
                 .addGroup(layout.createSequentialGroup()
                     .addGap(40, 40, 40)
                     .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(saveButton)
+                    .addGap(40, 40, 40))
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addContainerGap(130, Short.MAX_VALUE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(281, 281, 281))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -246,12 +265,8 @@ public class EditOrder extends javax.swing.JPanel {
                                 .addComponent(amountSpinner, javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(orderAmountLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(118, 118, 118)
-                            .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 212, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGap(69, 69, 69))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(69, 69, 69))))
             );
             layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -274,7 +289,9 @@ public class EditOrder extends javax.swing.JPanel {
                                 .addComponent(jScrollPane2)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
-                    .addComponent(backButton)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(backButton)
+                        .addComponent(saveButton))
                     .addGap(40, 40, 40))
             );
         }// </editor-fold>//GEN-END:initComponents
@@ -295,12 +312,24 @@ public class EditOrder extends javax.swing.JPanel {
 
         ((DefaultListModel<String>) stockList.getModel()).remove(idx);
         Plant p = stocks.findPlant(value);
-        orders.insert(new Order(p, amount));
+        newOrders.insert(new Order(p, amount));
+        localChange = true;
         amountSpinner.setValue(0);
         this.drawTable();
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        if (localChange) {
+            switch (showYesNoCancelDialog(window, "Unsaved changes detected!\n Would you like to save?")) {
+                case YES_OPTION:
+                    orders = newOrders.clone();
+                    break;
+                case NO_OPTION:
+                    break;
+                case CANCEL_OPTION:
+                    return;
+            }
+        }
         if (this.sale != null) {
             this.window.setContentPane(new EditSale(window, sale, orders));
             this.window.pack();
@@ -332,10 +361,17 @@ public class EditOrder extends javax.swing.JPanel {
         }
 
         String name = (String) ordersTable.getValueAt(row, 0);
-        orders.delete(name);
+        newOrders.delete(name);
+        localChange = true;
         ((DefaultTableModel) ordersTable.getModel()).removeRow(row);
         this.drawList();
     }//GEN-LAST:event_deleteButtonActionPerformed
+
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        orders = newOrders.clone();
+        localChange = false;
+        showInformationDialog(window, "Successfully saved!");
+    }//GEN-LAST:event_saveButtonActionPerformed
 
     private void onCellChanged(TableModelEvent evt) {
         if (evt.getType() == TableModelEvent.UPDATE) {
@@ -354,8 +390,9 @@ public class EditOrder extends javax.swing.JPanel {
                 return;
             }
 
-            if (orders.modify(name, num)) {
+            if (newOrders.modify(name, num)) {
                 showInformationDialog(this, "Order modified successfully");
+                localChange = true;
             } else {
                 showErrorDialog(this, "Failed modifying order!(What?)");
             }
@@ -371,6 +408,7 @@ public class EditOrder extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel orderAmountLabel;
     private javax.swing.JTable ordersTable;
+    private javax.swing.JButton saveButton;
     private javax.swing.JList<String> stockList;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
