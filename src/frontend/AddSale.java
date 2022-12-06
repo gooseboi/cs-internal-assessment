@@ -74,11 +74,16 @@ public class AddSale extends javax.swing.JPanel {
         ClientNode node = cs.getFirst();
         DefaultListModel model = (DefaultListModel) clientList.getModel();
         model.clear();
+        int i = 0;
         while (node != null) {
             Client c = node.getData();
             model.addElement(c.getName() + ' ' + c.getSurname() + '-' + c.getEmailAddress());
+            ids[i] = node.getData().getID();
             node = node.getNext();
+            i++;
         }
+        size = i;
+
         clientList.setModel(model);
     }
 
@@ -276,14 +281,8 @@ public class AddSale extends javax.swing.JPanel {
         }
 
         localClients = clients.searchAllFields(text);
-        ClientNode node = localClients.getFirst();
-        int i = 0;
-        while (node != null) {
-            ids[i] = node.getData().getID();
-            node = node.getNext();
-            i++;
-        }
-        if (i == 0) { // Empty list
+        size = localClients.size();
+        if (size == 0) { // Empty list
             if (showYesNoDialog(this, "Client has not been found!\n Would you like to add them?\n(This will keep the added orders)") == YES_OPTION) {
                 this.window.setContentPane(new AddClient(window, text, orders));
                 this.window.pack();
@@ -291,7 +290,7 @@ public class AddSale extends javax.swing.JPanel {
             return;
         }
         drawList();
-        if (i == 1) {
+        if (size == 1) {
             clientList.setSelectedIndex(0);
         }
 }//GEN-LAST:event_clientSearchTextFieldCaretUpdate
@@ -319,6 +318,7 @@ public class AddSale extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
     // Wrong
     private ClientList localClients;
+    int size;
     private int[] ids = new int[clients.size()];
     // Actual end of variable declaration
 }
