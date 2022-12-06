@@ -28,10 +28,10 @@
                       <Component id="jScrollPane2" min="-2" pref="144" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="addButton" max="32767" attributes="0"/>
+                          <Component id="addButton" pref="106" max="32767" attributes="0"/>
                           <Component id="deleteButton" max="32767" attributes="0"/>
-                          <Component id="jTextField1" max="32767" attributes="0"/>
                           <Component id="amountSpinner" alignment="1" max="32767" attributes="0"/>
+                          <Component id="orderAmountLabel" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jScrollPane1" min="-2" pref="243" max="-2" attributes="0"/>
@@ -58,7 +58,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="deleteButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jTextField1" min="-2" max="-2" attributes="0"/>
+                      <Component id="orderAmountLabel" min="-2" pref="23" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="amountSpinner" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -185,10 +185,11 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JTextField" name="jTextField1">
+    <Component class="javax.swing.JLabel" name="orderAmountLabel">
       <Properties>
         <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="text" type="java.lang.String" value="Order Amount"/>
+        <Property name="horizontalTextPosition" type="int" value="0"/>
       </Properties>
     </Component>
   </SubComponents>

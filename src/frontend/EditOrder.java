@@ -145,7 +145,7 @@ public class EditOrder extends javax.swing.JPanel {
         amountSpinner = new javax.swing.JSpinner();
         jScrollPane2 = new javax.swing.JScrollPane();
         stockList = new javax.swing.JList<>();
-        jTextField1 = new javax.swing.JTextField();
+        orderAmountLabel = new javax.swing.JLabel();
 
         backButton.setText("Back");
         backButton.addActionListener(new java.awt.event.ActionListener() {
@@ -217,8 +217,9 @@ public class EditOrder extends javax.swing.JPanel {
             stockList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
             jScrollPane2.setViewportView(stockList);
 
-            jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-            jTextField1.setText("Order Amount");
+            orderAmountLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+            orderAmountLabel.setText("Order Amount");
+            orderAmountLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
             javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
             this.setLayout(layout);
@@ -235,10 +236,10 @@ public class EditOrder extends javax.swing.JPanel {
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(addButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(addButton, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
                                 .addComponent(deleteButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jTextField1)
-                                .addComponent(amountSpinner, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addComponent(amountSpinner, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(orderAmountLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createSequentialGroup()
@@ -259,7 +260,7 @@ public class EditOrder extends javax.swing.JPanel {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(deleteButton)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(orderAmountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(amountSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createSequentialGroup()
@@ -363,7 +364,7 @@ public class EditOrder extends javax.swing.JPanel {
     private javax.swing.JButton deleteButton;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel orderAmountLabel;
     private javax.swing.JTable ordersTable;
     private javax.swing.JList<String> stockList;
     private javax.swing.JLabel titleLabel;
