@@ -314,6 +314,7 @@ public class EditOrder extends javax.swing.JPanel {
         Plant p = stocks.findPlant(value);
         newOrders.insert(new Order(p, amount));
         localChange = true;
+        didChange = true;
         amountSpinner.setValue(0);
         this.drawTable();
     }//GEN-LAST:event_addButtonActionPerformed
@@ -363,6 +364,7 @@ public class EditOrder extends javax.swing.JPanel {
         String name = (String) ordersTable.getValueAt(row, 0);
         newOrders.delete(name);
         localChange = true;
+        didChange = true;
         ((DefaultTableModel) ordersTable.getModel()).removeRow(row);
         this.drawList();
     }//GEN-LAST:event_deleteButtonActionPerformed
@@ -393,6 +395,7 @@ public class EditOrder extends javax.swing.JPanel {
             if (newOrders.modify(name, num)) {
                 showInformationDialog(this, "Order modified successfully");
                 localChange = true;
+                didChange = true;
             } else {
                 showErrorDialog(this, "Failed modifying order!(What?)");
             }
