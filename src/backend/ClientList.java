@@ -173,6 +173,19 @@ public class ClientList {
         return ret;
     }
 
+    public ClientList searchAllFields(String start) {
+        ClientList ret = new ClientList(false);
+        ClientNode node = first;
+        while (node != null) {
+            Client c = node.getData();
+            if (c.getName().startsWith(start) || c.getSurname().startsWith(start) || c.getEmailAddress().contains(start) || c.getPhoneNumber().startsWith(start)) {
+                ret.insert(c);
+            }
+            node = node.getNext();
+        }
+        return ret;
+    }
+
     public Client getByID(int id) {
         ClientNode node = first;
         while (node != null) {

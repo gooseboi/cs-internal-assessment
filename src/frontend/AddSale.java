@@ -275,7 +275,7 @@ public class AddSale extends javax.swing.JPanel {
             return;
         }
 
-        localClients = clients.getByNameSearch(text);
+        localClients = clients.searchAllFields(text);
         ClientNode node = localClients.getFirst();
         int i = 0;
         while (node != null) {
