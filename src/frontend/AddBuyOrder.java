@@ -60,6 +60,16 @@ public class AddBuyOrder extends javax.swing.JPanel {
         drawList(clients);
     }
 
+    public AddBuyOrder(JFrame window, OrderList orders, Date date) {
+        initComponents();
+        this.window = window;
+        this.orders = orders;
+        if (date != null) {
+            datePerformedDatePicker.setDate(date);
+        }
+        drawList(clients);
+    }
+
     private void drawList() {
         drawList(localClients);
     }
@@ -222,7 +232,8 @@ public class AddBuyOrder extends javax.swing.JPanel {
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void editOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editOrdersActionPerformed
-        this.window.setContentPane(new EditOrder(window, orders, "addbuyorder"));
+        Date date = datePerformedDatePicker.getDate();
+        this.window.setContentPane(new EditOrder(window, orders, date, "addbuyorder"));
         this.window.pack();
     }//GEN-LAST:event_editOrdersActionPerformed
 

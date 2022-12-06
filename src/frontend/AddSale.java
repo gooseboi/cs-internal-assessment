@@ -66,6 +66,16 @@ public class AddSale extends javax.swing.JPanel {
         drawList(clients);
     }
 
+    public AddSale(JFrame window, OrderList orders, Date date) {
+        initComponents();
+        this.window = window;
+        this.orders = orders;
+        if (date != null) {
+            datePerformedDatePicker.setDate(date);
+        }
+        drawList(clients);
+    }
+
     private void drawList() {
         drawList(localClients);
     }
@@ -224,7 +234,8 @@ public class AddSale extends javax.swing.JPanel {
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void editOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editOrdersActionPerformed
-        this.window.setContentPane(new EditOrder(window, orders, "addsale"));
+        Date date = datePerformedDatePicker.getDate();
+        this.window.setContentPane(new EditOrder(window, orders, date, "addsale"));
         this.window.pack();
     }//GEN-LAST:event_editOrdersActionPerformed
 
