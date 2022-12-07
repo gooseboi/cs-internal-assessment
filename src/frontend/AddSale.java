@@ -33,11 +33,14 @@ import java.util.Date;
 import javax.swing.DefaultListModel;
 import static backend.Main.showErrorDialog;
 import static backend.Main.showInformationDialog;
+import static backend.Main.showYesNoCancelDialog;
 import static backend.Main.showYesNoDialog;
 import static backend.Main.stocks;
 import backend.OrderNode;
 import backend.Plant;
 import backend.Stock;
+import static javax.swing.JOptionPane.CANCEL_OPTION;
+import static javax.swing.JOptionPane.NO_OPTION;
 import static javax.swing.JOptionPane.YES_OPTION;
 
 /**
@@ -56,6 +59,7 @@ public class AddSale extends javax.swing.JPanel {
         initComponents();
         this.window = window;
         this.orders = new OrderList();
+        localChange = false;
         drawList(clients);
     }
 
@@ -63,6 +67,7 @@ public class AddSale extends javax.swing.JPanel {
         initComponents();
         this.window = window;
         this.orders = orders;
+        localChange = true;
         drawList(clients);
     }
 
@@ -73,6 +78,7 @@ public class AddSale extends javax.swing.JPanel {
         if (date != null) {
             datePerformedDatePicker.setDate(date);
         }
+        localChange = true;
         drawList(clients);
     }
 
@@ -156,6 +162,11 @@ public class AddSale extends javax.swing.JPanel {
             public String getElementAt(int i) { return strings[i]; }
         });
         clientList.setModel(new DefaultListModel());
+        clientList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                clientListValueChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(clientList);
 
         clientSearchLabel.setText("Search for a client:");
@@ -229,6 +240,19 @@ public class AddSale extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        if (localChange) {
+            switch (showYesNoCancelDialog(window, "Unsaved changes detected!\nWould you like to save?")) {
+                case YES_OPTION:
+                    if (!this.save()) {
+                        return;
+                    }
+                    break;
+                case NO_OPTION:
+                    break;
+                case CANCEL_OPTION:
+                    return;
+            }
+        }
         this.window.setContentPane(new ManageSales(window));
         this.window.pack();
     }//GEN-LAST:event_backButtonActionPerformed
@@ -240,24 +264,31 @@ public class AddSale extends javax.swing.JPanel {
     }//GEN-LAST:event_editOrdersActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        if (this.save()) {
+            this.window.setContentPane(new ManageSales(window));
+            this.window.pack();
+        }
+    }//GEN-LAST:event_saveButtonActionPerformed
+
+    private boolean save() {
         Client c = getSelectedClient();
         if (c == null) {
             showErrorDialog(this, "You must select a client to associate the sale with!");
-            return;
+            return false;
         }
 
         if (orders.size() == 0) {
             showErrorDialog(this, "You must add some orders!");
-            return;
+            return false;
         }
 
         Date d = datePerformedDatePicker.getDate();
         if (d == null) {
             showErrorDialog(this, "You must select a date for the sale!");
-            return;
+            return false;
         } else if (d.after(new Date())) {
             showErrorDialog(this, "Date cannot be in the future!");
-            return;
+            return false;
         }
 
         Sale sale = new Sale(orders, c, d);
@@ -265,6 +296,7 @@ public class AddSale extends javax.swing.JPanel {
             showInformationDialog(this, "Sale successfully added!");
         } else {
             showErrorDialog(this, "Sale could not be added");
+            return false;
         }
 
         OrderNode node = orders.getFirst();
@@ -282,7 +314,8 @@ public class AddSale extends javax.swing.JPanel {
             stocks.modify(s);
             node = node.getNext();
         }
-    }//GEN-LAST:event_saveButtonActionPerformed
+        return true;
+    }
 
     private void clientSearchTextFieldCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_clientSearchTextFieldCaretUpdate
         String text = clientSearchTextField.getText();
@@ -305,6 +338,10 @@ public class AddSale extends javax.swing.JPanel {
             clientList.setSelectedIndex(0);
         }
 }//GEN-LAST:event_clientSearchTextFieldCaretUpdate
+
+    private void clientListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_clientListValueChanged
+        localChange = true;
+    }//GEN-LAST:event_clientListValueChanged
 
     private Client getSelectedClient() {
         int selected = clientList.getSelectedIndex();
@@ -331,5 +368,6 @@ public class AddSale extends javax.swing.JPanel {
     private ClientList localClients;
     int size;
     private int[] ids = new int[clients.size()];
+    private boolean localChange;
     // Actual end of variable declaration
 }
