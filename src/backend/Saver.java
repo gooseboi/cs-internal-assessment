@@ -322,13 +322,11 @@ public class Saver implements WindowListener {
             return;
         }
 
-        int res = JOptionPane.showConfirmDialog(window, "Unsaved changes detected!\nWould you like to save?", "INFO", JOptionPane.YES_NO_CANCEL_OPTION);
-        switch (res) {
+        switch (showYesNoCancelDialog(window, "Unsaved changes detected!\nWould you like to save?")) {
             case JOptionPane.YES_OPTION:
                 boolean stop = false;
                 while (!stop && !save()) {
-                    int res2 = showYesNoCancelDialog(window, "Saving failed, would you like to try again?");
-                    switch (res) {
+                    switch (showYesNoCancelDialog(window, "Saving failed, would you like to try again?")) {
                         case JOptionPane.YES_OPTION:
                             break;
                         case JOptionPane.NO_OPTION:

@@ -54,7 +54,7 @@ public class Main {
     public static void main(String[] args) {
         // Create the main menu window
         mainWindow = new JFrame();
-        mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainWindow.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         mainWindow.setContentPane(new frontend.MainMenu(mainWindow));
         mainWindow.pack();
         mainWindow.setLocationRelativeTo(null);
