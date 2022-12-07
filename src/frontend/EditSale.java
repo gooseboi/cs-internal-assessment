@@ -365,7 +365,6 @@ public class EditSale extends javax.swing.JPanel {
             return true;
         } else {
             showErrorDialog(this, "Sale could not be modified");
-            localChange = false;
             return false;
         }
     }
