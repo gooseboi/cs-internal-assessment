@@ -194,6 +194,11 @@ public class EditSale extends javax.swing.JPanel {
             public String getElementAt(int i) { return strings[i]; }
         });
         clientList.setModel(new DefaultListModel());
+        clientList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                clientListValueChanged(evt);
+            }
+        });
         jScrollPane2.setViewportView(clientList);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -319,6 +324,10 @@ public class EditSale extends javax.swing.JPanel {
     private void clientSearchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientSearchTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_clientSearchTextFieldActionPerformed
+
+    private void clientListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_clientListValueChanged
+        localChange = true;
+    }//GEN-LAST:event_clientListValueChanged
 
     private Client getSelectedClient() {
         int selected = clientList.getSelectedIndex();
