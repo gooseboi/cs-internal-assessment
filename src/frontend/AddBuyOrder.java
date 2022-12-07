@@ -33,6 +33,11 @@ import java.util.Date;
 import javax.swing.DefaultListModel;
 import static backend.Main.showErrorDialog;
 import static backend.Main.showInformationDialog;
+import static backend.Main.showYesNoCancelDialog;
+import static backend.Main.showYesNoDialog;
+import static javax.swing.JOptionPane.CANCEL_OPTION;
+import static javax.swing.JOptionPane.NO_OPTION;
+import static javax.swing.JOptionPane.YES_OPTION;
 
 /**
  *
@@ -50,6 +55,7 @@ public class AddBuyOrder extends javax.swing.JPanel {
         initComponents();
         this.window = window;
         this.orders = new OrderList();
+        localChange = false;
         drawList(clients);
     }
 
@@ -57,6 +63,7 @@ public class AddBuyOrder extends javax.swing.JPanel {
         initComponents();
         this.window = window;
         this.orders = orders;
+        localChange = true;
         drawList(clients);
     }
 
@@ -67,6 +74,7 @@ public class AddBuyOrder extends javax.swing.JPanel {
         if (date != null) {
             datePerformedDatePicker.setDate(date);
         }
+        localChange = true;
         drawList(clients);
     }
 
@@ -78,11 +86,14 @@ public class AddBuyOrder extends javax.swing.JPanel {
         ClientNode node = cs.getFirst();
         DefaultListModel<String> model = (DefaultListModel) clientList.getModel();
         model.clear();
+        int i = 0;
         while (node != null) {
             Client c = node.getData();
             model.addElement(c.getName() + ' ' + c.getSurname() + '-' + c.getEmailAddress());
+            ids[i++] = node.getData().getID();
             node = node.getNext();
         }
+        size = i;
         clientList.setModel(model);
     }
 
@@ -96,31 +107,21 @@ public class AddBuyOrder extends javax.swing.JPanel {
     private void initComponents() {
 
         titleLabel = new javax.swing.JLabel();
-        clientNameLabel = new javax.swing.JLabel();
-        clientNameTextField = new javax.swing.JTextField();
         ordersLabel = new javax.swing.JLabel();
         dateLabel = new javax.swing.JLabel();
         backButton = new javax.swing.JButton();
         editOrders = new javax.swing.JButton();
         saveButton = new javax.swing.JButton();
+        datePerformedDatePicker = new org.jdesktop.swingx.JXDatePicker();
+        clientSearchLabel = new javax.swing.JLabel();
+        clientSearchTextField1 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         clientList = new javax.swing.JList<>();
-        foundClientsLabel = new javax.swing.JLabel();
-        datePerformedDatePicker = new org.jdesktop.swingx.JXDatePicker();
 
         titleLabel.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         titleLabel.setText("Add Buy Order");
         titleLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-
-        clientNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        clientNameLabel.setText("Client Name:");
-
-        clientNameTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clientNameTextFieldActionPerformed(evt);
-            }
-        });
 
         ordersLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ordersLabel.setText("Orders:");
@@ -149,15 +150,26 @@ public class AddBuyOrder extends javax.swing.JPanel {
             }
         });
 
+        clientSearchLabel.setText("Search for a client:");
+
+        clientSearchTextField1.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                clientSearchTextField1CaretUpdate(evt);
+            }
+        });
+
         clientList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
         clientList.setModel(new DefaultListModel());
+        clientList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                clientListValueChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(clientList);
-
-        foundClientsLabel.setText("Found Clients");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -166,17 +178,20 @@ public class AddBuyOrder extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(68, 68, 68)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(ordersLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(clientNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ordersLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
                     .addComponent(dateLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(editOrders, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(clientNameTextField)
                     .addComponent(datePerformedDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(53, 53, 53)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(124, Short.MAX_VALUE))
+                .addGap(52, 52, 52)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(clientSearchLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(clientSearchTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -184,41 +199,30 @@ public class AddBuyOrder extends javax.swing.JPanel {
                 .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(284, 284, 284))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(foundClientsLabel)
-                        .addGap(214, 214, 214))))
+                .addContainerGap(283, Short.MAX_VALUE)
+                .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(283, 283, 283))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(47, 47, 47)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ordersLabel)
+                    .addComponent(editOrders)
+                    .addComponent(clientSearchLabel)
+                    .addComponent(clientSearchTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(44, 44, 44)
-                        .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(foundClientsLabel)
-                        .addGap(10, 10, 10)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(clientNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(clientNameLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(ordersLabel)
-                            .addComponent(editOrders))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(dateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(datePerformedDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(121, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(backButton)
                     .addComponent(saveButton))
@@ -227,6 +231,19 @@ public class AddBuyOrder extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        if (localChange) {
+            switch (showYesNoCancelDialog(window, "Unsaved changes detected!\nWould you like to save?")) {
+                case YES_OPTION:
+                    if (!this.save()) {
+                        return;
+                    }
+                    break;
+                case NO_OPTION:
+                    break;
+                case CANCEL_OPTION:
+                    return;
+            }
+        }
         this.window.setContentPane(new ManageBuyOrders(window));
         this.window.pack();
     }//GEN-LAST:event_backButtonActionPerformed
@@ -238,52 +255,68 @@ public class AddBuyOrder extends javax.swing.JPanel {
     }//GEN-LAST:event_editOrdersActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        if (this.save()) {
+            this.window.setContentPane(new ManageBuyOrders(window));
+            this.window.pack();
+        }
+    }//GEN-LAST:event_saveButtonActionPerformed
+
+    private boolean save() {
         Client c = getSelectedClient();
         if (c == null) {
             showErrorDialog(this, "You must select a client to associate the buy order with!");
-            return;
+            return false;
         }
 
         if (orders.size() == 0) {
             showErrorDialog(this, "You must add some orders!");
-            return;
+            return false;
         }
 
         Date d = datePerformedDatePicker.getDate();
         if (d == null) {
             showErrorDialog(this, "You must select a date for the buy order!");
-        }
-
-        if (d.before(new Date())) {
+            return false;
+        } else if (d.before(new Date())) {
             showErrorDialog(this, "Buy Orders must be due for after today!");
-            return;
+            return false;
         }
 
         BuyOrder buyOrder = new BuyOrder(c, d, orders);
         if (buyOrders.insert(buyOrder)) {
             showInformationDialog(this, "Buy order successfully added!");
+            return true;
         } else {
             showErrorDialog(this, "Buy order could not be added");
+            return false;
         }
-    }//GEN-LAST:event_saveButtonActionPerformed
+    }
 
-    private void clientNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientNameTextFieldActionPerformed
-        String text = clientNameTextField.getText();
+    private void clientSearchTextField1CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_clientSearchTextField1CaretUpdate
+        String text = clientSearchTextField.getText();
         if (text == null || text.isBlank() || text.isEmpty()) {
             drawList(clients);
             return;
         }
 
-        localClients = clients.getByNameSearch(text);
-        ClientNode node = localClients.getFirst();
-        int i = 0;
-        while (node != null) {
-            ids[i] = node.getData().getID();
-            node = node.getNext();
-            i++;
+        localClients = clients.searchAllFields(text);
+        size = localClients.size();
+        if (size == 0) { // Empty list
+            if (showYesNoDialog(this, "Client has not been found!\n Would you like to add them?\n(This will keep the added orders)") == YES_OPTION) {
+                this.window.setContentPane(new AddClient(window, text, orders));
+                this.window.pack();
+            }
+            return;
         }
         drawList();
-    }//GEN-LAST:event_clientNameTextFieldActionPerformed
+        if (size == 1) {
+            clientList.setSelectedIndex(0);
+        }
+    }//GEN-LAST:event_clientSearchTextField1CaretUpdate
+
+    private void clientListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_clientListValueChanged
+        localChange = true;
+    }//GEN-LAST:event_clientListValueChanged
 
     private Client getSelectedClient() {
         int selected = clientList.getSelectedIndex();
@@ -296,12 +329,12 @@ public class AddBuyOrder extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
     private javax.swing.JList<String> clientList;
-    private javax.swing.JLabel clientNameLabel;
-    private javax.swing.JTextField clientNameTextField;
+    private javax.swing.JLabel clientSearchLabel;
+    private javax.swing.JTextField clientSearchTextField;
+    private javax.swing.JTextField clientSearchTextField1;
     private javax.swing.JLabel dateLabel;
     private org.jdesktop.swingx.JXDatePicker datePerformedDatePicker;
     private javax.swing.JButton editOrders;
-    private javax.swing.JLabel foundClientsLabel;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel ordersLabel;
     private javax.swing.JButton saveButton;
@@ -311,5 +344,7 @@ public class AddBuyOrder extends javax.swing.JPanel {
     // Wrong
     private ClientList localClients;
     private int[] ids = new int[clients.size()];
+    int size;
+    private boolean localChange;
     // Actual end of variable declaration
 }

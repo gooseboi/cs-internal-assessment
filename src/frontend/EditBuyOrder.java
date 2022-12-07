@@ -26,11 +26,9 @@ import backend.Client;
 import backend.ClientList;
 import backend.ClientNode;
 import static backend.Main.buyOrders;
-import static backend.Main.sales;
 import static backend.Main.clients;
 import javax.swing.JFrame;
 import backend.OrderList;
-import backend.Sale;
 import java.util.Date;
 import javax.swing.DefaultListModel;
 import static backend.Main.showErrorDialog;
@@ -50,7 +48,7 @@ public class EditBuyOrder extends javax.swing.JPanel {
     private final JFrame window;
     private final BuyOrder buyOrder;
     private final OrderList orders;
-    private boolean changed = false;
+    private boolean localChange = false;
 
     /**
      * Creates new form DeleteSale
@@ -60,7 +58,7 @@ public class EditBuyOrder extends javax.swing.JPanel {
         this.window = window;
         this.buyOrder = b;
         this.orders = b.getOrders().clone();
-        this.clientNameTextField.setText(b.getClient().getName());
+        this.clientSearchTextField.setText(b.getClient().getName());
         this.datePerformedDatePicker.setDate(b.getDate());
         drawList(clients);
         clientList.setSelectedIndex(this.findIdx(b.getId()));
@@ -71,11 +69,11 @@ public class EditBuyOrder extends javax.swing.JPanel {
         this.window = window;
         this.buyOrder = b;
         this.orders = orders;
-        this.clientNameTextField.setText(b.getClient().getName());
+        this.clientSearchTextField.setText(b.getClient().getName());
         this.datePerformedDatePicker.setDate(b.getDate());
         drawList(clients);
         clientList.setSelectedIndex(this.findIdx(b.getId()));
-        changed = true;
+        localChange = true;
     }
 
     private void drawList() {
@@ -86,15 +84,20 @@ public class EditBuyOrder extends javax.swing.JPanel {
         ClientNode node = cs.getFirst();
         DefaultListModel<String> model = (DefaultListModel) clientList.getModel();
         model.clear();
+        int i = 0;
+        int idx = -1;
         while (node != null) {
             Client c = node.getData();
             model.addElement(c.getName() + ' ' + c.getSurname() + '-' + c.getEmailAddress());
+            if (buyOrder.getClient().equals(c)) {
+                idx = i;
+            }
+            ids[i++] = c.getID();
             node = node.getNext();
         }
         clientList.setModel(model);
-        if (cs.size() == 1) {
-            clientList.setSelectedIndex(0);
-            changed = false;
+        if (idx != -1) {
+            clientList.setSelectedIndex(idx);
         }
     }
 
@@ -108,31 +111,23 @@ public class EditBuyOrder extends javax.swing.JPanel {
     private void initComponents() {
 
         titleLabel = new javax.swing.JLabel();
-        clientNameLabel = new javax.swing.JLabel();
-        clientNameTextField = new javax.swing.JTextField();
         ordersLabel = new javax.swing.JLabel();
         dateLabel = new javax.swing.JLabel();
         backButton = new javax.swing.JButton();
         editOrders = new javax.swing.JButton();
         saveButton = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        clientList = new javax.swing.JList<>();
-        foundClientsLabel = new javax.swing.JLabel();
         datePerformedDatePicker = new org.jdesktop.swingx.JXDatePicker();
+        clientSearchLabel = new javax.swing.JLabel();
+        clientSearchTextField = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        clientList = new javax.swing.JList<>();
+
+        setPreferredSize(new java.awt.Dimension(754, 480));
 
         titleLabel.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titleLabel.setText("Edit Sale");
+        titleLabel.setText("Edit Buy Order");
         titleLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-
-        clientNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        clientNameLabel.setText("Client Name:");
-
-        clientNameTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clientNameTextFieldActionPerformed(evt);
-            }
-        });
 
         ordersLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ordersLabel.setText("Orders:");
@@ -161,6 +156,25 @@ public class EditBuyOrder extends javax.swing.JPanel {
             }
         });
 
+        datePerformedDatePicker.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                datePerformedDatePickerMouseClicked(evt);
+            }
+        });
+
+        clientSearchLabel.setText("Search for a client:");
+
+        clientSearchTextField.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                clientSearchTextFieldCaretUpdate(evt);
+            }
+        });
+        clientSearchTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clientSearchTextFieldActionPerformed(evt);
+            }
+        });
+
         clientList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
@@ -172,15 +186,7 @@ public class EditBuyOrder extends javax.swing.JPanel {
                 clientListValueChanged(evt);
             }
         });
-        jScrollPane1.setViewportView(clientList);
-
-        foundClientsLabel.setText("Found Clients");
-
-        datePerformedDatePicker.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                datePerformedDatePickerMouseClicked(evt);
-            }
-        });
+        jScrollPane2.setViewportView(clientList);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -189,83 +195,75 @@ public class EditBuyOrder extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(68, 68, 68)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(ordersLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(clientNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ordersLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
                     .addComponent(dateLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(editOrders, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(clientNameTextField)
                     .addComponent(datePerformedDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(53, 53, 53)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(124, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
+                .addGap(64, 64, 64)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(clientSearchLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(clientSearchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(159, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(289, 289, 289))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(284, 284, 284))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(foundClientsLabel)
-                        .addGap(214, 214, 214))))
+                .addGap(25, 25, 25))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(47, 47, 47)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ordersLabel)
+                    .addComponent(editOrders)
+                    .addComponent(clientSearchLabel)
+                    .addComponent(clientSearchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(44, 44, 44)
-                        .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(foundClientsLabel)
-                        .addGap(10, 10, 10)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(clientNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(clientNameLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(ordersLabel)
-                            .addComponent(editOrders))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(dateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(datePerformedDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(121, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(backButton)
-                    .addComponent(saveButton))
+                    .addComponent(saveButton)
+                    .addComponent(backButton))
                 .addGap(41, 41, 41))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        if (!changed) {
-            this.window.setContentPane(new ManageBuyOrders(window));
-            this.window.pack();
-            return;
+        if (localChange) {
+            switch (showYesNoCancelDialog(window, "Unsaved changes detected!\n Would you like to save them?")) {
+                case YES_OPTION:
+                    if (!this.save()) {
+                        return;
+                    }
+                    break;
+                case NO_OPTION:
+                    break;
+                case CANCEL_OPTION:
+                    return;
+            }
         }
-
-        switch (showYesNoCancelDialog(this, "Unsaved changes detected!\n Would you like to save them?")) {
-            case YES_OPTION:
-                this.save();
-            case NO_OPTION:
-                this.window.setContentPane(new ManageBuyOrders(window));
-                this.window.pack();
-                return;
-            case CANCEL_OPTION:
-                return;
-        }
+        this.window.setContentPane(new ManageSales(window));
+        this.window.pack();
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void editOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editOrdersActionPerformed
@@ -274,43 +272,46 @@ public class EditBuyOrder extends javax.swing.JPanel {
     }//GEN-LAST:event_editOrdersActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        this.save();
+        if (!this.save()) {
+            return;
+        }
         this.window.setContentPane(new ManageBuyOrders(window));
         this.window.pack();
     }//GEN-LAST:event_saveButtonActionPerformed
 
-    private void clientNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientNameTextFieldActionPerformed
-        String text = clientNameTextField.getText();
+    private void datePerformedDatePickerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_datePerformedDatePickerMouseClicked
+        localChange = true;
+    }//GEN-LAST:event_datePerformedDatePickerMouseClicked
+
+    private void clientSearchTextFieldCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_clientSearchTextFieldCaretUpdate
+        String text = clientSearchTextField.getText();
         if (text == null || text.isBlank() || text.isEmpty()) {
             drawList(clients);
             return;
         }
 
-        localClients = clients.getByNameSearch(text);
-        ClientNode node = localClients.getFirst();
-        int i = 0;
-        while (node != null) {
-            ids[i] = node.getData().getID();
-            node = node.getNext();
-            i++;
-        }
-        if (i == 0) { // Empty list
+        localClients = clients.searchAllFields(text);
+        size = localClients.size();
+        if (size == 0) { // Empty list
             if (showYesNoDialog(this, "Client has not been found!\n Would you like to add them?\n(This will keep the added orders)") == YES_OPTION) {
-                this.window.setContentPane(new AddClient(window, text, orders, buyOrder));
+                this.window.setContentPane(new AddClient(window, text, orders));
                 this.window.pack();
             }
             return;
         }
         drawList();
-    }//GEN-LAST:event_clientNameTextFieldActionPerformed
+        if (size == 1) {
+            clientList.setSelectedIndex(0);
+        }
+    }//GEN-LAST:event_clientSearchTextFieldCaretUpdate
+
+    private void clientSearchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientSearchTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_clientSearchTextFieldActionPerformed
 
     private void clientListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_clientListValueChanged
-        changed = true;
+        localChange = true;
     }//GEN-LAST:event_clientListValueChanged
-
-    private void datePerformedDatePickerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_datePerformedDatePickerMouseClicked
-        changed = true;
-    }//GEN-LAST:event_datePerformedDatePickerMouseClicked
 
     private Client getSelectedClient() {
         int selected = clientList.getSelectedIndex();
@@ -329,51 +330,54 @@ public class EditBuyOrder extends javax.swing.JPanel {
         return -1;
     }
 
-    private void save() {
+    private boolean save() {
         Client c = getSelectedClient();
         if (c == null) {
             showErrorDialog(this, "You must select a client to associate the buy order with!");
-            return;
+            return false;
         }
 
         if (buyOrder.getOrders().size() == 0) {
             showErrorDialog(this, "You must add some orders!");
-            return;
+            return false;
         }
 
         Date d = datePerformedDatePicker.getDate();
         if (d == null) {
             showErrorDialog(this, "You must select a date for the buy order!");
+            return false;
         } else if (d.before(new Date())) {
             showErrorDialog(this, "Date cannot be in the future!");
-            return;
+            return false;
         }
 
         BuyOrder b = new BuyOrder(c, d, orders, buyOrder.getId());
         if (buyOrders.modify(b)) {
             showInformationDialog(this, "Buy Order successfully modified!");
+            localChange = false;
+            return true;
         } else {
             showErrorDialog(this, "Buy Order could not be modified");
+            return false;
         }
-        changed = false;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
     private javax.swing.JList<String> clientList;
-    private javax.swing.JLabel clientNameLabel;
-    private javax.swing.JTextField clientNameTextField;
+    private javax.swing.JLabel clientSearchLabel;
+    private javax.swing.JTextField clientSearchTextField;
     private javax.swing.JLabel dateLabel;
     private org.jdesktop.swingx.JXDatePicker datePerformedDatePicker;
     private javax.swing.JButton editOrders;
-    private javax.swing.JLabel foundClientsLabel;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel ordersLabel;
     private javax.swing.JButton saveButton;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
     // Wrong
     private ClientList localClients;
+    int size;
     private int[] ids = new int[clients.size()];
     // Actual end of variable declaration
 }
