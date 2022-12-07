@@ -60,7 +60,7 @@ public class EditSale extends javax.swing.JPanel {
         this.orders = s.getOrders().clone();
         this.clientSearchTextField.setText(s.getClient().getName());
         this.datePerformedDatePicker.setDate(s.getDate());
-        drawList(clients, sale.getClient().getID());
+        drawList(clients);
         clientList.setSelectedIndex(this.findIdx(s.getId()));
     }
 
@@ -70,7 +70,7 @@ public class EditSale extends javax.swing.JPanel {
         this.sale = s;
         this.orders = orders;
         this.datePerformedDatePicker.setDate(s.getDate());
-        drawList(clients, sale.getClient().getID());
+        drawList(clients);
         clientList.setSelectedIndex(this.findIdx(s.getId()));
         localChange = true;
     }
@@ -86,16 +86,16 @@ public class EditSale extends javax.swing.JPanel {
         } else {
             this.datePerformedDatePicker.setDate(s.getDate());
         }
-        drawList(clients, sale.getClient().getID());
+        drawList(clients);
         clientList.setSelectedIndex(this.findIdx(s.getId()));
         localChange = true;
     }
 
     private void drawList() {
-        drawList(localClients, sale.getClient().getID());
+        drawList(localClients);
     }
 
-    private void drawList(ClientList cs, int id) {
+    private void drawList(ClientList cs) {
         ClientNode node = cs.getFirst();
         DefaultListModel<String> model = (DefaultListModel) clientList.getModel();
         model.clear();
@@ -297,7 +297,7 @@ public class EditSale extends javax.swing.JPanel {
     private void clientSearchTextFieldCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_clientSearchTextFieldCaretUpdate
         String text = clientSearchTextField.getText();
         if (text == null || text.isBlank() || text.isEmpty()) {
-            drawList(clients, sale.getClient().getID());
+            drawList(clients);
             return;
         }
 
