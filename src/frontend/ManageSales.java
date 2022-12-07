@@ -227,7 +227,7 @@ public class ManageSales extends javax.swing.JPanel {
             return;
         }
 
-        if (showYesNoDialog(this, "Are you sure you want to delete the selected stock?") == NO_OPTION) {
+        if (showYesNoDialog(this, "Are you sure you want to delete the selected sale?") == NO_OPTION) {
             return;
         }
 
