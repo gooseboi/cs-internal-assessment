@@ -269,7 +269,7 @@ public class AddClient extends javax.swing.JPanel {
         if (clients.insert(c)) {
             showInformationDialog(this, "Client successfully added!");
         } else {
-            showErrorDialog(this, "Client with the same fields already exists!");
+            showErrorDialog(this, "Client with the same phone number or email already exists!");
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 
