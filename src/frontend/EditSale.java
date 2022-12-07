@@ -260,9 +260,11 @@ public class EditSale extends javax.swing.JPanel {
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         if (localChange) {
-            switch (showYesNoCancelDialog(this, "Unsaved changes detected!\n Would you like to save them?")) {
+            switch (showYesNoCancelDialog(window, "Unsaved changes detected!\n Would you like to save them?")) {
                 case YES_OPTION:
-                    this.save();
+                    if (!this.save()) {
+                        return;
+                    }
                     break;
                 case NO_OPTION:
                     break;
@@ -281,7 +283,9 @@ public class EditSale extends javax.swing.JPanel {
     }//GEN-LAST:event_editOrdersActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        this.save();
+        if (!this.save()) {
+            return;
+        }
         this.window.setContentPane(new ManageSales(window));
         this.window.pack();
     }//GEN-LAST:event_saveButtonActionPerformed
@@ -333,34 +337,37 @@ public class EditSale extends javax.swing.JPanel {
         return -1;
     }
 
-    private void save() {
+    private boolean save() {
         Client c = getSelectedClient();
         if (c == null) {
             showErrorDialog(this, "You must select a client to associate the sale with!");
-            return;
+            return false;
         }
 
         if (sale.getOrders().size() == 0) {
             showErrorDialog(this, "You must add some orders!");
-            return;
+            return false;
         }
 
         Date d = datePerformedDatePicker.getDate();
         if (d == null) {
             showErrorDialog(this, "You must select a date for the sale!");
-            return;
+            return false;
         } else if (d.after(new Date())) {
             showErrorDialog(this, "Date cannot be in the future!");
-            return;
+            return false;
         }
 
         Sale s = new Sale(orders, c, d, sale.getId());
         if (sales.modify(s)) {
             showInformationDialog(this, "Sale successfully modified!");
+            localChange = false;
+            return true;
         } else {
             showErrorDialog(this, "Sale could not be modified");
+            localChange = false;
+            return false;
         }
-        localChange = false;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
