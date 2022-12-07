@@ -75,7 +75,7 @@ public class EditOrder extends javax.swing.JPanel {
         this.drawList();
     }
 
-    public EditOrder(JFrame window, Sale sale, OrderList orders) {
+    public EditOrder(JFrame window, Sale sale, OrderList orders, Date date) {
         initComponents();
         parent = null;
 
@@ -83,7 +83,7 @@ public class EditOrder extends javax.swing.JPanel {
         this.orders = orders;
         this.newOrders = orders.clone();
         this.sale = sale;
-        this.date = null;
+        this.date = date;
 
         this.drawTable();
         DefaultListModel<String> model = new DefaultListModel();
