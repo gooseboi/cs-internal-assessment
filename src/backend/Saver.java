@@ -30,6 +30,7 @@ import static backend.Main.stocks;
 import static backend.Main.sales;
 import static backend.Main.buyOrders;
 import static backend.Main.clients;
+import static backend.Main.showInformationDialog;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -338,6 +339,8 @@ public class Saver implements WindowListener {
                             break;
                     }
                 }
+                showInformationDialog(window, "Successfully saved!");
+                window.dispose();
                 break;
             case JOptionPane.NO_OPTION:
                 window.dispose();
