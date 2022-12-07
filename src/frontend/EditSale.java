@@ -99,15 +99,20 @@ public class EditSale extends javax.swing.JPanel {
         ClientNode node = cs.getFirst();
         DefaultListModel<String> model = (DefaultListModel) clientList.getModel();
         model.clear();
+        int i = 0;
+        int idx = -1;
         while (node != null) {
             Client c = node.getData();
             model.addElement(c.getName() + ' ' + c.getSurname() + '-' + c.getEmailAddress());
+            if (sale.getClient().equals(c)) {
+                idx = i;
+            }
+            ids[i++] = c.getID();
             node = node.getNext();
         }
         clientList.setModel(model);
-        if (cs.size() == 1) {
-            clientList.setSelectedIndex(0);
-            localChange = false;
+        if (idx != -1) {
+            clientList.setSelectedIndex(idx);
         }
     }
 
