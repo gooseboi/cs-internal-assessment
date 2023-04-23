@@ -55,6 +55,7 @@ public class Main {
         // Create the main menu window
         mainWindow = new JFrame();
         mainWindow.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        mainWindow.setTitle("Stock Manager");
         mainWindow.setContentPane(new frontend.MainMenu(mainWindow));
         mainWindow.pack();
         mainWindow.setLocationRelativeTo(null);
